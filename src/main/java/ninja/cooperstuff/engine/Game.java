@@ -23,8 +23,7 @@ public class Game extends JFrame {
 		this.add(this.screen);
 	}
 
-	@SuppressWarnings("WeakerAccess")
-	void close() {
+	public void close() {
 		this.running = false;
 		this.dispose();
 	}
