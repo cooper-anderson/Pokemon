@@ -3,6 +3,7 @@ import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.events.Keys;
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.pokemon.client.Launch;
 import ninja.cooperstuff.pokemon.init.Moves;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.move.Move;
@@ -11,11 +12,19 @@ import ninja.cooperstuff.pokemon.type.Type;
 import java.util.Random;
 
 public class Main {
+	public static void main(String[] args) throws InterruptedException {
+		Launch.run();
+	}
 	/*private static Game game = new Game();
 
 	public static void main(String[] args) throws InterruptedException {
+		Debug.info("Starting Pokemon");
 		game.setSize(800, 600);
-		game.setTitle("Test");
+		game.setTitle("Pokemon");
+
+		ninja.cooperstuff.pokemon.init.Init.preInit();
+		ninja.cooperstuff.pokemon.init.Init.init();
+		ninja.cooperstuff.pokemon.init.Init.postInit();
 		//TestObject test = game.instantiate(new TestObject());
 		//TestObject2 test2 = game.instantiate(new TestObject2());
 		while (game.running) {
@@ -32,7 +41,7 @@ public class Main {
 		}
 	}*/
 
-	public static void main(String[] args) throws InterruptedException {
+	/*public static void main(String[] args) throws InterruptedException {
 		Debug.info("Starting Pokemon");
 		Debug.level = 0;
 		ninja.cooperstuff.pokemon.init.Init.preInit();
@@ -60,5 +69,5 @@ public class Main {
 			}
 			Debug.log(x);
 		}
-	}
+	}*/
 }
