@@ -4,6 +4,8 @@ import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.events.Keys;
+import ninja.cooperstuff.pokemon.entity.Pokemon;
+import ninja.cooperstuff.pokemon.init.Monsters;
 
 public class Launch {
 	private static Game game = new Game();
@@ -16,6 +18,8 @@ public class Launch {
 		ninja.cooperstuff.pokemon.init.Init.preInit();
 		ninja.cooperstuff.pokemon.init.Init.init();
 		ninja.cooperstuff.pokemon.init.Init.postInit();
+
+		game.instantiate(new Pokemon(Monsters.bulbasaur));
 
 		while (game.running) {
 			game.update();
