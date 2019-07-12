@@ -156,7 +156,7 @@ public class Moves implements Init.Initializer {
 	public static final Move teleport = new Move("Teleport", PSYCHIC, STATUS, 0, 0, 20);
 	public static final Move thrash = new Move("Thrash", NORMAL, PHYSICAL, 120, 100, 10);
 	public static final Move thunder = new Move("Thunder", ELECTRIC, SPECIAL, 110, 70, 10);
-	public static final Move thudnerPunch = new Move("Thudner Punch", ELECTRIC, PHYSICAL, 75, 100, 15);
+	public static final Move thunderPunch = new Move("Thunder Punch", ELECTRIC, PHYSICAL, 75, 100, 15);
 	public static final Move thunderShock = new Move("Thunder Shock", ELECTRIC, SPECIAL, 40, 100, 30);
 	public static final Move thunderWave = new Move("Thunder Wave", ELECTRIC, STATUS, 0, 90, 20);
 	public static final Move thunderbolt = new Move("Thunderbolt", ELECTRIC, SPECIAL, 90, 100, 15);
