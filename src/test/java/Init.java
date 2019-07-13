@@ -1,8 +1,6 @@
 import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.type.Type;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
