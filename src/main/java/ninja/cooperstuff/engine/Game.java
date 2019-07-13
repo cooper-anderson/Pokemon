@@ -1,6 +1,5 @@
 package ninja.cooperstuff.engine;
 
-import ninja.cooperstuff.engine.components.Component;
 import ninja.cooperstuff.engine.components.GameObject;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.events.Keys;

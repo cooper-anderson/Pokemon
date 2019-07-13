@@ -15,7 +15,7 @@ public abstract class GameObject {
 	public <T extends Component> T addComponent(Class<T> componentType) {
 		Component component = null;
 		try {
-			component = (Component) componentType.getDeclaredConstructor().newInstance();
+			component = componentType.getDeclaredConstructor().newInstance();
 			component.gameObject = this;
 			this.components.put(componentType, component);
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
