@@ -8,10 +8,11 @@ import ninja.cooperstuff.engine.graphics.Screen;
 
 import javax.swing.*;
 import java.util.HashSet;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 public class Game extends JFrame {
 	public HashSet<GameObject> gameObjects = new HashSet<>();
+	public LinkedList<GameObject> deleteQueue = new LinkedList<>();
 	public boolean running = true;
 	private Screen screen = new Screen(this);
 
@@ -31,6 +32,7 @@ public class Game extends JFrame {
 	public void update() {
 		if (KeyListener.isKeyPressed(Keys.ESC)) this.close();
 		else {
+			for (GameObject gameObject : this.deleteQueue) this.gameObjects.remove(gameObject);
 			for (GameObject gameObject : this.gameObjects) {
 				gameObject.update();
 				for (Class componentType : gameObject.components.keySet()) gameObject.components.get(componentType).update();
@@ -38,6 +40,7 @@ public class Game extends JFrame {
 			for (GameObject gameObject : this.gameObjects) {
 				gameObject.late_update();
 				for (Class componentType : gameObject.components.keySet()) gameObject.components.get(componentType).late_update();
+				gameObject.frame++;
 			}
 		}
 	}
@@ -46,5 +49,9 @@ public class Game extends JFrame {
 		gameObject.game = this;
 		this.gameObjects.add(gameObject);
 		return gameObject;
+	}
+
+	public <T extends GameObject> void destroy(T gameObject) {
+		this.deleteQueue.add(gameObject);
 	}
 }
