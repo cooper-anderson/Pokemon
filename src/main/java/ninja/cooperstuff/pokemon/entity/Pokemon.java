@@ -1,7 +1,6 @@
 package ninja.cooperstuff.pokemon.entity;
 
-import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.events.Keys;
+import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.util.Stats;
@@ -11,44 +10,41 @@ import java.awt.*;
 
 public class Pokemon extends Entity {
 	public Monster monster;
-	private Stats valuesEffort = new Stats();
-	private Stats valuesIndividual = new Stats();
-	private Stats stats;
-	private int walkCycle = 0;
+	protected Stats valuesEffort = new Stats();
+	protected Stats valuesIndividual = new Stats();
+	protected Stats stats;
+	protected int walkCycle = 0;
 	public Direction facing = Direction.DOWN;
+	protected boolean moving = false;
 
 	public Pokemon(World world, Monster monster) {
 		super(world);
+		this.setMonster(monster);
+	}
+
+	public void setMonster(Monster monster) {
 		this.monster = monster;
+		this.shadow.scale = this.monster.getShadowSize();
 	}
 
 	@Override
 	public void update() {
-		if (KeyListener.isKeyPressed(Keys.K)) this.destroy();
-		boolean moving = false;
-		double multiplier = 1;
-		double speed = multiplier * ((KeyListener.isKeyPressed(Keys.W) && KeyListener.isKeyPressed(Keys.A)) || (KeyListener.isKeyPressed(Keys.W) && KeyListener.isKeyPressed(Keys.D)) ||
-				(KeyListener.isKeyPressed(Keys.S) && KeyListener.isKeyPressed(Keys.A)) || (KeyListener.isKeyPressed(Keys.S) && KeyListener.isKeyPressed(Keys.D)) ? .707 : 1);
-		if (KeyListener.isKeyPressed(Keys.W)) {
-			this.facing = Direction.UP; moving = true;
-			this.transform.position.y -= speed;
-		} else if (KeyListener.isKeyPressed(Keys.S)) {
-			this.facing = Direction.DOWN; moving = true;
-			this.transform.position.y += speed;
-		} if (KeyListener.isKeyPressed(Keys.A)) {
-			this.facing = Direction.LEFT; moving = true;
-			this.transform.position.x -= speed;
-		} else if (KeyListener.isKeyPressed(Keys.D)) {
-			this.facing = Direction.RIGHT; moving = true;
-			this.transform.position.x += speed;
-		}
-		if (this.frame % (int) (30) == 0 || (moving && this.frame % (int) (15 / multiplier) == 0)) {
+		this.shadow.scale = this.monster.getShadowSize();
+		if ((!this.moving && this.frame % (2 * this.monster.getAnimationSpeed()) == 0) || (this.moving && this.frame % this.monster.getAnimationSpeed() == 0)) {
 			this.walkCycle = 1 - walkCycle;
 		}
+		this.moving = false;
 	}
 
 	@Override
 	public void render(Graphics2D screen) {
-		screen.drawImage(this.monster.spriteLayout.get(this.facing)[this.walkCycle], (int) this.transform.position.x, (int) this.transform.position.y, 64, 64, null);
+		super.render(screen);
+		Vector offset = this.monster.getSpriteOffset(this.facing);
+		int x = (int) (offset.x - 32);
+		int y = (int) (offset.y - this.walkCycle * this.monster.getBobHeight(this.facing) - 60);
+		screen.drawImage(this.monster.spriteLayout.get(this.facing)[this.walkCycle], x, y, 64, 64, null);
+		Vector col1 = this.monster.getCollisionCorner1();
+		Vector col2 = this.monster.getCollisionCorner2();
+		if (Player.collisionMode) screen.drawRect((int) col1.x, (int) col1.y, (int) (col2.x - col1.x), (int) (col2.y - col1.y));
 	}
 }

@@ -1,15 +1,4 @@
-import ninja.cooperstuff.debug.Debug;
-import ninja.cooperstuff.engine.Game;
-import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.events.Keys;
-import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.pokemon.client.Launch;
-import ninja.cooperstuff.pokemon.init.Moves;
-import ninja.cooperstuff.pokemon.monster.Monster;
-import ninja.cooperstuff.pokemon.move.Move;
-import ninja.cooperstuff.pokemon.type.Type;
-
-import java.util.Random;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
@@ -28,7 +17,7 @@ public class Main {
 		//TestObject test = game.instantiate(new TestObject());
 		//TestObject2 test2 = game.instantiate(new TestObject2());
 		while (game.running) {
-			if (KeyListener.isKeyPressed(Keys.SPACE)) game.instantiate(new TestObject());
+			if (KeyListener.isKeyHeld(Keys.SPACE)) game.instantiate(new TestObject());
 			game.update();
 			game.repaint();
 			ninja.cooperstuff.pokemon.init.Init.initialize();
