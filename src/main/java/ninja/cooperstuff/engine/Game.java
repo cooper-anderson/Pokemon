@@ -2,7 +2,7 @@ package ninja.cooperstuff.engine;
 
 import ninja.cooperstuff.engine.components.GameObject;
 import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.events.Keys;
+import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.graphics.Screen;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ public class Game extends JFrame {
 	}
 
 	public void update() {
-		if (KeyListener.isKeyPressed(Keys.ESC)) this.close();
+		if (KeyListener.isKeyHeld(Keys.ESC)) this.close();
 		else {
 			for (GameObject gameObject : this.deleteQueue) this.gameObjects.remove(gameObject);
 			for (GameObject gameObject : this.gameObjects) {
@@ -42,6 +42,7 @@ public class Game extends JFrame {
 				gameObject.frame++;
 			}
 		}
+		KeyListener.clearKeys();
 	}
 
 	public <T extends GameObject> T instantiate(T gameObject) {

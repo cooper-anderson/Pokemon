@@ -1,6 +1,8 @@
 package ninja.cooperstuff.engine.util;
 
 public class Vector {
+	public static final Vector zero=new Vector(), one=new Vector(1, 1);
+
 	public double x, y;
 
 	public Vector(double x, double y) {
@@ -55,6 +57,10 @@ public class Vector {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	public String toString() {
+		return String.format("Vector(%s, %s)", (int) this.x, (int) this.y);
+	}
+
 	public static Vector add(Vector left, Vector right) {
 		return new Vector(left.x + right.x, left.y + right.y);
 	}
@@ -74,5 +80,9 @@ public class Vector {
 
 	public static Double dot(Vector left, Vector right) {
 		return left.x * right.x + left.y * right.y;
+	}
+
+	public static boolean equals(Vector left, Vector right) {
+		return left.x == right.x && left.y == right.y;
 	}
 }
