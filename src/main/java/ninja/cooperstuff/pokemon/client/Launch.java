@@ -92,11 +92,13 @@ public class Launch {
 				player.monster.setSpriteOffset(Direction.LEFT, pPrev.monster.getSpriteOffset(Direction.LEFT));
 				player.monster.setSpriteOffset(Direction.RIGHT, pPrev.monster.getSpriteOffset(Direction.RIGHT));
 				player.monster.setAnimationSpeed(pPrev.monster.getAnimationSpeed());
+				player.monster.setCollisionCorner1(pPrev.monster.getCollisionCorner1());
+				player.monster.setCollisionCorner2(pPrev.monster.getCollisionCorner2());
 			} else if (KeyListener.isKeyDown(Keys.RETURN)) {
 				Monster m = player.monster;
 				// bulbasaur.setShadowSize(1.1).setSpriteOffset(Direction.UP, new Vector(1, 4)).setSpriteOffset(Direction.DOWN, new Vector(1, 4)).setSpriteOffset(Direction.LEFT, new Vector(-6, 4)).setSpriteOffset(Direction.RIGHT, new Vector(6, 4));
 				String text = m.name.toLowerCase();
-				if (m.getShadowSize() != 0) text += ".setShadowSize(" + m.getShadowSize() + ")";
+				if (m.getShadowSize() != 0) text += ".setShadowSize(" + (Math.round(m.getShadowSize() * 10) / 10.0) + ")";
 				if (!Vector.equals(m.getSpriteOffset(Direction.UP), Vector.zero)) text += String.format(".setSpriteOffset(Direction.UP, new %s)", m.getSpriteOffset(Direction.UP));
 				if (!Vector.equals(m.getSpriteOffset(Direction.DOWN), Vector.zero)) text += String.format(".setSpriteOffset(Direction.DOWN, new %s)", m.getSpriteOffset(Direction.DOWN));
 				if (!Vector.equals(m.getSpriteOffset(Direction.LEFT), Vector.zero)) text += String.format(".setSpriteOffset(Direction.LEFT, new %s)", m.getSpriteOffset(Direction.LEFT));

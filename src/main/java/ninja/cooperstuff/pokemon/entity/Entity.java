@@ -38,7 +38,7 @@ public abstract class Entity extends GameObject {
 
 		public void render(Graphics2D screen) {
 			Color color = screen.getColor();
-			screen.setColor(new Color(0, 0, 0, this.opacity + (KeyListener.isKeyHeld(Keys.SPACE) ? 64 : 0)));
+			screen.setColor(new Color(0, 0, 0, this.opacity));
 			int x = (int) (-this.size.x * this.scale / 2);
 			int y = (int) (-this.size.y * this.scale / 2);
 			screen.fillOval(x, y, (int) (this.size.x * this.scale), (int) (this.size.y * this.scale));

@@ -37,10 +37,6 @@ public class Player extends Pokemon {
 			this.facing = Direction.RIGHT; moving = true;
 			this.transform.position.x += speed;
 		}
-		if (KeyListener.isKeyHeld(Keys.Q)) { this.transform.position.x -= multiplier; moving = true; }
-		if (KeyListener.isKeyHeld(Keys.E)) { this.transform.position.x += multiplier; moving = true; }
-		if (KeyListener.isKeyTyped(Keys.O)) this.monster.setShadowSize(this.monster.getShadowSize() + .1);
-		if (KeyListener.isKeyTyped(Keys.U)) this.monster.setShadowSize(this.monster.getShadowSize() - .1);
 
 		int x=0, y=0, h=0;
 		if (KeyListener.isKeyTyped(Keys.I)) y = -1;
@@ -53,12 +49,21 @@ public class Player extends Pokemon {
 		if (KeyListener.isKeyDown(Keys.TILDE)) collisionMode = !collisionMode;
 
 		if (collisionMode) {
+			if (KeyListener.isKeyTyped(Keys.O)) {
+				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(1, 0)));
+				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(-1, 0)));
+			} else if (KeyListener.isKeyTyped(Keys.U)) {
+				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(-1, 0)));
+				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(1, 0)));
+			}
 			if (KeyListener.isKeyHeld(Keys.SHIFT)) {
 				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(x, y)));
 				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(x, y)));
 			} else if (KeyListener.isKeyHeld(Keys.CTRL)) this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(x, y)));
 			else this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(x, y)));
 		} else {
+			if (KeyListener.isKeyTyped(Keys.O)) this.monster.setShadowSize(this.monster.getShadowSize() + .1);
+			if (KeyListener.isKeyTyped(Keys.U)) this.monster.setShadowSize(this.monster.getShadowSize() - .1);
 			if (KeyListener.isKeyHeld(Keys.SHIFT)) {
 				if (KeyListener.isKeyTyped(Keys.P)) {
 					this.monster.setSpriteOffset(Direction.UP, new Vector());
