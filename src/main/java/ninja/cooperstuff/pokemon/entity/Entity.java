@@ -1,8 +1,6 @@
 package ninja.cooperstuff.pokemon.entity;
 
 import ninja.cooperstuff.engine.components.GameObject;
-import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.world.World;
 

@@ -1,6 +1,5 @@
 package ninja.cooperstuff.pokemon.move;
 
-import ninja.cooperstuff.pokemon.init.Types;
 import ninja.cooperstuff.pokemon.type.Type;
 
 import java.util.HashSet;

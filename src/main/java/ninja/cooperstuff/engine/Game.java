@@ -2,8 +2,8 @@ package ninja.cooperstuff.engine;
 
 import ninja.cooperstuff.engine.components.GameObject;
 import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.graphics.Screen;
+import ninja.cooperstuff.engine.util.Keys;
 
 import javax.swing.*;
 import java.util.HashSet;

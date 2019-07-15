@@ -24,6 +24,7 @@ public abstract class GameObject {
 		return (T) component;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Component> T getComponent(Class<T> componentType) {
 		return (T) this.components.get(componentType);
 	}
