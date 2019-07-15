@@ -1,8 +1,9 @@
 import ninja.cooperstuff.pokemon.client.Launch;
+import ninja.cooperstuff.pokemon.client.MapGenLaunch;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
-		Launch.run();
+		MapGenLaunch.run();
 	}
 	/*private static Game game = new Game();
 

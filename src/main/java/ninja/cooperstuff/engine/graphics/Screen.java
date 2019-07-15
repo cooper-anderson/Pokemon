@@ -18,6 +18,7 @@ public class Screen extends JComponent {
 		Graphics2D g = (Graphics2D) graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		this.game.render(g);
 		for (GameObject gameObject : this.game.gameObjects) {
 			g.translate(gameObject.transform.position.x, gameObject.transform.position.y);
 			g.rotate(gameObject.transform.rotation);
