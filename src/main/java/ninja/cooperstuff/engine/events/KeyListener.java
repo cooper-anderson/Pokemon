@@ -37,7 +37,6 @@ public class KeyListener implements java.awt.event.KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
 		if (!hashSet.contains(e.getKeyCode())) downSet.add(e.getKeyCode());
 		typedSet.add(e.getKeyCode());
 		hashSet.add(e.getKeyCode());

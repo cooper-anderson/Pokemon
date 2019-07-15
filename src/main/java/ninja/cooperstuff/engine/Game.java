@@ -6,6 +6,7 @@ import ninja.cooperstuff.engine.graphics.Screen;
 import ninja.cooperstuff.engine.util.Keys;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -44,6 +45,8 @@ public class Game extends JFrame {
 		}
 		KeyListener.clearKeys();
 	}
+
+	public void render(Graphics2D screen) {}
 
 	public <T extends GameObject> T instantiate(T gameObject) {
 		gameObject.game = this;
