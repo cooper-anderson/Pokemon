@@ -45,6 +45,9 @@ public class Player extends Pokemon {
 		if (KeyListener.isKeyTyped(Keys.L)) x = 1;
 		if (KeyListener.isKeyTyped(Keys.Y)) h = 1;
 		if (KeyListener.isKeyTyped(Keys.H)) h = -1;
+		if (KeyListener.isKeyTyped(45)) this.transform.scale.div(1.1);
+		if (KeyListener.isKeyTyped(61))this.transform.scale.mul(1.1);
+		if (KeyListener.isKeyTyped(Keys.X)) this.shiny = !this.shiny;
 
 		if (KeyListener.isKeyDown(Keys.TILDE)) collisionMode = !collisionMode;
 
@@ -116,8 +119,9 @@ public class Player extends Pokemon {
 		Vector left = this.monster.getSpriteOffset(Direction.LEFT);
 		Vector right = this.monster.getSpriteOffset(Direction.RIGHT);
 		screen.translate(-this.transform.position.x, -this.transform.position.y);
-		screen.scale(scale, scale);
+		screen.scale(scale / this.transform.scale.x, scale / this.transform.scale.y);
 		screen.drawString(this.monster.name, 50, 205);
+		screen.drawString(String.valueOf(Monster.ids.indexOf(this.monster)), 50, 242);
 		screen.drawString(String.format("Shadow: %s", Math.round(this.monster.getShadowSize() * 10) / 10.0), 150, 205);
 		screen.drawString(String.format("BobHeight: <%d,%d,%d,%d>", this.monster.getBobHeight(Direction.UP), this.monster.getBobHeight(Direction.DOWN), this.monster.getBobHeight(Direction.LEFT), this.monster.getBobHeight(Direction.RIGHT)), 250, 205);
 		screen.drawString(String.format("OffsetUp: <%d, %d>", (int) up.x, (int) up.y), 90, 230);
@@ -127,7 +131,7 @@ public class Player extends Pokemon {
 		screen.drawString(String.format("Animation: %s", this.monster.getAnimationSpeed()), 50, 280);
 		screen.drawString(String.format("CollCorner1: <%d, %d>", (int) this.monster.getCollisionCorner1().x, (int) this.monster.getCollisionCorner1().y), 130, 280);
 		screen.drawString(String.format("CollCorner2: <%d, %d>", (int) this.monster.getCollisionCorner2().x, (int) this.monster.getCollisionCorner2().y), 260, 280);
-		screen.scale(1/scale, 1/scale);
+		screen.scale(this.transform.scale.x / scale, this.transform.scale.y / scale);
 		screen.translate(this.transform.position.x, this.transform.position.y);
 	}
 }

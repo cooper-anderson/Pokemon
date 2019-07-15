@@ -75,7 +75,18 @@ public class Launch {
 			game.update();
 			game.repaint();
 			Thread.sleep((long) (1000.0 / 60.0));
-			if (KeyListener.isKeyHeld(Keys.BRACKET_RIGHT) && wait == 0) {
+			if (KeyListener.isKeyDown(Keys.SPACE)) {
+				int i = 0;
+				player.destroy();
+				player = game.instantiate(new Player(new World(), Monster.ids.get(id)));
+				while (!player.isShiny()) {
+					player.destroy();
+					player = game.instantiate(new Player(new World(), Monster.ids.get(id)));
+					i++;
+				}
+				System.out.println(i);
+			}
+			if ((KeyListener.isKeyHeld(Keys.BRACKET_RIGHT) || KeyListener.isKeyHeld(Keys.C)) && wait == 0) {
 				id++; if (id == Monster.ids.size()) id = 1;
 				respawn();
 			} else if (KeyListener.isKeyHeld(Keys.BRACKET_LEFT) && wait == 0) {
@@ -94,9 +105,8 @@ public class Launch {
 				player.monster.setAnimationSpeed(pPrev.monster.getAnimationSpeed());
 				player.monster.setCollisionCorner1(pPrev.monster.getCollisionCorner1());
 				player.monster.setCollisionCorner2(pPrev.monster.getCollisionCorner2());
-			} else if (KeyListener.isKeyDown(Keys.RETURN)) {
+			} else if (KeyListener.isKeyDown(Keys.V)) {
 				Monster m = player.monster;
-				// bulbasaur.setShadowSize(1.1).setSpriteOffset(Direction.UP, new Vector(1, 4)).setSpriteOffset(Direction.DOWN, new Vector(1, 4)).setSpriteOffset(Direction.LEFT, new Vector(-6, 4)).setSpriteOffset(Direction.RIGHT, new Vector(6, 4));
 				String text = m.name.toLowerCase();
 				if (m.getShadowSize() != 0) text += ".setShadowSize(" + (Math.round(m.getShadowSize() * 10) / 10.0) + ")";
 				if (!Vector.equals(m.getSpriteOffset(Direction.UP), Vector.zero)) text += String.format(".setSpriteOffset(Direction.UP, new %s)", m.getSpriteOffset(Direction.UP));
@@ -110,7 +120,8 @@ public class Launch {
 				if (m.getAnimationSpeed() != 15) text += ".setAnimationSpeed(" + m.getAnimationSpeed() + ")";
 				if (!Vector.equals(m.getCollisionCorner1(), new Vector(-16, -32))) text += String.format(".setCollisionCorner1(new %s)", m.getCollisionCorner1());
 				if (!Vector.equals(m.getCollisionCorner2(), new Vector(16, 0))) text += String.format(".setCollisionCorner2(new %s)", m.getCollisionCorner2());
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text + ";"), null);
+				//Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text + ";"), null);
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(m.name + "\n"), null);
 			}
 			if (tick == 0) {
 				tick = 15;

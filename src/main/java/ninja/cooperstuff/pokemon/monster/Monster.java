@@ -3,10 +3,11 @@ package ninja.cooperstuff.pokemon.monster;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Direction;
-import ninja.cooperstuff.pokemon.util.ResourceLoader;
 import ninja.cooperstuff.pokemon.util.Stats;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +24,10 @@ public class Monster {
 	public Type type1;
 	public Type type2;
 	public Stats baseStats;
-	private BufferedImage image;
+	private BufferedImage sprite;
+	private BufferedImage spriteShiny;
 	public SpriteLayout spriteLayout;
+	public SpriteLayout spriteLayoutShiny;
 	public HashMap<Direction, Vector> spriteOffset = new HashMap<>();
 	public HashMap<Direction, Integer> bobHeight = new HashMap<>();
 	public Vector collisionCorner1 = new Vector(-16, -32);
@@ -37,8 +40,15 @@ public class Monster {
 		this.type1 = type1;
 		this.type2 = type2;
 		this.baseStats = new Stats(health, attackPhysical, attackSpecial, defensePhysical, defenseSpecial, speed);
-		this.image = ResourceLoader.load(String.format("pokemon/sprites/%s.png", this.name.toLowerCase()));
-		this.spriteLayout = new SpriteLayout(this.image);
+		//this.sprite = ResourceLoader.load(String.format("pokemon/sprites/%s.png", this.name.toLowerCase()));
+		try {
+			this.sprite = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/sprites/%s.png", this.name.toLowerCase())));
+			this.spriteShiny = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/shiny/%s.png", this.name.toLowerCase())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.spriteLayout = new SpriteLayout(this.sprite);
+		this.spriteLayoutShiny = new SpriteLayout(this.spriteShiny);
 		Monster.monsters.add(this);
 		Monster.ids.add(this);
 	}
@@ -97,6 +107,15 @@ public class Monster {
 
 	public int getAnimationSpeed() {
 		return this.animationSpeed;
+	}
+
+	public BufferedImage getSprite(Direction dir, int frame) {
+		return this.spriteLayout.get(dir, frame);
+	}
+
+	public BufferedImage getSprite(Direction dir, int frame, boolean shiny) {
+		if (shiny) return this.spriteLayoutShiny.get(dir, frame);
+		return this.spriteLayout.get(dir, frame);
 	}
 
 	public static class SpriteLayout {

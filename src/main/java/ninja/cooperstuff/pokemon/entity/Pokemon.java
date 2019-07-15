@@ -9,12 +9,14 @@ import ninja.cooperstuff.pokemon.util.Stats;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Pokemon extends Entity {
 	public Monster monster;
 	protected Stats valuesEffort = new Stats();
 	protected Stats valuesIndividual = new Stats();
 	protected Stats stats;
+	protected boolean shiny = false;
 	protected int walkCycle = 0;
 	public Direction facing = Direction.DOWN;
 	protected boolean moving = false;
@@ -22,11 +24,21 @@ public class Pokemon extends Entity {
 	public Pokemon(World world, Monster monster) {
 		super(world);
 		this.setMonster(monster);
+		this.shiny = new Random().nextInt(8192) == 1;
 	}
 
 	public void setMonster(Monster monster) {
 		this.monster = monster;
 		this.shadow.scale = this.monster.getShadowSize();
+	}
+
+	public boolean isShiny() {
+		return this.shiny;
+	}
+
+	public Pokemon isShiny(boolean shiny) {
+		this.shiny = shiny;
+		return this;
 	}
 
 	@Override
@@ -41,10 +53,11 @@ public class Pokemon extends Entity {
 	@Override
 	public void render(Graphics2D screen) {
 		super.render(screen);
+		int size = 64;
 		Vector offset = this.monster.getSpriteOffset(this.facing);
-		int x = (int) (offset.x - 32);
-		int y = (int) (offset.y - this.walkCycle * this.monster.getBobHeight(this.facing) - 60);
-		screen.drawImage(this.monster.spriteLayout.get(this.facing)[this.walkCycle], x, y, 64, 64, null);
+		int x = (int) (offset.x - size / 2);
+		int y = (int) (offset.y - this.walkCycle * this.monster.getBobHeight(this.facing) - size + 4);
+		screen.drawImage(this.monster.getSprite(this.facing, this.walkCycle, this.shiny), x, y, size, size, null);
 		Vector col1 = this.monster.getCollisionCorner1();
 		Vector col2 = this.monster.getCollisionCorner2();
 		if (Player.collisionMode || KeyListener.isKeyHeld(Keys.SPACE)) screen.drawRect((int) col1.x, (int) col1.y, (int) (col2.x - col1.x), (int) (col2.y - col1.y));
