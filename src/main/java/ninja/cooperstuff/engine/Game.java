@@ -2,6 +2,7 @@ package ninja.cooperstuff.engine;
 
 import ninja.cooperstuff.engine.components.GameObject;
 import ninja.cooperstuff.engine.events.KeyListener;
+import ninja.cooperstuff.engine.graphics.Camera;
 import ninja.cooperstuff.engine.graphics.Screen;
 import ninja.cooperstuff.engine.util.Keys;
 
@@ -15,6 +16,8 @@ public class Game extends JFrame {
 	public LinkedList<GameObject> deleteQueue = new LinkedList<>();
 	public boolean running = true;
 	private Screen screen = new Screen(this);
+	public Camera camera = new Camera(this);
+	public boolean loading = true;
 
 	public Game() {
 		super();
@@ -47,6 +50,20 @@ public class Game extends JFrame {
 	}
 
 	public void render(Graphics2D screen) {}
+
+	public void loadingScreen(Graphics2D screen) {
+		int width = this.getWidth();
+		int height = this.getHeight();
+		screen.setColor(new Color(51, 51, 51));
+		screen.fillRect(0, 0, width, height);
+		screen.setColor(Color.WHITE);
+		screen.scale(10, 10);
+		screen.drawString("Loading", (width - 450) / 20, (height + 45) / 20);
+	}
+
+	public void stopLoading() {
+		this.loading = false;
+	}
 
 	public <T extends GameObject> T instantiate(T gameObject) {
 		gameObject.game = this;

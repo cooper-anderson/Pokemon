@@ -10,7 +10,6 @@ import ninja.cooperstuff.pokemon.world.World;
 import java.awt.*;
 
 public class Player extends Pokemon {
-	private int canMove = 0;
 	public static boolean collisionMode = false;
 
 	public Player(World world, Monster monster) {
@@ -21,8 +20,8 @@ public class Player extends Pokemon {
 	public void update() {
 		super.update();
 		double multiplier = 1;
-		if (KeyListener.isKeyDown(Keys.SPACE)) canMove = 1 - canMove;
-		double speed = canMove * multiplier * ((KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.D)) ||
+		double superSpeed = KeyListener.isKeyHeld(Keys.SHIFT) ? 5 : 1;
+		double speed = superSpeed * multiplier * ((KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.D)) ||
 				(KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.D)) ? .707 : 1);
 		if (KeyListener.isKeyHeld(Keys.W)) {
 			this.facing = Direction.UP; moving = true;
@@ -36,6 +35,9 @@ public class Player extends Pokemon {
 		} else if (KeyListener.isKeyHeld(Keys.D)) {
 			this.facing = Direction.RIGHT; moving = true;
 			this.transform.position.x += speed;
+		}
+		if (KeyListener.isKeyDown(Keys.L)) {
+			//
 		}
 
 		int x=0, y=0, h=0;
@@ -51,7 +53,10 @@ public class Player extends Pokemon {
 
 		if (KeyListener.isKeyDown(Keys.TILDE)) collisionMode = !collisionMode;
 
-		if (collisionMode) {
+		this.game.camera.follow(this, new Vector(30, 20));
+		this.game.camera.lagFollow(this.transform.position);
+
+		/*if (collisionMode) {
 			if (KeyListener.isKeyTyped(Keys.O)) {
 				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(1, 0)));
 				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(-1, 0)));
@@ -107,13 +112,13 @@ public class Player extends Pokemon {
 				this.monster.setSpriteOffset(this.facing, Vector.add(this.monster.getSpriteOffset(this.facing), new Vector(x, y)));
 				this.monster.setBobHeight(this.facing, this.monster.getBobHeight(this.facing) + h);
 			}
-		}
+		}*/
 	}
 
 	@Override
 	public void render(Graphics2D screen) {
 		super.render(screen);
-		double scale = 2.0;
+		/*double scale = 2.0;
 		Vector up = this.monster.getSpriteOffset(Direction.UP);
 		Vector down = this.monster.getSpriteOffset(Direction.DOWN);
 		Vector left = this.monster.getSpriteOffset(Direction.LEFT);
@@ -132,6 +137,6 @@ public class Player extends Pokemon {
 		screen.drawString(String.format("CollCorner1: <%d, %d>", (int) this.monster.getCollisionCorner1().x, (int) this.monster.getCollisionCorner1().y), 130, 280);
 		screen.drawString(String.format("CollCorner2: <%d, %d>", (int) this.monster.getCollisionCorner2().x, (int) this.monster.getCollisionCorner2().y), 260, 280);
 		screen.scale(this.transform.scale.x / scale, this.transform.scale.y / scale);
-		screen.translate(this.transform.position.x, this.transform.position.y);
+		screen.translate(this.transform.position.x, this.transform.position.y);*/
 	}
 }

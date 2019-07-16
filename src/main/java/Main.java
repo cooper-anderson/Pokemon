@@ -1,9 +1,10 @@
 import ninja.cooperstuff.pokemon.client.Launch;
 import ninja.cooperstuff.pokemon.client.MapGenLaunch;
+import ninja.cooperstuff.pokemon.client.TerrainLaunch;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
-		MapGenLaunch.run();
+		TerrainLaunch.run();
 	}
 	/*private static Game game = new Game();
 
