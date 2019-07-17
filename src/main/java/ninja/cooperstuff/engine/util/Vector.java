@@ -57,6 +57,16 @@ public class Vector {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	@Override
+	public int hashCode() {
+		return (String.format("%s,%s", this.x, this.y)).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return (o != null && o.getClass() == this.getClass() && o.hashCode() == this.hashCode());
+	}
+
 	public String toString() {
 		return String.format("Vector(%s, %s)", (int) this.x, (int) this.y);
 	}

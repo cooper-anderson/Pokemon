@@ -29,6 +29,7 @@ public class Launch {
 	private static Pokemon pVert;
 	private static Pokemon pHorz;
 	private static int wait = 0;
+	private static World world = new World(game);
 
 	public static void run() throws InterruptedException {
 		Debug.info("Starting Pokemon");
@@ -44,28 +45,28 @@ public class Launch {
 		int scale = 100;
 		Vector center = new Vector((game.getWidth() - 16) / 2, (game.getHeight() - 16) / 2 - 50);
 
-		player = game.instantiate(new Player(new World(), Monster.ids.get(id)));
+		player = game.instantiate(new Player(world, Monster.ids.get(id)));
 		player.transform.position = Vector.add(center, new Vector(0, scale));
-		pUp = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pUp = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pUp.transform.position = Vector.add(center, new Vector(0, -scale));
 		pUp.facing = Direction.UP;
-		pDown = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pDown = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pDown.transform.position = Vector.add(center, new Vector(0, 0));
-		pLeft = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pLeft = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pLeft.transform.position = Vector.add(center, new Vector(-scale, 0));
 		pLeft.facing = Direction.LEFT;
-		pRight = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pRight = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pRight.transform.position = Vector.add(center, new Vector(scale, 0));
 		pRight.facing = Direction.RIGHT;
-		pPrev = game.instantiate(new Pokemon(new World(), Monster.ids.get(getId(id - 1))));
+		pPrev = game.instantiate(new Pokemon(world, Monster.ids.get(getId(id - 1))));
 		pPrev.transform.position = Vector.add(center, new Vector(-scale * 2, -scale));
-		pNext = game.instantiate(new Pokemon(new World(), Monster.ids.get(getId(id + 1))));
+		pNext = game.instantiate(new Pokemon(world, Monster.ids.get(getId(id + 1))));
 		pNext.transform.position = Vector.add(center, new Vector(scale * 2, -scale));
-		pSpin = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pSpin = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pSpin.transform.position = Vector.add(center, new Vector(0, -scale * 2));
-		pVert = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pVert = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pVert.transform.position = Vector.add(center, new Vector(-scale, -scale * 2));
-		pHorz = game.instantiate(new Pokemon(new World(), Monster.ids.get(id)));
+		pHorz = game.instantiate(new Pokemon(world, Monster.ids.get(id)));
 		pHorz.transform.position = Vector.add(center, new Vector(scale, -scale * 2));
 		pHorz.facing = Direction.LEFT;
 
@@ -78,10 +79,10 @@ public class Launch {
 			if (KeyListener.isKeyDown(Keys.SPACE)) {
 				int i = 0;
 				player.destroy();
-				player = game.instantiate(new Player(new World(), Monster.ids.get(id)));
+				player = game.instantiate(new Player(world, Monster.ids.get(id)));
 				while (!player.isShiny()) {
 					player.destroy();
-					player = game.instantiate(new Player(new World(), Monster.ids.get(id)));
+					player = game.instantiate(new Player(world, Monster.ids.get(id)));
 					i++;
 				}
 				System.out.println(i);

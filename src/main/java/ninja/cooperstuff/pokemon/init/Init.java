@@ -14,12 +14,14 @@ public class Init {
 	private static final Types types = new Types();
 	private static final Moves moves = new Moves();
 	private static final Monsters monsters = new Monsters();
+	private static final Tiles tiles = new Tiles();
 
 	public static void preInit() {
 		Debug.log("Starting preInitialization");
 		types.preInit();
 		moves.preInit();
 		monsters.preInit();
+		tiles.preInit();
 		Debug.log("Finished preInitialization");
 	}
 
@@ -28,6 +30,7 @@ public class Init {
 		types.init();
 		moves.init();
 		monsters.init();
+		tiles.init();
 		Debug.log("Finished initialization");
 	}
 
@@ -36,6 +39,7 @@ public class Init {
 		types.postInit();
 		moves.postInit();
 		monsters.postInit();
+		tiles.postInit();
 		Debug.log("Finished postInitialization");
 	}
 }
