@@ -2,7 +2,6 @@ package ninja.cooperstuff.pokemon.entity;
 
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.util.Keys;
-import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.world.World;
@@ -53,8 +52,8 @@ public class Player extends Pokemon {
 
 		if (KeyListener.isKeyDown(Keys.TILDE)) collisionMode = !collisionMode;
 
-		this.game.camera.follow(this, new Vector(30, 20));
-		this.game.camera.lagFollow(this.transform.position);
+		//this.game.camera.follow(this, new Vector(30, 20));
+		//this.game.camera.lagFollow(this.transform.position);
 
 		/*if (collisionMode) {
 			if (KeyListener.isKeyTyped(Keys.O)) {

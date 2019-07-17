@@ -20,7 +20,7 @@ public class Camera {
 	public void toGameCoords(Graphics2D screen) {
 		if (this.drawMode != DrawMode.GAME) {
 			double width = this.game.getWidth() - 16;
-			double height = this.game.getHeight() - 16;
+			double height = this.game.getHeight() - 39;
 			this.drawMode = DrawMode.GAME;
 			screen.translate(-this.game.camera.position.x + width / 2, -this.game.camera.position.y + height / 2);
 		}
@@ -29,7 +29,7 @@ public class Camera {
 	public void toScreenCoords(Graphics2D screen) {
 		if (this.drawMode != DrawMode.SCREEN) {
 			double width = this.game.getWidth() - 16;
-			double height = this.game.getHeight() - 16;
+			double height = this.game.getHeight() - 39;
 			this.drawMode = DrawMode.SCREEN;
 			screen.translate(this.game.camera.position.x - width / 2, this.game.camera.position.y - height / 2);
 		}
@@ -38,7 +38,7 @@ public class Camera {
 	public void toTopLeft(Graphics2D screen) {
 		if (this.posMode != PosMode.LEFT) {
 			double width = this.game.getWidth() - 16;
-			double height = this.game.getHeight() - 16;
+			double height = this.game.getHeight() - 39;
 			this.posMode = PosMode.LEFT;
 			screen.translate(-width / 2, -height / 2);
 		}
@@ -47,7 +47,7 @@ public class Camera {
 	public void toCenter(Graphics2D screen) {
 		if (this.posMode != PosMode.CENTER) {
 			double width = this.game.getWidth() - 16;
-			double height = this.game.getHeight() - 16;
+			double height = this.game.getHeight() - 39;
 			this.posMode = PosMode.CENTER;
 			screen.translate(width / 2, height / 2);
 		}

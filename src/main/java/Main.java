@@ -1,5 +1,3 @@
-import ninja.cooperstuff.pokemon.client.Launch;
-import ninja.cooperstuff.pokemon.client.MapGenLaunch;
 import ninja.cooperstuff.pokemon.client.TerrainLaunch;
 
 public class Main {

@@ -4,7 +4,6 @@ import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.util.Keys;
-import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.entity.Player;
 import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.world.World;
@@ -35,9 +34,12 @@ public class TerrainLaunch {
 		public World world = new World(this);
 		private Player p;
 
+		public boolean showDetails = true;
+
 		public TerrainGame() {
 			super();
-			this.setSize(816, 616);
+			this.setSize(240 * 4 + 16, 160 * 4 + 39);
+			this.setResizable(false);
 			this.setTitle("Pokemon");
 			this.p = this.instantiate(new Player(this.world, Monsters.bulbasaur));
 			//this.camera.position = new Vector(-this.getWidth() / 2, -this.getHeight() / 2);
@@ -52,6 +54,10 @@ public class TerrainLaunch {
 			if (KeyListener.isKeyHeld(Keys.K)) this.camera.position.y += 1;
 			if (KeyListener.isKeyHeld(Keys.J)) this.camera.position.x -= 1;
 			if (KeyListener.isKeyHeld(Keys.L)) this.camera.position.x += 1;
+
+			if (KeyListener.isKeyDown(Keys.SPACE)) this.showDetails = !this.showDetails;
+			this.world.showDetails = this.showDetails;
+			this.world.generate((int) Math.floor(this.p.transform.position.x / 32), (int) Math.floor(this.p.transform.position.y / 32));
 			super.update();
 		}
 

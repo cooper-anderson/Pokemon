@@ -8,9 +8,9 @@ import java.util.HashSet;
 public class Tile {
 	public static HashSet<Tile> tiles = new HashSet<>();
 
-	private String name;
-	private String path;
-	private BufferedImage sprite;
+	protected String name;
+	protected String path;
+	protected BufferedImage sprite;
 
 	public Tile(String name, String path) {
 		this.name = name;
@@ -21,6 +21,15 @@ public class Tile {
 			e.printStackTrace();
 		}
 		Tile.tiles.add(this);
+	}
+
+	public Tile(String name) {
+		this.name = name;
+	}
+
+	public Tile setSprite(BufferedImage sprite) {
+		this.sprite = sprite;
+		return this;
 	}
 
 	public BufferedImage getSprite() {
