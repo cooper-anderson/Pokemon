@@ -34,6 +34,8 @@ public class TerrainLaunch {
 		public World world = new World(this);
 		private Player p;
 
+		private int generateCounter = 0;
+
 		public boolean showDetails = true;
 
 		public TerrainGame() {
@@ -57,7 +59,11 @@ public class TerrainLaunch {
 
 			if (KeyListener.isKeyDown(Keys.SPACE)) this.showDetails = !this.showDetails;
 			this.world.showDetails = this.showDetails;
-			this.world.generate((int) Math.floor(this.p.transform.position.x / 32), (int) Math.floor(this.p.transform.position.y / 32));
+			if (this.generateCounter == 0) {
+				this.world.generate((int) Math.floor(this.p.transform.position.x / 32), (int) Math.floor(this.p.transform.position.y / 32));
+				this.generateCounter = 2;
+			}
+			this.generateCounter--;
 			super.update();
 		}
 

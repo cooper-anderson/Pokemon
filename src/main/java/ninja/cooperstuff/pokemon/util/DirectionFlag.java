@@ -6,9 +6,7 @@ public class DirectionFlag {
 	private HashMap<Direction, Boolean> flags = new HashMap<>();
 
 	public DirectionFlag setFlag(int x, int y, boolean flag) {
-		Direction asdf = Direction.parse(x, y);
-		System.out.println(asdf);
-		this.flags.put(asdf, flag);
+		this.flags.put(Direction.parse(x, y), flag);
 		return this;
 	}
 
@@ -26,6 +24,14 @@ public class DirectionFlag {
 		if (this.getFlag(Direction.UP) && this.getFlag(Direction.LEFT) && this.getFlag(Direction.RIGHT)) return -2;
 		if (this.getFlag(Direction.UP) && this.getFlag(Direction.DOWN) && this.getFlag(Direction.LEFT)) return -2;
 		if (this.getFlag(Direction.UP) && this.getFlag(Direction.DOWN) && this.getFlag(Direction.RIGHT)) return -2;
+		if (this.getFlag(Direction.UP_RIGHT) && this.getFlag(Direction.DOWN_LEFT) && this.getFlag(Direction.DOWN_RIGHT)) return 7;
+		if (this.getFlag(Direction.UP_LEFT) && this.getFlag(Direction.DOWN_LEFT) && this.getFlag(Direction.DOWN_RIGHT)) return 6;
+		if (this.getFlag(Direction.UP_LEFT) && this.getFlag(Direction.UP_RIGHT) && this.getFlag(Direction.DOWN_RIGHT)) return 5;
+		if (this.getFlag(Direction.UP_LEFT) && this.getFlag(Direction.UP_RIGHT) && this.getFlag(Direction.DOWN_LEFT)) return 4;
+		if (this.getFlag(Direction.UP_LEFT) && this.getFlag(Direction.UP_RIGHT) && !this.getFlag(Direction.LEFT) && !this.getFlag(Direction.RIGHT)) return 0;
+		if (this.getFlag(Direction.DOWN_LEFT) && this.getFlag(Direction.DOWN_RIGHT) && !this.getFlag(Direction.LEFT) && !this.getFlag(Direction.RIGHT)) return 1;
+		if (this.getFlag(Direction.UP_LEFT) && this.getFlag(Direction.DOWN_LEFT) && !this.getFlag(Direction.UP) && !this.getFlag(Direction.DOWN)) return 2;
+		if (this.getFlag(Direction.UP_RIGHT) && this.getFlag(Direction.DOWN_RIGHT) && !this.getFlag(Direction.UP) && !this.getFlag(Direction.DOWN)) return 3;
 		if (this.getFlag(Direction.UP)) {
 			if (this.getFlag(Direction.LEFT)) return 4;
 			if (this.getFlag(Direction.RIGHT)) return 5;

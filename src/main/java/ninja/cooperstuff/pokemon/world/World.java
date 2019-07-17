@@ -4,6 +4,7 @@ import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.init.Tiles;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -21,8 +22,8 @@ public class World {
 	double offsetElevation = -0.58;
 	double offsetMoisture = 0.23;
 
-	private Vector generateSize = new Vector(12, 12);
-	private Vector detailSize = new Vector(11, 11);
+	private Vector generateSize = new Vector(16, 12);
+	private Vector detailSize = new Vector(15, 11);
 	private Vector lastGenerateLocation;
 
 	public boolean showDetails;
@@ -155,20 +156,35 @@ public class World {
 		int height = this.game.getHeight() - 39;
 		this.game.camera.toScreenCoords(screen);
 		screen.translate(width / 2, height / 2);
-		int x = (int) this.game.camera.position.x;
-		int y = (int) this.game.camera.position.y;
+		int x = (int) Math.floor(this.game.camera.position.x);
+		int y = (int) Math.floor(this.game.camera.position.y);
 		int screenOffsetX = ((x > 0) ? x % 32 : ((x % 32) + 32) % 32);
 		int screenOffsetY = ((y > 0) ? y % 32 : ((y % 32) + 32) % 32);
-		int tileOffsetX = Math.floorDiv(x, 32);
-		int tileOffsetY = Math.floorDiv(y, 32);
-		for (Vector pos : this.data.keySet()) {
-			screen.drawImage(this.data.get(pos).getGround().getSprite(), (int) pos.x * 32, (int) pos.y * 32, 32, 32, null);
-			if (this.showDetails && this.data.get(pos).getDetail() != null) screen.drawImage(this.data.get(pos).getDetail().getSprite(), (int) pos.x * 32, (int) pos.y * 32, 32, 32, null);
+		screen.drawImage(Tiles.ground1.getSprite(), 0, 0, 32, 32, null);
+		for (int i = x / 32 - width / 16; i < x / 32 + width / 16; i++) {
+			for (int j = y / 32 - height / 16; j < y / 32 + height / 16; j++) {
+				Vector pos = new Vector(i, j);
+				if (this.data.containsKey(pos)) {
+					TileData tileData = this.data.get(pos);
+					if (tileData == null) continue;
+					int drawX = (int) Math.floor(pos.x - Math.floorDiv(x, 32)) * 32 - screenOffsetX;
+					int drawY = (int) Math.floor(pos.y - Math.floorDiv(y, 32)) * 32 - screenOffsetY;
+					screen.drawImage(tileData.getGround().getSprite(), drawX, drawY, 32, 32, null);
+					if (this.showDetails && tileData.getDetail() != null) screen.drawImage(tileData.getDetail().getSprite(), drawX, drawY, 32, 32, null);
+				}
+			}
+
 		}
-		/*for (int i = - width / 2; i < width / 2; i += 32) {
-			screen.drawLine(i, -height / 2, i, height / 2);
-			for (int j = - height / 2; j < height / 2; j += 32) {
-				screen.drawLine(-width / 2, j, width / 2, j);
+		/*for (Vector pos : this.data.keySet()) {
+			int drawX = (int) pos.x * 32 - screenOffsetX;
+			int drawY = (int) pos.y * 32 - screenOffsetY;
+			screen.drawImage(this.data.get(pos).getGround().getSprite(), drawX, drawY, 32, 32, null);
+			if (this.showDetails && this.data.get(pos).getDetail() != null) screen.drawImage(this.data.get(pos).getDetail().getSprite(), drawX, drawY, 32, 32, null);
+		}*/
+		/*for (int i = - width / 2; i - 32 < width / 2; i += 32) {
+			screen.drawLine(i - screenOffsetX, -height / 2 + screenOffsetY, i - screenOffsetX, height / 2 - screenOffsetY + 32);
+			for (int j = - height / 2; j - 32 < height / 2; j += 32) {
+				screen.drawLine(-width / 2 - screenOffsetX, j - screenOffsetY, width / 2 - screenOffsetX + 32, j - screenOffsetY);
 			}
 		}*/
 		screen.translate(-width / 2, -height / 2);

@@ -21,7 +21,6 @@ public class Cave implements Biome {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) continue;
-				System.out.printf("%d %d%n", i, j);
 				TileData tileData = world.getTileData(x + i, y + j);
 				if (tileData == null) flag.setFlag(i, j, false);
 				else flag.setFlag(i, j, (tileData.getBiome() == this && world.getTileData(x, y).getGround() == Tiles.ground2 && tileData.getGround() == Tiles.ground3));
