@@ -9,21 +9,29 @@ import ninja.cooperstuff.pokemon.world.World;
 
 public class Cave implements Biome {
 	@Override
-	public Tile getTile(World world, int x, int y) {
+	public int getHeight(World world, int x, int y) {
 		double scale = 10;
 		double noise = Noise.noise(x / scale, y / scale);
-		return noise < 0 ? Tiles.ground2 : Tiles.ground3;
+		return noise < 0 ? (noise > -0.4 ? 0 : -1) : (noise < 0.4 ? 1 : 2);
 	}
 
 	@Override
-	public Tile getDetail(World world, int x, int y) {
+	public Tile getTile(World world, int height, int x, int y) {
+		if (height == 0) return Tiles.ground2;
+		if (height == -1) return Tiles.ground1;
+		return Tiles.ground3;
+	}
+
+	@Override
+	public Tile getDetail(World world, int height, int x, int y) {
 		DirectionFlag flag = new DirectionFlag();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) continue;
 				TileData tileData = world.getTileData(x + i, y + j);
 				if (tileData == null) flag.setFlag(i, j, false);
-				else flag.setFlag(i, j, (tileData.getBiome() == this && world.getTileData(x, y).getGround() == Tiles.ground2 && tileData.getGround() == Tiles.ground3));
+				//else if (tileData.getBiome() != this) return Tiles.dirt.tile;
+				else flag.setFlag(i, j, (tileData.getBiome() == this && height > -1 && tileData.getHeight() > height));
 			}
 		}
 		int id = flag.getId();

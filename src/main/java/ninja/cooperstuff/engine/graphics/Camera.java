@@ -22,7 +22,7 @@ public class Camera {
 			double width = this.game.getWidth() - 16;
 			double height = this.game.getHeight() - 39;
 			this.drawMode = DrawMode.GAME;
-			screen.translate(-this.game.camera.position.x + width / 2, -this.game.camera.position.y + height / 2);
+			screen.translate(-Math.floor(this.game.camera.position.x) + width / 2, -Math.floor(this.game.camera.position.y) + height / 2);
 		}
 	}
 
@@ -31,7 +31,7 @@ public class Camera {
 			double width = this.game.getWidth() - 16;
 			double height = this.game.getHeight() - 39;
 			this.drawMode = DrawMode.SCREEN;
-			screen.translate(this.game.camera.position.x - width / 2, this.game.camera.position.y - height / 2);
+			screen.translate(Math.floor(this.game.camera.position.x) - width / 2, Math.floor(this.game.camera.position.y) - height / 2);
 		}
 	}
 
@@ -70,6 +70,8 @@ public class Camera {
 
 	public void lagFollow(Vector position) {
 		double speed = 0.5;
+		if (Math.abs(this.position.x - position.x) <= speed / 2) this.position.x = position.x;
+		if (Math.abs(this.position.y - position.y) <= speed / 2) this.position.y = position.y;
 		if (this.position.x < position.x) this.position.x += speed;
 		else if (this.position.x > position.x) this.position.x -= speed;
 		if (this.position.y < position.y) this.position.y += speed;

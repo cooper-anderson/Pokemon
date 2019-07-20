@@ -5,8 +5,11 @@ import ninja.cooperstuff.pokemon.world.World;
 
 public interface Biome {
 	Biome cave = new Cave();
+	Biome marsh = new Marsh();
 
-	Tile getTile(World world, int x, int y);
+	int getHeight(World world, int x, int y);
 
-	Tile getDetail(World world, int x, int y);
+	Tile getTile(World world, int height, int x, int y);
+
+	Tile getDetail(World world, int height, int x, int y);
 }
