@@ -7,7 +7,7 @@ import ninja.cooperstuff.pokemon.world.World;
 import java.awt.*;
 
 public abstract class Entity extends GameObject {
-	private World world;
+	protected World world;
 	public Shadow shadow = new Shadow(this);
 
 	public Entity(World world) {

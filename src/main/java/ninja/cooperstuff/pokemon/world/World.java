@@ -3,6 +3,7 @@ package ninja.cooperstuff.pokemon.world;
 import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.pokemon.init.Tiles;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -14,7 +15,7 @@ public class World {
 	double multiplier = 1.0;
 	double multiplierElevation = 6.12;
 	double multiplierMoisture = 5.05;
-	public double scaleMap = 0.5;
+	public double scaleMap = 1;
 	double scaleElevation = 2;
 	double scaleMoisture = 5.56;
 	double offsetElevation = -0.58;
@@ -49,21 +50,58 @@ public class World {
 
 	@NonNull
 	private Biome getBiome(double elevation, double moisture) {
-		if (moisture < 3) {
-			if (elevation < 2) {
-				return Biome.cave;
-			}
+		return Biome.marsh;
+		/*if (moisture < 1) {
+			if (elevation < 1) return Biome.cave;
+			if (elevation < 2) return Biome.marsh;
+			if (elevation < 3) return Biome.cave;
+			return Biome.marsh;
+		} else if (moisture < 2) {
+			if (elevation < 1) return Biome.marsh;
+			if (elevation < 2) return Biome.cave;
+			if (elevation < 3) return Biome.marsh;
+			return Biome.cave;
+		} else if (moisture < 3) {
+			if (elevation < 1) return Biome.cave;
+			if (elevation < 2) return Biome.marsh;
+			if (elevation < 3) return Biome.cave;
+			return Biome.marsh;
+		} else if (moisture < 4) {
+			if (elevation < 1) return Biome.marsh;
+			if (elevation < 2) return Biome.cave;
+			if (elevation < 3) return Biome.marsh;
+			return Biome.cave;
+		} else if (moisture < 5) {
+			if (elevation < 1) return Biome.cave;
+			if (elevation < 2) return Biome.marsh;
+			if (elevation < 3) return Biome.cave;
 			return Biome.marsh;
 		}
-		if (elevation < 2) {
-			return Biome.marsh;
-		}
-		return Biome.cave;
+		if (elevation < 1) return Biome.marsh;
+		if (elevation < 2) return Biome.cave;
+		if (elevation < 3) return Biome.marsh;
+		return Biome.cave;*/
 	}
 
 	public TileData getTileData(int x, int y) {
 		if (!this.data.containsKey(new IntVector(x, y))) return null;
 		return this.data.get(new IntVector(x, y));
+	}
+
+	public double getHeight(int x, int y) {
+		double elevation = this.getElevation(x, y);
+		double moisture = this.getMoisture(x, y);
+		double distE = Math.abs((elevation % 1) - 0.5);
+		double distM = Math.abs((moisture % 1) - 0.5);
+		//return Math.min(15 * (2 * Math.pow(2 * (0.5 - Math.max(distE, distM)), 2)), 1);
+		distE = 20 * Math.pow(2 * (0.5 - distE), 2);
+		distM = 20 * Math.pow(2 * (0.5 - distM), 2);
+		return Math.min(Math.min(distE, distM), 1);
+	}
+
+	public double heightNoise(int x, int y, double multiplier, double offset) {
+		double noise = Noise.noise(x / 10.0, y / 10.0);
+		return (World.sigmoid(multiplier * noise + offset) * 2 - 1) * this.getHeight(x, y);
 	}
 
 	public void generate(int x, int y) {
@@ -73,10 +111,8 @@ public class World {
 				for (int i = -this.generateSize.x; i <= this.generateSize.x; i++) {
 					IntVector pos = new IntVector(x + i, y + j);
 					Biome biome = this.getBiome(pos.x, pos.y);
-					//if (this.getBiome(pos.x - 1, pos.y - 1) == biome && this.getBiome(pos.x - 1, pos.y + 1) == biome && this.getBiome(pos.x + 1, pos.y - 1) == biome && this.getBiome(pos.x + 1, pos.y + 1) == biome) {
-						this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
-					//} //else this.data.put(pos, new TileData(this, biome, 0, pos.x, pos.y));
-					//else this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
 			for (int j = -this.detailSize.y; j <= this.detailSize.y; j++) {
@@ -106,7 +142,8 @@ public class World {
 					IntVector pos = new IntVector(x + sign * (i + this.generateSize.x), y + j);
 					this.data.remove(new IntVector(this.lastGenerateLocation.x + sign * (i - this.generateSize.x), y + j));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
 			for (int j = -this.detailSize.y; j <= this.detailSize.y; j++) {
@@ -125,7 +162,8 @@ public class World {
 					IntVector pos = new IntVector(x + i, y + sign * (j + this.generateSize.y));
 					this.data.remove(new IntVector(x + i, this.lastGenerateLocation.y + sign * (j - this.generateSize.y)));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
 			for (int j = 0; j < Math.abs(y - this.lastGenerateLocation.y); j++) {
@@ -157,7 +195,15 @@ public class World {
 					int drawX = (int) Math.floor(pos.x - Math.floorDiv(x, 32)) * 32 - screenOffsetX;
 					int drawY = (int) Math.floor(pos.y - Math.floorDiv(y, 32)) * 32 - screenOffsetY;
 					screen.drawImage(tileData.getGround().getSprite(), drawX, drawY, 32, 32, null);
-					if (this.showDetails && tileData.getDetail() != null) screen.drawImage(tileData.getDetail().getSprite(), drawX, drawY, 32, 32, null);
+					if (tileData.getDetail() != null) screen.drawImage(tileData.getDetail().getSprite(), drawX, drawY, 32, 32, null);
+					if (!this.showDetails) {
+						int scale = 10000;
+						//screen.setColor(new Color(0, 0, 0, (int) (255 * (1 - this.getHeight(Math.floorDiv(x, scale) + i, Math.floorDiv(y, scale) + j)))));
+						screen.setColor(new Color(255, 0, 0, tileData.getWalkable() ? 0 : 255));
+						IntVector col1 = tileData.getCollisionCorner1();
+						IntVector col2 = tileData.getCollisionCorner2();
+						screen.fillRect(drawX + col1.x * 2, drawY + col1.y * 2, (col2.x - col1.x) * 2, (col2.y - col1.y) * 2);
+					}
 				}
 			}
 

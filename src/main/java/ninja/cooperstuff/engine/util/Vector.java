@@ -57,6 +57,10 @@ public class Vector {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	public IntVector getTile() {
+		return new IntVector(this.x / 32, this.y / 32);
+	}
+
 	@Override
 	public int hashCode() {
 		return (String.format("%s,%s", this.x, this.y)).hashCode();

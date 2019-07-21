@@ -1,10 +1,12 @@
 package ninja.cooperstuff.pokemon.entity;
 
 import ninja.cooperstuff.engine.events.KeyListener;
+import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
+import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.awt.*;
@@ -23,24 +25,48 @@ public class Player extends Pokemon {
 		double superSpeed = KeyListener.isKeyHeld(Keys.SHIFT) ? 5 : 1;
 		double speed = superSpeed * multiplier * ((KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.D)) ||
 				(KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.D)) ? .707 : 1);
+		double tolerance = 5;
+		boolean noclip = KeyListener.isKeyHeld(Keys.CTRL);
+		Vector velocity = new Vector();
 		if (KeyListener.isKeyHeld(Keys.W)) {
 			this.facing = Direction.UP; moving = true;
-			this.transform.position.y -= speed;
+			velocity.y = -speed;
 		} else if (KeyListener.isKeyHeld(Keys.S)) {
 			this.facing = Direction.DOWN; moving = true;
-			this.transform.position.y += speed;
+			velocity.y = +speed;
 		} if (KeyListener.isKeyHeld(Keys.A)) {
 			this.facing = Direction.LEFT; moving = true;
-			this.transform.position.x -= speed;
+			velocity.x = -speed;
 		} else if (KeyListener.isKeyHeld(Keys.D)) {
 			this.facing = Direction.RIGHT; moving = true;
-			this.transform.position.x += speed;
-		}
-		if (KeyListener.isKeyDown(Keys.L)) {
-			//
+			velocity.x = +speed;
 		}
 
-		int x=0, y=0, h=0;
+		Vector pos = this.transform.position;
+		IntVector tile = pos.getTile();
+		Vector newPos = new Vector(this.transform.position.x + velocity.x, this.transform.position.y + velocity.y);
+		IntVector newTile = newPos.getTile();
+		//TileData tileX = this.world.getTileData(newTile.x, tile.y);
+		//TileData tileY = this.world.getTileData(tile.x, newTile.y);
+		TileData tileX = this.world.getTileData(newTile.x, newTile.y);
+		TileData tileY = this.world.getTileData(newTile.x, newTile.y);
+		if (noclip || tileX.getWalkable())
+			this.transform.position.x += velocity.x;
+		else if (newPos.x - newTile.x * 32 < 2 * tileX.getCollisionCorner1().x ||
+				newPos.x - newTile.x * 32 > 2 * tileX.getCollisionCorner2().x ||
+				pos.y - tile.y * 32 < 2 * tileX.getCollisionCorner1().y ||
+				pos.y - tile.y * 32 > 2 * tileX.getCollisionCorner2().y)
+				this.transform.position.x += velocity.x;
+		if (noclip || tileY.getWalkable())
+			this.transform.position.y += velocity.y;
+		else if (pos.x - tile.x * 32 < 2 * tileY.getCollisionCorner1().x ||
+				pos.x - tile.x * 32 > 2 * tileY.getCollisionCorner2().x ||
+				newPos.y - newTile.y * 32 < 2 * tileY.getCollisionCorner1().y ||
+				newPos.y - newTile.y * 32 > 2 * tileY.getCollisionCorner2().y)
+			this.transform.position.y += velocity.y;
+
+
+			int x=0, y=0, h=0;
 		if (KeyListener.isKeyTyped(Keys.I)) y = -1;
 		if (KeyListener.isKeyTyped(Keys.K)) y = 1;
 		if (KeyListener.isKeyTyped(Keys.J)) x = -1;
