@@ -50,37 +50,37 @@ public class World {
 
 	@NonNull
 	private Biome getBiome(double elevation, double moisture) {
-		return Biome.marsh;
-		/*if (moisture < 1) {
-			if (elevation < 1) return Biome.cave;
-			if (elevation < 2) return Biome.marsh;
-			if (elevation < 3) return Biome.cave;
+		//return Biome.bog;
+		if (moisture < 1) {
+			if (elevation < 1) return Biome.bog;
+			if (elevation < 2) return Biome.cave;
+			if (elevation < 3) return Biome.forest;
 			return Biome.marsh;
 		} else if (moisture < 2) {
-			if (elevation < 1) return Biome.marsh;
-			if (elevation < 2) return Biome.cave;
-			if (elevation < 3) return Biome.marsh;
+			if (elevation < 1) return Biome.snow;
+			if (elevation < 2) return Biome.woods;
+			if (elevation < 3) return Biome.bog;
 			return Biome.cave;
 		} else if (moisture < 3) {
-			if (elevation < 1) return Biome.cave;
+			if (elevation < 1) return Biome.forest;
 			if (elevation < 2) return Biome.marsh;
-			if (elevation < 3) return Biome.cave;
-			return Biome.marsh;
+			if (elevation < 3) return Biome.snow;
+			return Biome.woods;
 		} else if (moisture < 4) {
-			if (elevation < 1) return Biome.marsh;
+			if (elevation < 1) return Biome.bog;
 			if (elevation < 2) return Biome.cave;
-			if (elevation < 3) return Biome.marsh;
-			return Biome.cave;
-		} else if (moisture < 5) {
-			if (elevation < 1) return Biome.cave;
-			if (elevation < 2) return Biome.marsh;
-			if (elevation < 3) return Biome.cave;
+			if (elevation < 3) return Biome.forest;
 			return Biome.marsh;
+		} else if (moisture < 5) {
+			if (elevation < 1) return Biome.snow;
+			if (elevation < 2) return Biome.woods;
+			if (elevation < 3) return Biome.bog;
+			return Biome.cave;
 		}
-		if (elevation < 1) return Biome.marsh;
-		if (elevation < 2) return Biome.cave;
-		if (elevation < 3) return Biome.marsh;
-		return Biome.cave;*/
+		if (elevation < 1) return Biome.forest;
+		if (elevation < 2) return Biome.marsh;
+		if (elevation < 3) return Biome.snow;
+		return Biome.woods;
 	}
 
 	public TileData getTileData(int x, int y) {

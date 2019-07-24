@@ -64,7 +64,7 @@ public class TileData {
 	public IntVector getCollisionCorner1() {
 		if (!this.getGround().getWalkable()) return this.getGround().getCollisionCorner1();
 		else if (this.getDetail() != null && !this.getDetail().getWalkable()) return this.getDetail().getCollisionCorner1();
-		return new IntVector(1, 1);
+		return new IntVector(0, 0);
 	}
 
 	public IntVector getCollisionCorner2() {

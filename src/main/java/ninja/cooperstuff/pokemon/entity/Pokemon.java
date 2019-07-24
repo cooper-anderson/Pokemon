@@ -1,7 +1,5 @@
 package ninja.cooperstuff.pokemon.entity;
 
-import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
@@ -60,6 +58,5 @@ public class Pokemon extends Entity {
 		screen.drawImage(this.monster.getSprite(this.facing, this.walkCycle, this.shiny), x, y, size, size, null);
 		Vector col1 = this.monster.getCollisionCorner1();
 		Vector col2 = this.monster.getCollisionCorner2();
-		if (Player.collisionMode || KeyListener.isKeyHeld(Keys.SPACE)) screen.drawRect((int) col1.x, (int) col1.y, (int) (col2.x - col1.x), (int) (col2.y - col1.y));
 	}
 }

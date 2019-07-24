@@ -7,7 +7,7 @@ import ninja.cooperstuff.pokemon.util.DirectionFlag;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
-public class Marsh implements Biome {
+public class Snow implements Biome {
 	@Override
 	public int getHeight(World world, int x, int y) {
 		double noise = world.heightNoise(x, y, 2, 0);
@@ -17,9 +17,9 @@ public class Marsh implements Biome {
 	@Override
 	public Tile getTile(World world, int height, int x, int y) {
 		double noise = Noise.noise(100 + x / 10.0, 100 + y / 10.0);
-		if (world.heightNoise(x, y, 3, 0.2) < -0.25 && x % 3 == 0 && y % 3 == 0) return Tiles.marshTree.getTile(4);
-		if (height == 0) return noise < 0 ? Tiles.grass : Tiles.dirt.tile;
-		return Tiles.marshCliff.tile;
+		if (world.heightNoise(x, y, 3, 0.2) < -0.25 && x % 3 == 0 && y % 3 == 0) return Tiles.snowTree.getTile(4);
+		if (height == 0) return noise < 0.2 ? Tiles.snowGrass : Tiles.snowSlush.tile;
+		return Tiles.snowCliff.tile;
 	}
 
 	@Override
@@ -35,20 +35,20 @@ public class Marsh implements Biome {
 				if (tileData == null) {
 					cliffFlags.setFlag(i, j, false);
 					dirtFlags.setFlag(i, j, false);
-				} else if (tileData.getGround() == Tiles.marshTree.getTile(4)) tree = Tiles.marshTree.getTile(i, j);
+				} else if (tileData.getGround() == Tiles.snowTree.getTile(4)) tree = Tiles.snowTree.getTile(i, j);
 				else {
 					cliffFlags.setFlag(i, j, (tileData.getBiome() == this && height > -1 && tileData.getHeight() > height));
-					dirtFlags.setFlag(i, j, (tileData.getBiome() == this && center.getGround() == Tiles.grass && Tiles.dirt.isCenter(tileData.getGround())));
+					dirtFlags.setFlag(i, j, (tileData.getBiome() == this && center.getGround() == Tiles.snowGrass && Tiles.snowSlush.isCenter(tileData.getGround())));
 				}
 			}
 		}
 		int cliffId = cliffFlags.getId();
-		int dirtId = dirtFlags.getId();
-		if (dirtId == -2) center.setGround(Tiles.dirt.tile);
-		else if (dirtId != -1) center.setGround(Tiles.dirt.getTile(dirtId));
+		int slushId = dirtFlags.getId();
+		if (slushId == -2) center.setGround(Tiles.snowSlush.tile);
+		else if (slushId != -1) center.setGround(Tiles.snowSlush.getTile(slushId));
 		if (tree != null) return tree;
-		if (cliffId == -2) return Tiles.marshCliff.tile;
-		if (cliffId != -1) return Tiles.marshCliff.getTile(cliffId);
+		if (cliffId == -2) return Tiles.snowCliff.tile;
+		if (cliffId != -1) return Tiles.snowCliff.getTile(cliffId);
 		return null;
 	}
 }

@@ -39,4 +39,21 @@ public class MultiTile {
 	public Tile getTile(int id) {
 		return this.tiles[id];
 	}
+
+	public Tile getTile(int i, int j) {
+		int id;
+		if (j == -1) {
+			if (i == -1) id = 8;
+			else if (i == 1) id = 6;
+			else id = 7;
+		} else if (j == 1) {
+			if (i == -1) id = 2;
+			else if (i == 1) id = 0;
+			else id = 1;
+		} else {
+			if (i == -1) id = 5;
+			else id = 3;
+		}
+		return this.getTile(id);
+	}
 }

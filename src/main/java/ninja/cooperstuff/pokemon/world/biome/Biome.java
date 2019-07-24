@@ -6,6 +6,10 @@ import ninja.cooperstuff.pokemon.world.World;
 public interface Biome {
 	Biome cave = new Cave();
 	Biome marsh = new Marsh();
+	Biome forest = new Forest();
+	Biome snow = new Snow();
+	Biome woods = new Woods();
+	Biome bog = new Bog();
 
 	int getHeight(World world, int x, int y);
 
