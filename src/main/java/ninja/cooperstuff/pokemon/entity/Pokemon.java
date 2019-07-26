@@ -16,6 +16,7 @@ public class Pokemon extends Entity {
 	protected Stats stats;
 	protected boolean shiny = false;
 	protected int walkCycle = 0;
+	private Vector lastPos = new Vector();
 	public Direction facing = Direction.DOWN;
 	protected boolean moving = false;
 
@@ -39,8 +40,19 @@ public class Pokemon extends Entity {
 		return this;
 	}
 
+	public Vector getVelocity() {
+		return Vector.sub(this.transform.position, this.lastPos);
+	}
+
+	public Vector getForwardVector() {
+		Vector velocity = this.getVelocity().normalized();
+		if (velocity.equals(Vector.zero)) return Vector.fromDirection(this.facing);
+		return velocity;
+	}
+
 	@Override
 	public void update() {
+		this.lastPos = this.transform.position.clone();
 		this.shadow.scale = this.monster.getShadowSize();
 		if ((!this.moving && this.frame % (2 * this.monster.getAnimationSpeed()) == 0) || (this.moving && this.frame % this.monster.getAnimationSpeed() == 0)) {
 			this.walkCycle = 1 - walkCycle;

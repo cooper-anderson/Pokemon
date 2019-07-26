@@ -67,7 +67,7 @@ public class Tiles implements Init.Initializer {
 
 	@Override
 	public void init() {
-		setCliff(cliff, 8, 2);
+		setCliff(cliff, 12, 2);
 		setCliff(marshCliff, 12, 2);
 		setCliff(snowCliff, 12, 2);
 		setTree(marshTree);

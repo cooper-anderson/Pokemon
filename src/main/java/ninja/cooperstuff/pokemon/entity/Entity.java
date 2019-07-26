@@ -7,8 +7,8 @@ import ninja.cooperstuff.pokemon.world.World;
 import java.awt.*;
 
 public abstract class Entity extends GameObject {
-	protected World world;
-	public Shadow shadow = new Shadow(this);
+	public World world;
+	public Shadow shadow = new Shadow(1);
 
 	public Entity(World world) {
 		this.world = world;
@@ -25,13 +25,12 @@ public abstract class Entity extends GameObject {
 	}
 
 	public static class Shadow {
-		public Entity entity;
 		public int opacity = 128;
 		public Vector size = new Vector(32, 16);
-		public double scale = 1;
+		public double scale;
 
-		public Shadow(Entity entity) {
-			this.entity = entity;
+		public Shadow(double scale) {
+			this.scale = scale;
 		}
 
 		public void render(Graphics2D screen) {

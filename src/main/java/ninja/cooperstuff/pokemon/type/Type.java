@@ -1,5 +1,6 @@
 package ninja.cooperstuff.pokemon.type;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -9,11 +10,11 @@ public class Type {
 
 	public String name;
 	public String abbreviation;
-	public String color;
+	public Color color;
 	public HashMap<Type, Effectiveness> effOut = new HashMap<>();
 	public HashMap<Type, Effectiveness> effIn = new HashMap<>();
 
-	public Type(String name, String abbr, String color) {
+	public Type(String name, String abbr, Color color) {
 		this.name = name;
 		this.abbreviation = abbr;
 		this.color = color;

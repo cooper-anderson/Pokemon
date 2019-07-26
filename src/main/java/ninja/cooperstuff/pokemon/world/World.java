@@ -4,6 +4,7 @@ import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.pokemon.init.Tiles;
+import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -50,7 +51,7 @@ public class World {
 
 	@NonNull
 	private Biome getBiome(double elevation, double moisture) {
-		//return Biome.bog;
+//		return Biome.woods;
 		if (moisture < 1) {
 			if (elevation < 1) return Biome.bog;
 			if (elevation < 2) return Biome.cave;
@@ -105,13 +106,14 @@ public class World {
 	}
 
 	public void generate(int x, int y) {
+		Tile road = Tiles.ground1;
 		if (this.lastGenerateLocation == null || Math.abs(x - this.lastGenerateLocation.x) > 2 * this.generateSize.x || Math.abs(y - this.lastGenerateLocation.y) > 2 * this.generateSize.y) {
 			this.data = new HashMap<>();
 			for (int j = -this.generateSize.y; j <= this.generateSize.y; j++) {
 				for (int i = -this.generateSize.x; i <= this.generateSize.x; i++) {
 					IntVector pos = new IntVector(x + i, y + j);
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
@@ -142,7 +144,7 @@ public class World {
 					IntVector pos = new IntVector(x + sign * (i + this.generateSize.x), y + j);
 					this.data.remove(new IntVector(this.lastGenerateLocation.x + sign * (i - this.generateSize.x), y + j));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
@@ -162,7 +164,7 @@ public class World {
 					IntVector pos = new IntVector(x + i, y + sign * (j + this.generateSize.y));
 					this.data.remove(new IntVector(x + i, this.lastGenerateLocation.y + sign * (j - this.generateSize.y)));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}

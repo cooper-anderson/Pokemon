@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 public class Game extends JFrame {
 	public HashSet<GameObject> gameObjects = new HashSet<>();
+	public LinkedList<GameObject> addQueue = new LinkedList<>();
 	public LinkedList<GameObject> deleteQueue = new LinkedList<>();
 	public boolean running = true;
 	private Screen screen = new Screen(this);
@@ -33,9 +34,13 @@ public class Game extends JFrame {
 	}
 
 	public void update() {
+		RepaintManager.currentManager(this).markCompletelyClean(this.screen);
 		if (KeyListener.isKeyHeld(Keys.ESC)) this.close();
 		else {
+			this.gameObjects.addAll(this.addQueue);
+			this.addQueue.clear();
 			for (GameObject gameObject : this.deleteQueue) this.gameObjects.remove(gameObject);
+			this.deleteQueue.clear();
 			for (GameObject gameObject : this.gameObjects) {
 				gameObject.update();
 				for (Class componentType : gameObject.components.keySet()) gameObject.components.get(componentType).update();
@@ -67,7 +72,7 @@ public class Game extends JFrame {
 
 	public <T extends GameObject> T instantiate(T gameObject) {
 		gameObject.game = this;
-		this.gameObjects.add(gameObject);
+		this.addQueue.add(gameObject);
 		return gameObject;
 	}
 

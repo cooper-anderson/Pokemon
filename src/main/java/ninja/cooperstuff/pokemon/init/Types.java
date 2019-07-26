@@ -2,27 +2,30 @@ package ninja.cooperstuff.pokemon.init;
 
 import ninja.cooperstuff.pokemon.type.Type;
 
+import java.awt.*;
+
 import static ninja.cooperstuff.pokemon.type.Type.Effectiveness.*;
 
 public class Types implements Init.Initializer {
-	public static final Type NORMAL = new Type("Normal", "NOR", "#aa9");
-	public static final Type FIRE = new Type("Fire", "FIR", "#f42");
-	public static final Type WATER = new Type("Water", "WAT", "#39f");
-	public static final Type ELECTRIC = new Type("Electric", "ELE", "#fc3");
-	public static final Type GRASS = new Type("Grass", "GRA", "#7c5");
-	public static final Type ICE = new Type("Ice", "ICE", "#6cf");
-	public static final Type FIGHTING = new Type("Fighting", "FIG", "#b54");
-	public static final Type POISON = new Type("Poison", "POI", "#a59");
-	public static final Type GROUND = new Type("Ground", "GRO", "#db5");
-	public static final Type FLYING = new Type("Flying", "FLY", "#89f");
-	public static final Type PSYCHIC = new Type("Psychic", "PSY", "#f59");
-	public static final Type BUG = new Type("Bug", "BUG", "#ab2");
-	public static final Type ROCK = new Type("Rock", "ROC", "#ba6");
-	public static final Type GHOST = new Type("Ghost", "GHO", "#66b");
-	public static final Type DRAGON = new Type("Dragon", "DRA", "#76e");
-	public static final Type DARK = new Type("Dark", "DAR", "#754");
-	public static final Type STEEL = new Type("Steel", "STE", "#aab");
-	public static final Type FAIRY = new Type("Fairy", "FAI", "#e9e");
+	public static final int alpha = 200;
+	public static final Type NORMAL = new Type("Normal", "NOR", new Color(170, 170, 153, alpha));
+	public static final Type FIRE = new Type("Fire", "FIR", new Color(255, 68, 34, alpha));
+	public static final Type WATER = new Type("Water", "WAT", new Color(51, 153, 255, alpha));
+	public static final Type ELECTRIC = new Type("Electric", "ELE", new Color(255, 204, 51, alpha));
+	public static final Type GRASS = new Type("Grass", "GRA", new Color(119, 204, 85, alpha));
+	public static final Type ICE = new Type("Ice", "ICE", new Color(102, 204, 255, alpha));
+	public static final Type FIGHTING = new Type("Fighting", "FIG", new Color(187, 85, 68, alpha));
+	public static final Type POISON = new Type("Poison", "POI", new Color(170, 85, 153, alpha));
+	public static final Type GROUND = new Type("Ground", "GRO", new Color(221, 187, 85, alpha));
+	public static final Type FLYING = new Type("Flying", "FLY", new Color(136, 153, 255, alpha));
+	public static final Type PSYCHIC = new Type("Psychic", "PSY", new Color(255, 85, 153, alpha));
+	public static final Type BUG = new Type("Bug", "BUG", new Color(170, 187, 34, alpha));
+	public static final Type ROCK = new Type("Rock", "ROC", new Color(187, 170, 102, alpha));
+	public static final Type GHOST = new Type("Ghost", "GHO", new Color(102, 102, 187, alpha));
+	public static final Type DRAGON = new Type("Dragon", "DRA", new Color(119, 102, 238, alpha));
+	public static final Type DARK = new Type("Dark", "DAR", new Color(119, 85, 68, alpha));
+	public static final Type STEEL = new Type("Steel", "STE", new Color(170, 170, 187, alpha));
+	public static final Type FAIRY = new Type("Fairy", "FAI", new Color(238, 153, 238, alpha));
 
 	@Override
 	public void preInit() {}

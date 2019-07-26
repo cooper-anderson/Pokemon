@@ -1,5 +1,7 @@
 package ninja.cooperstuff.engine.util;
 
+import ninja.cooperstuff.pokemon.util.Direction;
+
 public class Vector {
 	public static final Vector zero=new Vector(), one=new Vector(1, 1);
 
@@ -18,7 +20,7 @@ public class Vector {
 		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
 	}
 
-	public Vector normal() {
+	public Vector normalized() {
 		double magnitude = this.magnitude();
 		if (magnitude == 0) return new Vector();
 		else return Vector.div(this, magnitude);
@@ -57,6 +59,10 @@ public class Vector {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	public IntVector getIntVector() {
+		return new IntVector(this.x, this.y);
+	}
+
 	public IntVector getTile() {
 		return new IntVector(this.x / 32, this.y / 32);
 	}
@@ -69,6 +75,10 @@ public class Vector {
 	@Override
 	public boolean equals(Object o) {
 		return (o != null && o.getClass() == this.getClass() && o.hashCode() == this.hashCode());
+	}
+
+	public Vector clone() {
+		return new Vector(this.x, this.y);
 	}
 
 	public String toString() {
@@ -94,6 +104,15 @@ public class Vector {
 
 	public static Double dot(Vector left, Vector right) {
 		return left.x * right.x + left.y * right.y;
+	}
+
+	public static Vector fromDirection(Direction direction) {
+		switch(direction) {
+			case UP: return new Vector(0, -1);
+			case DOWN: return new Vector(0, 1);
+			case LEFT: return new Vector(-1, 0);
+			default: return new Vector(1, 0);
+		}
 	}
 
 	public static boolean equals(Vector left, Vector right) {

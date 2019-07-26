@@ -1,10 +1,12 @@
 package ninja.cooperstuff.pokemon.move;
 
+import ninja.cooperstuff.pokemon.entity.MoveInstance;
+import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.type.Type;
 
 import java.util.HashSet;
 
-public class Move {
+public abstract class Move {
 	public static HashSet<Move> moves = new HashSet<>();
 	public enum AttackType {PHYSICAL, SPECIAL, STATUS}
 
@@ -13,7 +15,7 @@ public class Move {
 	public int power;
 	public int accuracy;
 	public int points;
-	public AttackType attackType;
+	public DefaultMove.AttackType attackType;
 
 	public Move(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		this.name = name;
@@ -25,35 +27,23 @@ public class Move {
 		Move.moves.add(this);
 	}
 
-	public String toString() {
-		return String.format("Move(\"%s\", %s, %s, %d, %d, %d)", this.name, this.type.name, this.attackType, this.power, this.accuracy, this.points);
+	/*public final boolean use(Pokemon pokemon) {
+		return this.use(pokemon, new Vector(0, 1));
 	}
 
-	/*protected Move setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	protected Move setPower(int power) {
-		this.power = power;
-		return this;
-	}
-
-	public int getPower() {
-		return this.power;
-	}
-
-	protected Move setAccuracy(int accuracy) {
-		this.accuracy = accuracy;
-		return this;
-	}
-
-	protected Move setPoints(int points) {
-		this.points = points;
-		return this;
+	public final boolean use(Pokemon pokemon, double angle, double speed) {
+		return this.use(pokemon, new Vector(speed * Math.cos(angle), speed * Math.sin(angle)));
 	}*/
+
+	public boolean use(Pokemon pokemon) {
+		// TODO check status effects, accuracy
+		this.behavior(pokemon);
+		return true;
+	}
+
+	public abstract MoveInstance behavior(Pokemon pokemon);
+
+	public final String toString() {
+		return String.format("DefaultMove(\"%s\", %s, %s, %d, %d, %d)", this.name, this.type.name, this.attackType, this.power, this.accuracy, this.points);
+	}
 }
