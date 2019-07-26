@@ -7,6 +7,8 @@ import ninja.cooperstuff.pokemon.util.DirectionFlag;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
+import java.util.Random;
+
 public class Marsh implements Biome {
 	@Override
 	public int getHeight(World world, int x, int y) {
@@ -17,7 +19,7 @@ public class Marsh implements Biome {
 	@Override
 	public Tile getTile(World world, int height, int x, int y) {
 		double noise = Noise.noise(100 + x / 10.0, 100 + y / 10.0);
-		if (world.heightNoise(x, y, 3, 0.2) < -0.25 && x % 3 == 0 && y % 3 == 0) return Tiles.marshTree.getTile(4);
+		if (world.heightNoise(x, y, 3, 0.2) < -0.25 && (x + new Random(y).nextInt(3) - 1) % 3 == 0 && y % 3 == 0) return Tiles.marshTree.getTile(4);
 		if (height == 0) return noise < 0 ? Tiles.grass : Tiles.dirt.tile;
 		return Tiles.marshCliff.tile;
 	}

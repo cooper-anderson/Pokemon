@@ -5,6 +5,8 @@ import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
+import java.util.Random;
+
 public class Forest implements Biome {
 	@Override
 	public int getHeight(World world, int x, int y) {
@@ -14,7 +16,7 @@ public class Forest implements Biome {
 
 	@Override
 	public Tile getTile(World world, int height, int x, int y) {
-		if (world.heightNoise(x, y, 8, 0.2) < -0.15 && x % 3 == 0 && y % 3 == 0) return Tiles.forestTree.getTile(4);
+		if (world.heightNoise(x, y, 8, 0.2) < -0.15 && (x + new Random(y).nextInt(3) - 1) % 3 == 0 && y % 3 == 0) return Tiles.forestTree.getTile(4);
 		return Tiles.forestGrass;
 	}
 
