@@ -1,15 +1,42 @@
 package ninja.cooperstuff.pokemon.world.biome;
 
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Tiles;
+import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.util.DirectionFlag;
+import ninja.cooperstuff.pokemon.util.PokemonWeight;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.util.Random;
 
 public class Bog implements Biome {
+	private PokemonWeight pokemon = new PokemonWeight()
+			.add(Monsters.squirtle, 1)
+			.add(Monsters.caterpie)
+			.add(Monsters.weedle)
+			.add(Monsters.pidgey)
+			.add(Monsters.spearow)
+			.add(Monsters.nidoranF)
+			.add(Monsters.nidoranM)
+			.add(Monsters.oddish, 6)
+			.add(Monsters.psyduck, 8)
+			.add(Monsters.poliwag, 7)
+			.add(Monsters.poliwhirl, 3)
+			.add(Monsters.tentacool, 8)
+			.add(Monsters.tentacruel, 3)
+			.add(Monsters.slowpoke, 5)
+			.add(Monsters.seel, 5)
+			.add(Monsters.shellder, 5)
+			.add(Monsters.krabby, 5)
+			.add(Monsters.tangela, 5)
+			.add(Monsters.horsea, 5)
+			.add(Monsters.goldeen)
+			.add(Monsters.staryu, 5)
+			.add(Monsters.magikarp);
+
 	@Override
 	public int getHeight(World world, int x, int y) {
 		double noise = world.heightNoise(x, y, 2, 0);
@@ -47,5 +74,10 @@ public class Bog implements Biome {
 			else if (noise > 0.2) return Tiles.bogLily2;
 		}
 		return null;
+	}
+
+	@Override
+	public Monster getPokemon() {
+		return this.pokemon.get();
 	}
 }

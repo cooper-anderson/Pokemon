@@ -1,18 +1,23 @@
 package ninja.cooperstuff.pokemon.world;
 
-import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.client.PokemonGame;
+import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.init.Tiles;
+import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 public class World {
-	Game game;
+	PokemonGame game;
 	double multiplier = 1.0;
 	double multiplierElevation = 6.12;
 	double multiplierMoisture = 5.05;
@@ -22,16 +27,29 @@ public class World {
 	double offsetElevation = -0.58;
 	double offsetMoisture = 0.23;
 
-	private IntVector generateSize = new IntVector(16, 12);
-	private IntVector detailSize = new IntVector(15, 11);
+	private IntVector generateSize = new IntVector(17, 13);
+	private IntVector detailSize = new IntVector(16, 12);
 	private IntVector lastGenerateLocation;
+
+	public HashSet<Pokemon> pokemon = new HashSet<>();
+	public IntVector entityMaxDist = this.detailSize.clone().mul(3);
+	public int entityCap = 32;
+	public double entitySpawnRate = 0.1;
 
 	public boolean showDetails;
 
 	private HashMap<IntVector, TileData> data;
 
-	public World(Game game) {
+	public World(PokemonGame game) {
 		this.game = game;
+	}
+
+	public IntVector getGenerateSize() {
+		return this.generateSize;
+	}
+
+	public IntVector getDetailSize() {
+		return this.detailSize;
 	}
 
 	private double getElevation(double x, double y) {
@@ -177,6 +195,44 @@ public class World {
 			}
 			this.lastGenerateLocation.y = y;
 		}
+	}
+
+	public Pokemon spawnPokemon(Monster monster) {
+		return this.spawnPokemon(monster, this.game.camera.position);
+	}
+
+	public Pokemon spawnPokemon(Monster monster, Vector position) {
+		if (monster == null) return null;
+		if (this.pokemon.size() >= this.entityCap) return null;
+		Pokemon pokemon = this.game.instantiate(new Pokemon(this, monster)).useAI(true);
+		pokemon.transform.position = position.clone();
+		this.pokemon.add(pokemon);
+		System.out.println("Spawned " + monster.name);
+		return pokemon;
+	}
+
+	public Pokemon trySpawnPokemon(int x, int y) {
+		Random r = new Random();
+		if (r.nextDouble() < this.entitySpawnRate) {
+			IntVector tile = null;
+			IntVector velocity = new IntVector(Math.signum(this.game.player.getVelocity().x), Math.signum(this.game.player.getVelocity().y));
+			for (int i = 0; i < 5; i++) {
+				IntVector flip = new IntVector(0, 0);
+				if (velocity.x == 0) flip.x = r.nextDouble() < 0.5 ? 1 : -1;
+				else flip.x = velocity.x;
+				if (velocity.y == 0) flip.y = r.nextDouble() < 0.5 ? 1 : -1;
+				else flip.y = velocity.y;
+				//velocity.equals(IntVector.zero) ? new IntVector(r.nextDouble() < 0.5 ? 1 : -1, r.nextDouble() < 0.5 ? 1 : -1) : velocity;
+				double offset = r.nextDouble();
+				if (r.nextDouble() < 0.5) tile = new IntVector(x + flip.x * this.detailSize.x, y + flip.y * this.detailSize.y * offset);
+				else tile = new IntVector(x + flip.x * this.detailSize.x * offset, y + flip.y * this.detailSize.y);
+				if (this.getTileData(tile.x, tile.y).getWalkable()) break;
+				tile = null;
+			}
+			if (tile == null) return null;
+			return this.spawnPokemon(this.getBiome(tile.x, tile.y).getPokemon(), new Vector(tile.x * 32, tile.y * 32));
+		}
+		return null;
 	}
 
 	public void render(Graphics2D screen) {

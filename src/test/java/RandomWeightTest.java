@@ -1,4 +1,4 @@
-import ninja.cooperstuff.pokemon.util.RandomWeight;
+import ninja.cooperstuff.engine.util.RandomWeight;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

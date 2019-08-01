@@ -1,4 +1,4 @@
-package ninja.cooperstuff.pokemon.util;
+package ninja.cooperstuff.engine.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +24,7 @@ public class RandomWeight<T> {
 	}
 
 	public T get(int index) {
+		if (this.size == 0) return null;
 		int current = 0;
 		for (WeightContainer container : this.items) {
 			if (index < current + container.weight) return container.item;
@@ -33,6 +34,7 @@ public class RandomWeight<T> {
 	}
 
 	public T get() {
+		if (this.size == 0) return null;
 		return this.get(new Random().nextInt(this.size));
 	}
 
