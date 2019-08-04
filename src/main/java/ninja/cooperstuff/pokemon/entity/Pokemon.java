@@ -5,6 +5,7 @@ import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.entity.particle.Smoke;
+import ninja.cooperstuff.pokemon.entity.particle.StatModifier;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
@@ -20,6 +21,7 @@ public class Pokemon extends Entity {
 	protected Stats valuesEffort = new Stats();
 	protected Stats valuesIndividual = new Stats();
 	protected Stats stats;
+	protected Stats statModifiers = new Stats();
 	protected boolean shiny;
 	protected boolean useAI = false;
 	private boolean isPlayer = false;
@@ -96,6 +98,51 @@ public class Pokemon extends Entity {
 		int health = this.stats.health;
 		this.stats.health = Math.min(this.monster.baseStats.health, this.stats.health + amount);
 		return this.stats.health - health;
+	}
+
+	public int modifyAttackPhysical(Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (new Random().nextDouble() < chance) {
+			this.statModifiers.attackPhysical = Math.min(7, Math.max(-7, this.statModifiers.attackPhysical + sign.getValue() * modifier.getValue()));
+			this.stats.attackPhysical = (int) (this.monster.baseStats.attackPhysical * Stats.getMultiplier(this.statModifiers.attackPhysical));
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, sign.getValue(), this.shadow.scale)).transform.position = this.transform.position;
+		}
+		return this.statModifiers.attackPhysical;
+	}
+
+	public int modifyAttackSpecial(Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (new Random().nextDouble() < chance) {
+			this.statModifiers.attackSpecial = Math.min(7, Math.max(-7, this.statModifiers.attackSpecial + sign.getValue() * modifier.getValue()));
+			this.stats.attackSpecial = (int) (this.monster.baseStats.attackSpecial * Stats.getMultiplier(this.statModifiers.attackSpecial));
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, sign.getValue(), this.shadow.scale)).transform.position = this.transform.position;
+		}
+		return this.statModifiers.attackSpecial;
+	}
+
+	public int modifyDefensePhysical(Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (new Random().nextDouble() < chance) {
+			this.statModifiers.defensePhysical = Math.min(7, Math.max(-7, this.statModifiers.defensePhysical + sign.getValue() * modifier.getValue()));
+			this.stats.defensePhysical = (int) (this.monster.baseStats.defensePhysical * Stats.getMultiplier(this.statModifiers.defensePhysical));
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.DEFENSE, sign.getValue(), this.shadow.scale)).transform.position = this.transform.position;
+		}
+		return this.statModifiers.defensePhysical;
+	}
+
+	public int modifyDefenseSpecial(Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (new Random().nextDouble() < chance) {
+			this.statModifiers.defenseSpecial = Math.min(7, Math.max(-7, this.statModifiers.defenseSpecial + sign.getValue() * modifier.getValue()));
+			this.stats.defenseSpecial = (int) (this.monster.baseStats.defenseSpecial * Stats.getMultiplier(this.statModifiers.defenseSpecial));
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.DEFENSE, sign.getValue(), this.shadow.scale)).transform.position = this.transform.position;
+		}
+		return this.statModifiers.defenseSpecial;
+	}
+
+	public int modifySpeed(Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (new Random().nextDouble() < chance) {
+			this.statModifiers.speed = Math.min(7, Math.max(-7, this.statModifiers.speed + sign.getValue() * modifier.getValue()));
+			this.stats.speed = (int) (this.monster.baseStats.speed * Stats.getMultiplier(this.statModifiers.speed));
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.SPEED, sign.getValue(), this.shadow.scale)).transform.position = this.transform.position;
+		}
+		return this.statModifiers.speed;
 	}
 
 	@Override

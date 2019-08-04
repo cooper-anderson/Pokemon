@@ -21,6 +21,18 @@ public abstract class Constants {
 		}
 	}
 
+	public static abstract class statModifier {
+		public static abstract class color {
+			public static final Color ATTACK = new Color(255, 100, 100);
+			public static final Color DEFENSE = new Color(100, 255, 100);
+			public static final Color SPEED = new Color(100, 100, 255);
+		}
+		public static final int lineCount = 10;
+		public static final int lineLength = 16;
+		public static final int width = 32;
+		public static final int height = 32;
+	}
+
 	public static final int shadowOpacity = 128;
 	public static final int deathParticleCount = 10;
 	public static final double maxBezierMagnitude = 500.0;

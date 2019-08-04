@@ -3,9 +3,11 @@ package ninja.cooperstuff.pokemon.entity;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.entity.particle.StatModifier;
 import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Moves;
 import ninja.cooperstuff.pokemon.monster.Monster;
+import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.world.World;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 
@@ -39,7 +41,7 @@ public class Player extends Pokemon {
 			Moves.ember.use(this);
 		}
 		if (KeyListener.isKeyUp(Keys.Q)) {
-			this.setMonster(Monsters.bulbasaur);
+			this.setMonster(Monsters.venusaur);
 			Moves.vineWhip.use(this);
 		}
 
@@ -47,5 +49,7 @@ public class Player extends Pokemon {
 		this.game.camera.lagFollow(this.transform.position);
 
 		if (KeyListener.isKeyDown(Keys.SPACE)) this.world.tempMove.use(this);
+		if (KeyListener.isKeyDown(Keys.J)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, 1, this.shadow.scale)).transform.position = this.transform.position;
+		if (KeyListener.isKeyDown(Keys.K)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, -1, this.shadow.scale)).transform.position = this.transform.position;
 	}
 }

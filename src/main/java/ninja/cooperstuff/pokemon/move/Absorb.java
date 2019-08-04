@@ -37,7 +37,7 @@ public class Absorb extends Move {
 		@Override
 		public int onCollision(Pokemon pokemon, Projectile projectile) {
 			int damage = super.onCollision(pokemon, projectile);
-			this.pokemon.heal(damage);
+			this.pokemon.heal(damage / 2);
 			for (int i = 0; i < particleCount; i++) {
 				Bezier b = this.game.instantiate(new Bezier(this.world, 30));
 				Random r = new Random();

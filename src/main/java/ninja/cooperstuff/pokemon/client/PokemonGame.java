@@ -59,6 +59,7 @@ public class PokemonGame extends Game {
 		this.stopLoading();
 
 		this.moves.add(Moves.absorb);
+		this.moves.add(Moves.acid);
 		this.moves.add(Moves.ember);
 		this.moves.add(Moves.vineWhip);
 
