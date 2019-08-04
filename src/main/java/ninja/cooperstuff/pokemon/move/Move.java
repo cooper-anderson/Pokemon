@@ -15,7 +15,7 @@ public abstract class Move {
 	public int power;
 	public int accuracy;
 	public int points;
-	public DefaultMove.AttackType attackType;
+	public MoveDefault.AttackType attackType;
 
 	public Move(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		this.name = name;
@@ -44,6 +44,6 @@ public abstract class Move {
 	public abstract MoveInstance behavior(Pokemon pokemon);
 
 	public final String toString() {
-		return String.format("DefaultMove(\"%s\", %s, %s, %d, %d, %d)", this.name, this.type.name, this.attackType, this.power, this.accuracy, this.points);
+		return String.format("MoveDefault(\"%s\", %s, %s, %d, %d, %d)", this.name, this.type.name, this.attackType, this.power, this.accuracy, this.points);
 	}
 }

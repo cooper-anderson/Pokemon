@@ -1,8 +1,16 @@
 package ninja.cooperstuff.pokemon.move;
 
+import ninja.cooperstuff.engine.util.IntVector;
+import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.entity.MoveInstance;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
+import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
+import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
+import ninja.cooperstuff.pokemon.util.Constants;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class VineWhip extends Move {
 	public VineWhip(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
@@ -11,50 +19,40 @@ public class VineWhip extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		int count = 20;
-		//for (int index = 0; index < count; index++) {
-			//Projectile p = pokemon.game.instantiate(new VineWhipProjectile(pokemon, this, pokemon.facing.getAngle() + Math.PI, count - 1, count));
-
-		//}
-		return null;
+		return pokemon.game.instantiate(new VineWhipInstance(pokemon, this));
 	}
 
-	/*private class VineWhipProjectile extends Projectile {
+	public class VineWhipInstance extends MoveInstance {
+		private ArrayList<Projectile> projectileList = new ArrayList<>();
 		private double angle;
-		private int index;
-		private int count;
-		private int timer = 50;
+		private int count = 10;
+		private int lifetime = 50;
 
-		public VineWhipProjectile(Entity pokemon, Move move, double angle, int index, int count) {
-			super(pokemon);
-			this.angle = angle;
-			this.index = index;
-			this.count = count;
-			//this.shadow.scale = 0.25;
-		}
-
-		@Override
-		public void update() {
-			double percent = (double) this.frame / (double) this.timer;
-			double dist = 100 * ((double) this.index / (double) this.count) * Math.sin(percent * Math.PI);
-			//this.transform.position = Vector.add(this.pokemon.transform.position, new Vector(dist * Math.cos(this.angle + percent * 2 * Math.PI), dist * Math.sin(this.angle + percent * 2 * Math.PI)));
-			//if (this.frame > this.timer) this.destroy();
+		public VineWhipInstance(Pokemon pokemon, Move move) {
+			super(pokemon, move);
+			this.angle = this.pokemon.facing.getAngle() + Math.PI;
+			for (int i = 0; i < this.count; i++) this.projectileList.add(this.spawnProjectile(new ProjectileDefault(this, this.move)));
 		}
 
 		@Override
 		public void behavior() {
-
-		}
-
-		public void render(Graphics2D screen) {
-			if (this.index == this.count - 1) {
-				Color c = screen.getColor();
-				screen.setColor(this.color);
-				screen.setStroke(new BasicStroke(5));
-				//IntVector pos = Vector.sub(this.pokemon.transform.position, this.transform.position).getIntVector();
-				//screen.drawLine(0, 0, pos.x, pos.y);
-				screen.setColor(c);
+			this.transform.position = this.pokemon.transform.position.clone();
+			for (int i = 0; i < this.count; i++) {
+				double percent = (double) this.frame / (double) this.lifetime;
+				double dist = 100 * ((double) i / (double) this.count) * Math.sin(percent * Math.PI);
+				this.projectileList.get(i).position = Vector.add(this.transform.position, new Vector(dist * Math.cos(this.angle + percent * 2 * Math.PI), dist * Math.sin(this.angle + percent * 2 * Math.PI)));
 			}
+			if (this.frame > this.lifetime) this.destroy();
 		}
-	}*/
+
+		@Override
+		public void render(Graphics2D screen) {
+			IntVector pos = Vector.sub(this.projectileList.get(this.count - 1).position, this.transform.position).getIntVector();
+			screen.setStroke(new BasicStroke(5));
+			screen.setColor(new Color(0, 0, 0, Constants.shadowOpacity));
+			screen.drawLine(0, 0, pos.x, pos.y);
+			screen.setColor(this.move.type.color);
+			screen.drawLine(0, -11, pos.x, pos.y - 11);
+		}
+	}
 }

@@ -4,19 +4,22 @@ import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.entity.Entity;
 import ninja.cooperstuff.pokemon.entity.MoveInstance;
+import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.move.Move;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.Random;
 
 public abstract class Projectile {
 	public MoveInstance owner;
 	public Move move;
 	public Vector position;
-	public Vector velocity;
+	public Vector velocity = new Vector();
 	public Color color;
 	public int seed = Math.abs(new Random().nextInt(100));
 	public double offset = Math.abs(new Random().nextDouble()) % 5;
+	public HashSet<Pokemon> pokemonHit = new HashSet<>();
 	public int frame = 0;
 
 	public Entity.Shadow shadow = new Entity.Shadow(0.4);
@@ -26,6 +29,7 @@ public abstract class Projectile {
 		this.move = move;
 		this.position = owner.transform.position.clone();
 		this.color = this.move.type.color;
+		this.pokemonHit.add(this.owner.pokemon);
 	}
 
 	public void update() {

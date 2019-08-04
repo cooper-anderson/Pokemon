@@ -1,5 +1,5 @@
 import ninja.cooperstuff.debug.Debug;
-import ninja.cooperstuff.pokemon.move.DefaultMove;
+import ninja.cooperstuff.pokemon.move.MoveDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,6 +22,6 @@ public class Init {
 
 	@Test
 	public void countMoves() {
-		assertEquals(165, DefaultMove.moves.size());
+		assertEquals(165, MoveDefault.moves.size());
 	}
 }

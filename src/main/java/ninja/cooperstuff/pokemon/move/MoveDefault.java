@@ -4,8 +4,8 @@ import ninja.cooperstuff.pokemon.entity.MoveInstance;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.type.Type;
 
-public class DefaultMove extends Move {
-	public DefaultMove(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
+public class MoveDefault extends Move {
+	public MoveDefault(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		super(name, type, attackType, power, accuracy, points);
 	}
 

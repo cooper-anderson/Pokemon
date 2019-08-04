@@ -50,7 +50,7 @@ public class PokemonGame extends Game {
 		ninja.cooperstuff.pokemon.init.Init.postInit();
 		this.stopLoading();
 
-		this.player = this.instantiate(new Player(this.world, Monsters.venusaur));
+		this.player = this.instantiate(new Player(this.world, Monsters.charmander));
 
 		while (this.running) {
 			this.update();

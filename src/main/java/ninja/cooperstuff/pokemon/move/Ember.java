@@ -19,6 +19,8 @@ public class Ember extends Move {
 	public class EmberInstance extends MoveInstance {
 		public EmberInstance(Pokemon owner, Move move) {
 			super(owner, move);
+			this.multihit = true;
+			this.destroyProjectiles = true;
 		}
 
 		@Override
@@ -31,8 +33,9 @@ public class Ember extends Move {
 		}
 
 		@Override
-		public void onCollision(Pokemon pokemon) {
-
+		public void onCollision(Pokemon pokemon, Projectile projectile) {
+			super.onCollision(pokemon, projectile);
+			//this.projectiles.remove(projectile);
 		}
 	}
 }

@@ -4,6 +4,7 @@ import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.entity.particle.Smoke;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
@@ -84,6 +85,17 @@ public class Pokemon extends Entity {
 		return velocity;
 	}
 
+	public Pokemon damage(int amount) {
+		this.stats.health = Math.max(0, this.stats.health - amount);
+		return this;
+	}
+
+	public Pokemon heal(int amount) {
+		if (this.stats.health == 0) return this;
+		this.stats.health = Math.min(this.monster.baseStats.health, this.stats.health + amount);
+		return this;
+	}
+
 	@Override
 	public void update() {
 		this.lastPos = this.transform.position.clone();
@@ -150,6 +162,15 @@ public class Pokemon extends Entity {
 		if (Math.abs(this.stats.health - this.healthAnimation) < Constants.healthBar.ANIMATION_STEP) this.healthAnimation = this.stats.health;
 		this.healthAnimation += Constants.healthBar.ANIMATION_STEP * Math.signum(this.stats.health - this.healthAnimation);
 		this.healthDelay = Math.max(0, this.healthDelay - 1);
+
+		if (this.stats.health == 0 && this.healthAnimation == 0) {
+			this.createDeathParticles();
+			this.destroy();
+		}
+	}
+
+	public void createDeathParticles() {
+		for (int i = 0; i < Constants.deathParticleCount; i++) this.game.instantiate(new Smoke(this.world)).transform.position = this.transform.position.clone();
 	}
 
 	@Override

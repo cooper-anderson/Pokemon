@@ -20,4 +20,7 @@ public abstract class Constants {
 			return color.HIGH;
 		}
 	}
+
+	public static final int shadowOpacity = 128;
+	public static final int deathParticleCount = 10;
 }
