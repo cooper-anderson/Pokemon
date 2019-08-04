@@ -1,8 +1,9 @@
 package ninja.cooperstuff.pokemon.util;
 
 public class Stats {
+	public enum Stat {HEALTH, ATTACK_PHYSICAL, ATTACK_SPECIAL, DEFENSE_PHYSICAL, DEFENSE_SPECIAL, SPEED}
 	public enum Modifier {
-		NORMAL(1), HARSH(2), SEVERE(3);
+		NORMAL(1), HARSH(2), SHARP(3);
 
 		private final int value;
 		Modifier(int value) {
@@ -14,7 +15,7 @@ public class Stats {
 		}
 	}
 	public enum Sign {
-		RISE(1), FALL(-1);
+		RAISE(1), FALL(-1);
 
 		private final int value;
 		Sign(int value) {

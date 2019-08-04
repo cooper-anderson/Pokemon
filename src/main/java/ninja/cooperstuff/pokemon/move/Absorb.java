@@ -8,8 +8,10 @@ import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
+import ninja.cooperstuff.pokemon.util.Stats;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Absorb extends Move {
@@ -21,12 +23,12 @@ public class Absorb extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new AbsorbInstance(pokemon, this));
+		return pokemon.game.instantiate(new AbsorbInstance(pokemon, this, this.modifiers));
 	}
 
 	public class AbsorbInstance extends MoveInstance {
-		public AbsorbInstance(Pokemon pokemon, Move move) {
-			super(pokemon, move, false, true, true);
+		public AbsorbInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, StatModification> modifiers) {
+			super(pokemon, move, modifiers, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 			p.velocity = this.pokemon.getForwardVector().clone().mul(5);
 		}
@@ -47,7 +49,7 @@ public class Absorb extends Move {
 				b.v2 = this.pokemon.transform.position;
 				Vector diff = Vector.sub(b.v0, b.v2);
 				b.v1 = Vector.add(Vector.div(Vector.add(b.v0, b.v2), 2.0),
-						Vector.mul(new Vector(diff.y, -diff.x), Math.min(Constants.maxBezierMagnitude, diff.magnitude()) * (r.nextDouble() * 2 - 1) / 1000.0)
+					Vector.mul(new Vector(diff.y, -diff.x), Math.min(Constants.maxBezierMagnitude, diff.magnitude()) * (r.nextDouble() * 2 - 1) / 1000.0)
 				);
 			}
 			return damage;

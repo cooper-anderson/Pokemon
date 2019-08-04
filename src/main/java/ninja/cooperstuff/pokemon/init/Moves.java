@@ -2,21 +2,22 @@ package ninja.cooperstuff.pokemon.init;
 
 import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.pokemon.move.*;
+import ninja.cooperstuff.pokemon.util.Stats;
 
 import static ninja.cooperstuff.pokemon.init.Types.*;
 import static ninja.cooperstuff.pokemon.move.Move.AttackType.*;
 
 public class Moves implements Init.Initializer {
 	public static final Move absorb = new Absorb("Absorb", GRASS, SPECIAL, 20, 100, 25);
-	public static final Move acid = new Acid("Acid", POISON, SPECIAL, 40, 100, 30);
-	public static final Move acidArmor = new MoveDefault("Acid Armor", POISON, STATUS, 0, 0, 20);
-	public static final Move agility = new MoveDefault("Agility", PSYCHIC, STATUS, 0, 0, 30);
-	public static final Move amnesia = new MoveDefault("Amnesia", PSYCHIC, STATUS, 0, 0, 20);
-	public static final Move auroraBeam = new MoveDefault("Aurora Beam", ICE, SPECIAL, 65, 100, 20);
-	public static final Move barrage = new MoveDefault("Barrage", NORMAL, PHYSICAL, 15, 85, 20);
-	public static final Move barrier = new MoveDefault("Barrier", PSYCHIC, STATUS, 0, 0, 20);
-	public static final Move bide = new MoveDefault("Bide", NORMAL, PHYSICAL, 0, 0, 10);
-	public static final Move bind = new MoveDefault("Bind", NORMAL, PHYSICAL, 15, 85, 20);
+	public static final Move acid = new MoveDefault("Acid", POISON, SPECIAL, 40, 100, 30).addModifier(Stats.Stat.DEFENSE_SPECIAL, Stats.Modifier.NORMAL, Stats.Sign.FALL, 0.1);
+	public static final Move acidArmor = new MoveStatus("Acid Armor", POISON, STATUS, 0, 0, 20).addSelfModifier(Stats.Stat.DEFENSE_PHYSICAL, Stats.Modifier.SHARP, Stats.Sign.RAISE, 1.0);
+	public static final Move agility = new MoveStatus("Agility", PSYCHIC, STATUS, 0, 0, 30).addSelfModifier(Stats.Stat.SPEED, Stats.Modifier.SHARP, Stats.Sign.RAISE, 1.0);
+	public static final Move amnesia = new MoveStatus("Amnesia", PSYCHIC, STATUS, 0, 0, 20).addSelfModifier(Stats.Stat.DEFENSE_SPECIAL, Stats.Modifier.SHARP, Stats.Sign.RAISE, 1.0);
+	public static final Move auroraBeam = new MoveDefault("Aurora Beam", ICE, SPECIAL, 65, 100, 20).addModifier(Stats.Stat.ATTACK_PHYSICAL, Stats.Modifier.NORMAL, Stats.Sign.FALL, 0.1);
+	public static final Move barrage = new MoveDefault("Barrage", NORMAL, PHYSICAL, 15, 85, 20).setProjectileCount(2, 5);
+	public static final Move barrier = new MoveStatus("Barrier", PSYCHIC, STATUS, 0, 0, 20).addSelfModifier(Stats.Stat.DEFENSE_PHYSICAL, Stats.Modifier.SHARP, Stats.Sign.RAISE, 1.0);
+	public static final Move bide = new MoveDefault("Bide", NORMAL, PHYSICAL, 0, 0, 10); // TODO
+	public static final Move bind = new MoveDefault("Bind", NORMAL, PHYSICAL, 15, 85, 20); // TODO
 	public static final Move bite = new MoveDefault("Bite", DARK, PHYSICAL, 60, 100, 25);
 	public static final Move blizzard = new MoveDefault("Blizzard", ICE, SPECIAL, 110, 70, 5);
 	public static final Move bodySlam = new MoveDefault("Body Slam", NORMAL, PHYSICAL, 85, 100, 15);
@@ -46,7 +47,7 @@ public class Moves implements Init.Initializer {
 	public static final Move drillPeck = new MoveDefault("Drill Peck", FLYING, PHYSICAL, 80, 100, 20);
 	public static final Move earthquake = new MoveDefault("Earthquake", GROUND, PHYSICAL, 100, 100, 10);
 	public static final Move eggBomb = new MoveDefault("Egg Bomb", NORMAL, PHYSICAL, 100, 75, 10);
-	public static final Move ember = new Ember("Ember", FIRE, SPECIAL, 40, 100, 25);
+	public static final Move ember = new MoveDefault("Ember", FIRE, SPECIAL, 40, 100, 25).setProjectileCount(3);
 	public static final Move explosion = new MoveDefault("Explosion", NORMAL, PHYSICAL, 250, 100, 5);
 	public static final Move fireBlast = new MoveDefault("Fire Blast", FIRE, SPECIAL, 110, 85, 5);
 	public static final Move firePunch = new MoveDefault("Fire Punch", FIRE, PHYSICAL, 75, 100, 15);

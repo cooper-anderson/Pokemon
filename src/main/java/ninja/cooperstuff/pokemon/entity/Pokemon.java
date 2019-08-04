@@ -145,6 +145,15 @@ public class Pokemon extends Entity {
 		return this.statModifiers.speed;
 	}
 
+	public int modifyStat(Stats.Stat stat, Stats.Modifier modifier, Stats.Sign sign, double chance) {
+		if (stat == Stats.Stat.ATTACK_PHYSICAL) return this.modifyAttackPhysical(modifier, sign, chance);
+		else if (stat == Stats.Stat.ATTACK_SPECIAL) return this.modifyAttackSpecial(modifier, sign, chance);
+		else if (stat == Stats.Stat.DEFENSE_PHYSICAL) return this.modifyDefensePhysical(modifier, sign, chance);
+		else if (stat == Stats.Stat.DEFENSE_SPECIAL) return this.modifyDefenseSpecial(modifier, sign, chance);
+		else if (stat == Stats.Stat.SPEED) return this.modifySpeed(modifier, sign, chance);
+		return 0;
+	}
+
 	@Override
 	public void update() {
 		this.lastPos = this.transform.position.clone();

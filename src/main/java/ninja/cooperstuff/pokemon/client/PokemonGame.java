@@ -60,6 +60,11 @@ public class PokemonGame extends Game {
 
 		this.moves.add(Moves.absorb);
 		this.moves.add(Moves.acid);
+		this.moves.add(Moves.acidArmor);
+		this.moves.add(Moves.agility);
+		this.moves.add(Moves.amnesia);
+		this.moves.add(Moves.auroraBeam);
+		this.moves.add(Moves.barrage);
 		this.moves.add(Moves.ember);
 		this.moves.add(Moves.vineWhip);
 
