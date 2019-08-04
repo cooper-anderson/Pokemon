@@ -5,24 +5,15 @@ import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
-import ninja.cooperstuff.pokemon.util.Stats;
-import ninja.cooperstuff.pokemon.util.Status;
-
-import java.util.HashMap;
-import java.util.Random;
 
 public class MoveDefault extends Move {
-	private int projectileCountMin = 1;
-	private int projectileCountMax = 1;
-	private int projectileDelay = 10;
-
 	public MoveDefault(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		super(name, type, attackType, power, accuracy, points);
 	}
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new MoveDefaultInstance(pokemon, this, this.modifiers, this.effects, this.projectileCountMin, this.projectileCountMax, this.projectileDelay));
+		return pokemon.game.instantiate(new MoveDefaultInstance(pokemon, this));
 	}
 
 	public MoveDefault setProjectileCount(int count) {
@@ -43,13 +34,9 @@ public class MoveDefault extends Move {
 	}
 
 	public class MoveDefaultInstance extends MoveInstance {
-		private int projectileCount;
-		private int projectileDelay;
 
-		public MoveDefaultInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, StatModification> modifiers, HashMap<Status, Double> effects, int projectileCountMin, int projectileCountMax, int projectileDelay) {
-			super(pokemon, move, modifiers, effects, true, true, true);
-			this.projectileCount = projectileCountMin == projectileCountMax ? projectileCountMin : projectileCountMin + new Random().nextInt(projectileCountMax - projectileCountMin + 1);
-			this.projectileDelay = projectileDelay;
+		public MoveDefaultInstance(Pokemon pokemon, Move move) {
+			super(pokemon, move, true, true, true);
 		}
 
 		@Override

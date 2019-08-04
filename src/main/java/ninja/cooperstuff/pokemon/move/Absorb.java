@@ -8,11 +8,8 @@ import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
-import ninja.cooperstuff.pokemon.util.Stats;
-import ninja.cooperstuff.pokemon.util.Status;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Absorb extends Move {
@@ -24,12 +21,12 @@ public class Absorb extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new AbsorbInstance(pokemon, this, this.modifiers, this.effects));
+		return pokemon.game.instantiate(new AbsorbInstance(pokemon, this));
 	}
 
 	public class AbsorbInstance extends MoveInstance {
-		public AbsorbInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, StatModification> modifiers, HashMap<Status, Double> effects) {
-			super(pokemon, move, modifiers, effects, false, true, true);
+		public AbsorbInstance(Pokemon pokemon, Move move) {
+			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 			p.velocity = this.pokemon.getForwardVector().clone().mul(5);
 		}

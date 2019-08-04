@@ -8,12 +8,9 @@ import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
-import ninja.cooperstuff.pokemon.util.Stats;
-import ninja.cooperstuff.pokemon.util.Status;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VineWhip extends Move {
 	public VineWhip(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
@@ -22,7 +19,7 @@ public class VineWhip extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new VineWhipInstance(pokemon, this, this.modifiers, this.effects));
+		return pokemon.game.instantiate(new VineWhipInstance(pokemon, this));
 	}
 
 	public class VineWhipInstance extends MoveInstance {
@@ -31,8 +28,8 @@ public class VineWhip extends Move {
 		private int count = 10;
 		private int lifetime = 50;
 
-		public VineWhipInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, StatModification> modifiers, HashMap<Status, Double> effects) {
-			super(pokemon, move, modifiers, effects);
+		public VineWhipInstance(Pokemon pokemon, Move move) {
+			super(pokemon, move);
 			this.angle = this.pokemon.facing.getAngle() + Math.PI;
 			for (int i = 0; i < this.count; i++) this.projectileList.add(this.spawnProjectile(new ProjectileDefault(this, this.move)));
 		}

@@ -21,23 +21,27 @@ public abstract class MoveInstance extends Entity {
 	public HashSet<Projectile> projectiles = new HashSet<>();
 	public HashSet<Projectile> projectilesDeleteQueue = new HashSet<>();
 	public int lifetime = 150;
+	public int projectileCount;
+	public int projectileDelay;
 
 	public boolean multihit = false;
 	public boolean destroyProjectiles = false;
 
-	public MoveInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, Move.StatModification> modifiers, HashMap<Status, Double> effects, boolean multihit, boolean destroyProjectiles, boolean copyPosition) {
+	public MoveInstance(Pokemon pokemon, Move move, boolean multihit, boolean destroyProjectiles, boolean copyPosition) {
 		super(pokemon.world);
 		this.transform.position = copyPosition ? pokemon.transform.position : pokemon.transform.position.clone();
 		this.pokemon = pokemon;
 		this.move = move;
-		this.modifiers = modifiers;
-		this.effects = effects;
+		this.modifiers = this.move.modifiers;
+		this.effects = this.move.effects;
 		this.multihit = multihit;
 		this.destroyProjectiles = destroyProjectiles;
+		this.projectileCount = this.move.projectileCountMin == this.move.projectileCountMax ? this.move.projectileCountMin : this.move.projectileCountMin + new Random().nextInt(this.move.projectileCountMax - this.move.projectileCountMin + 1);
+		this.projectileDelay = this.move.projectileDelay;
 	}
 
-	public MoveInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, Move.StatModification> modifiers, HashMap<Status, Double> effects) {
-		this(pokemon, move, modifiers, effects, false, false, true);
+	public MoveInstance(Pokemon pokemon, Move move) {
+		this(pokemon, move, false, false, true);
 	}
 
 	public Projectile spawnProjectile(Projectile projectile) {
@@ -80,7 +84,9 @@ public abstract class MoveInstance extends Entity {
 		for (Status status : this.effects.keySet()) {
 			if (new Random().nextDouble() < this.effects.get(status)) pokemon.setStatus(status);
 		}
-		return pokemon.damage(this.move.power);
+		int damage = pokemon.damage(this.move.power);
+		if (this.move.recoilChance != 0 && new Random().nextDouble() < this.move.recoilChance) this.pokemon.damage((int) (damage * this.move.recoilPercent));
+		return damage;
 	}
 
 	public void render(Graphics2D screen) {

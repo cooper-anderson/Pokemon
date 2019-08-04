@@ -7,11 +7,8 @@ import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
-import ninja.cooperstuff.pokemon.util.Stats;
-import ninja.cooperstuff.pokemon.util.Status;
 
 import java.awt.*;
-import java.util.HashMap;
 
 public class Bonemerang extends Move {
 	public Bonemerang(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
@@ -20,12 +17,12 @@ public class Bonemerang extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new BonemerangInstance(pokemon, this, this.modifiers, this.effects));
+		return pokemon.game.instantiate(new BonemerangInstance(pokemon, this));
 	}
 
 	public class BonemerangInstance extends MoveInstance {
-		public BonemerangInstance(Pokemon pokemon, Move move, HashMap<Stats.Stat, StatModification> modifiers, HashMap<Status, Double> effects) {
-			super(pokemon, move, modifiers, effects, true, false, true);
+		public BonemerangInstance(Pokemon pokemon, Move move) {
+			super(pokemon, move, true, false, true);
 		}
 
 		@Override
@@ -45,7 +42,7 @@ public class Bonemerang extends Move {
 			super(owner, move);
 			Vector facing = this.owner.pokemon.getForwardVector();
 			this.v0 = this.owner.transform.position.clone();
-			this.v1 = Vector.add(Vector.add(v0, Vector.mul(this.owner.pokemon.getForwardVector(), 500.0)), new Vector(-facing.y, facing.x).mul(25 * side));
+			this.v1 = Vector.add(Vector.add(v0, Vector.mul(facing, 500.0)), new Vector(-facing.y, facing.x).mul(25 * side));
 			this.v2 = this.owner.pokemon.transform.position;
 		}
 

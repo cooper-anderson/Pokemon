@@ -25,6 +25,11 @@ public abstract class Move {
 	public int accuracy;
 	public int points;
 	public MoveDefault.AttackType attackType;
+	public int projectileCountMin = 1;
+	public int projectileCountMax = 1;
+	public int projectileDelay = 10;
+	public double recoilPercent = 0.0;
+	public double recoilChance = 0.0;
 
 	public Move(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		this.name = name;
@@ -79,6 +84,12 @@ public abstract class Move {
 
 	public Move addSelfEffect(Status status, double chance) {
 		this.selfEffects.put(status, chance);
+		return this;
+	}
+
+	public Move addRecoil(double percent, double chance) {
+		this.recoilPercent = percent;
+		this.recoilChance = chance;
 		return this;
 	}
 
