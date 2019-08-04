@@ -5,6 +5,7 @@ import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Monster;
+import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.util.Stats;
 import ninja.cooperstuff.pokemon.world.TileData;
@@ -18,7 +19,7 @@ public class Pokemon extends Entity {
 	protected Stats valuesEffort = new Stats();
 	protected Stats valuesIndividual = new Stats();
 	protected Stats stats;
-	protected boolean shiny = false;
+	protected boolean shiny;
 	protected boolean useAI = false;
 	private boolean isPlayer = false;
 	protected int walkCycle = 0;
@@ -29,16 +30,20 @@ public class Pokemon extends Entity {
 	public Vector input = new Vector();
 	private int seed = this.hashCode() % 10000;
 
+	private int healthAnimation = 0;
+	private int healthDelay = 0;
+
 	public Pokemon(World world, Monster monster) {
 		super(world);
 		this.setMonster(monster);
-		this.shadow.scale = this.monster.getShadowSize();
 		this.shiny = new Random().nextInt(8192) == 1;
 		if (this.shiny) Debug.info(String.format("Shiny %s", this.monster.name));
 	}
 
 	public void setMonster(Monster monster) {
 		this.monster = monster;
+		this.stats = monster.baseStats.clone();
+		this.healthAnimation = this.stats.health;
 		this.shadow.scale = this.monster.getShadowSize();
 	}
 
@@ -91,9 +96,6 @@ public class Pokemon extends Entity {
 			double y = Noise.noise(seed + 10000 + this.frame / 100.0);
 			this.input.x = (x > threshold) ? 1 : (x < - threshold) ? -1 : 0;
 			this.input.y = (y > threshold) ? 1 : (y < - threshold) ? -1 : 0;
-			/*if (x > threshold) this.input.x = 1;
-			else if (x < -threshold) this.input.x = -1;
-			else this.input.x = 0;*/
 		}
 
 		Vector pos = this.transform.position;
@@ -143,6 +145,11 @@ public class Pokemon extends Entity {
 				}
 			}
 		}
+
+		if (this.healthAnimation != this.stats.health) this.healthDelay = Constants.healthBar.ANIMATION_DELAY;
+		if (Math.abs(this.stats.health - this.healthAnimation) < Constants.healthBar.ANIMATION_STEP) this.healthAnimation = this.stats.health;
+		this.healthAnimation += Constants.healthBar.ANIMATION_STEP * Math.signum(this.stats.health - this.healthAnimation);
+		this.healthDelay = Math.max(0, this.healthDelay - 1);
 	}
 
 	@Override
@@ -159,7 +166,20 @@ public class Pokemon extends Entity {
 		int x = (int) (offset.x - size / 2);
 		int y = (int) (offset.y - this.walkCycle * this.monster.getBobHeight(this.facing) - size + 4);
 		screen.drawImage(this.monster.getSprite(this.facing, this.walkCycle, this.shiny), x, y, size, size, null);
-		Vector col1 = this.monster.getCollisionCorner1();
-		Vector col2 = this.monster.getCollisionCorner2();
+		if (this.healthDelay != 0) this.drawHealthBar(screen);
+	}
+
+	private void drawHealthBar(Graphics2D screen) {
+		double percent = (double) this.healthAnimation / (double) this.monster.baseStats.health;
+		int width = (int) (40 * this.shadow.scale);
+		int height = 10;
+		int offsetY = (int) (10 * this.shadow.scale);
+		int margin = 2;
+		screen.setColor(Constants.healthBar.color.BORDER);
+		screen.fillRect(-width / 2, offsetY, width, height);
+		screen.setColor(Constants.healthBar.getColor(percent));
+		screen.fillRect(-width / 2 + margin, offsetY + margin, (int) Math.round((width - 2 * margin) * percent), height - 2 * margin);
+		screen.setColor(Constants.healthBar.color.BACKGROUND);
+		screen.fillRect(-width / 2 + margin + (int) Math.round((width - 2 * margin) * percent), offsetY + margin, (int) Math.round((width - 2 * margin) * (1 - percent)), height - 2 * margin);
 	}
 }

@@ -24,7 +24,6 @@ public class PokemonGame extends Game {
 		this.setSize(240 * 4 + 16, 160 * 4 + 39);
 		this.setResizable(false);
 		this.setTitle("Pokemon");
-		this.player = this.instantiate(new Player(this.world, Monsters.charmander));
 	}
 
 	@Override
@@ -50,6 +49,8 @@ public class PokemonGame extends Game {
 		ninja.cooperstuff.pokemon.init.Init.init();
 		ninja.cooperstuff.pokemon.init.Init.postInit();
 		this.stopLoading();
+
+		this.player = this.instantiate(new Player(this.world, Monsters.venusaur));
 
 		while (this.running) {
 			this.update();

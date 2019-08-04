@@ -21,6 +21,10 @@ public class Stats {
 		this.speed = speed;
 	}
 
+	public Stats clone() {
+		return new Stats(this.health, this.attackPhysical, this.attackSpecial, this.defensePhysical, this.defenseSpecial, this.speed);
+	}
+
 	public static Stats randomEffort() {
 		return null;
 	}

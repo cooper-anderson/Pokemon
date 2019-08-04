@@ -207,7 +207,6 @@ public class World {
 		Pokemon pokemon = this.game.instantiate(new Pokemon(this, monster)).useAI(true);
 		pokemon.transform.position = position.clone();
 		this.pokemon.add(pokemon);
-		System.out.println("Spawned " + monster.name);
 		return pokemon;
 	}
 

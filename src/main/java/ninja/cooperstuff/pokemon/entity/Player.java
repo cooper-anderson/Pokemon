@@ -45,5 +45,9 @@ public class Player extends Pokemon {
 
 		this.game.camera.follow(this, new Vector(10, 10));
 		this.game.camera.lagFollow(this.transform.position);
+
+		if (KeyListener.isKeyDown(Keys.U)) this.stats.health = (int) (this.monster.baseStats.health * 0.2);
+		if (KeyListener.isKeyDown(Keys.I)) this.stats.health = (int) (this.monster.baseStats.health * 0.5);
+		if (KeyListener.isKeyDown(Keys.O)) this.stats.health = this.monster.baseStats.health;
 	}
 }
