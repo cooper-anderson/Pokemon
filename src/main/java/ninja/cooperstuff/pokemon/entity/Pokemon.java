@@ -85,15 +85,17 @@ public class Pokemon extends Entity {
 		return velocity;
 	}
 
-	public Pokemon damage(int amount) {
+	public int damage(int amount) {
+		int health = this.stats.health;
 		this.stats.health = Math.max(0, this.stats.health - amount);
-		return this;
+		return health - this.stats.health;
 	}
 
-	public Pokemon heal(int amount) {
-		if (this.stats.health == 0) return this;
+	public int heal(int amount) {
+		if (this.stats.health == 0) return 0;
+		int health = this.stats.health;
 		this.stats.health = Math.min(this.monster.baseStats.health, this.stats.health + amount);
-		return this;
+		return this.stats.health - health;
 	}
 
 	@Override

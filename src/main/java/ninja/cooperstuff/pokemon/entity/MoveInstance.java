@@ -19,11 +19,17 @@ public abstract class MoveInstance extends Entity {
 	public boolean multihit = false;
 	public boolean destroyProjectiles = false;
 
-	public MoveInstance(Pokemon pokemon, Move move) {
+	public MoveInstance(Pokemon pokemon, Move move, boolean multihit, boolean destroyProjectiles, boolean copyPosition) {
 		super(pokemon.world);
-		this.transform.position = pokemon.transform.position.clone();
+		this.transform.position = copyPosition ? pokemon.transform.position : pokemon.transform.position.clone();
 		this.pokemon = pokemon;
 		this.move = move;
+		this.multihit = multihit;
+		this.destroyProjectiles = destroyProjectiles;
+	}
+
+	public MoveInstance(Pokemon pokemon, Move move) {
+		this(pokemon, move, false, false, true);
 	}
 
 	public Projectile spawnProjectile(Projectile projectile) {
@@ -58,8 +64,8 @@ public abstract class MoveInstance extends Entity {
 
 	public abstract void behavior();
 
-	public void onCollision(Pokemon pokemon, Projectile projectile) {
-		pokemon.damage(this.move.power);
+	public int onCollision(Pokemon pokemon, Projectile projectile) {
+		return pokemon.damage(this.move.power);
 	}
 
 	public void render(Graphics2D screen) {

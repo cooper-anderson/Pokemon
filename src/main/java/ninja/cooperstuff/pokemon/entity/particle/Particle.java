@@ -20,8 +20,7 @@ public abstract class Particle extends Entity {
 	public void update() {
 		this.behavior();
 		this.transform.position.add(this.velocity);
-		this.lifetime--;
-		if (this.lifetime == 0) this.destroy();
+		if (this.frame >= this.lifetime) this.destroy();
 	}
 
 	public abstract void behavior();

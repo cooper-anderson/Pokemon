@@ -7,6 +7,7 @@ import ninja.cooperstuff.pokemon.client.PokemonGame;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.init.Tiles;
 import ninja.cooperstuff.pokemon.monster.Monster;
+import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -37,6 +38,7 @@ public class World {
 	public double entitySpawnRate = 0.1;
 
 	public boolean showDetails;
+	public Move tempMove;
 
 	private HashMap<IntVector, TileData> data;
 

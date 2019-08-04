@@ -23,4 +23,5 @@ public abstract class Constants {
 
 	public static final int shadowOpacity = 128;
 	public static final int deathParticleCount = 10;
+	public static final double maxBezierMagnitude = 500.0;
 }

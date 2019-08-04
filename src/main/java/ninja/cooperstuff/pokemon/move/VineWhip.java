@@ -36,7 +36,6 @@ public class VineWhip extends Move {
 
 		@Override
 		public void behavior() {
-			this.transform.position = this.pokemon.transform.position.clone();
 			for (int i = 0; i < this.count; i++) {
 				double percent = (double) this.frame / (double) this.lifetime;
 				double dist = 100 * ((double) i / (double) this.count) * Math.sin(percent * Math.PI);

@@ -18,24 +18,15 @@ public class Ember extends Move {
 
 	public class EmberInstance extends MoveInstance {
 		public EmberInstance(Pokemon owner, Move move) {
-			super(owner, move);
-			this.multihit = true;
-			this.destroyProjectiles = true;
+			super(owner, move, true, true, true);
 		}
 
 		@Override
 		public void behavior() {
-			this.transform.position = this.pokemon.transform.position.clone();
 			if (this.frame <= 20 && this.frame % 10 == 0) {
 				Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 				p.velocity = this.pokemon.getForwardVector().clone().mul(5);
 			}
-		}
-
-		@Override
-		public void onCollision(Pokemon pokemon, Projectile projectile) {
-			super.onCollision(pokemon, projectile);
-			//this.projectiles.remove(projectile);
 		}
 	}
 }

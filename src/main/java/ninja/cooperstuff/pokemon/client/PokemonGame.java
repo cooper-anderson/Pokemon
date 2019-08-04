@@ -7,9 +7,12 @@ import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.pokemon.entity.Player;
 import ninja.cooperstuff.pokemon.init.Monsters;
+import ninja.cooperstuff.pokemon.init.Moves;
+import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PokemonGame extends Game {
 	public World world = new World(this);
@@ -18,6 +21,9 @@ public class PokemonGame extends Game {
 	private int generateCounter = 0;
 	private int spawnCounter = 0;
 	private boolean showDetails = true;
+
+	public ArrayList<Move> moves = new ArrayList<>();
+	public int moveIndex = 0;
 
 	public PokemonGame() {
 		super();
@@ -28,7 +34,9 @@ public class PokemonGame extends Game {
 
 	@Override
 	public void update() {
-		if (KeyListener.isKeyDown(Keys.SPACE)) this.showDetails = !this.showDetails;
+		if (KeyListener.isKeyDown(Keys.BRACKET_RIGHT)) this.moveIndex = (this.moveIndex + this.moves.size() + 1) % this.moves.size();
+		if (KeyListener.isKeyDown(Keys.BRACKET_LEFT)) this.moveIndex = (this.moveIndex + this.moves.size() - 1) % this.moves.size();
+		this.world.tempMove = this.moves.get(this.moveIndex);
 		this.world.showDetails = this.showDetails;
 		IntVector pos = this.player.transform.position.getTile();
 		if (this.generateCounter == 0) {
@@ -50,6 +58,10 @@ public class PokemonGame extends Game {
 		ninja.cooperstuff.pokemon.init.Init.postInit();
 		this.stopLoading();
 
+		this.moves.add(Moves.absorb);
+		this.moves.add(Moves.ember);
+		this.moves.add(Moves.vineWhip);
+
 		this.player = this.instantiate(new Player(this.world, Monsters.charmander));
 
 		while (this.running) {
@@ -65,8 +77,9 @@ public class PokemonGame extends Game {
 		world.render(screen);
 		screen.setColor(Color.white);
 		this.camera.toScreenCoords(screen);
-		screen.drawString(String.valueOf(this.spawnCounter), 100, 100);
-		screen.drawString(String.valueOf(this.world.pokemon.size()), 100, 120);
+		screen.scale(5, 5);
+		screen.drawString(this.moves.get(this.moveIndex).name, 1, 10);
+		screen.scale(0.2, 0.2);
 		this.camera.toGameCoords(screen);
 		screen.fillRect(-1, -1, 2, 2);
 	}

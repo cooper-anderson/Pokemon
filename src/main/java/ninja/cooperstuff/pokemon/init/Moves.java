@@ -7,7 +7,7 @@ import static ninja.cooperstuff.pokemon.init.Types.*;
 import static ninja.cooperstuff.pokemon.move.Move.AttackType.*;
 
 public class Moves implements Init.Initializer {
-	public static final Move absorb = new MoveDefault("Absorb", GRASS, SPECIAL, 20, 100, 25);
+	public static final Move absorb = new Absorb("Absorb", GRASS, SPECIAL, 20, 100, 25);
 	public static final Move acid = new MoveDefault("Acid", POISON, SPECIAL, 40, 100, 30);
 	public static final Move acidArmor = new MoveDefault("Acid Armor", POISON, STATUS, 0, 0, 20);
 	public static final Move agility = new MoveDefault("Agility", PSYCHIC, STATUS, 0, 0, 30);
