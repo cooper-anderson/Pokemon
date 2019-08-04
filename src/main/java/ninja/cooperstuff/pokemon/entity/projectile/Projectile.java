@@ -32,6 +32,10 @@ public abstract class Projectile {
 		this.pokemonHit.add(this.owner.pokemon);
 	}
 
+	public void destroy() {
+		this.owner.projectilesDeleteQueue.add(this);
+	}
+
 	public void update() {
 		this.behavior();
 		this.position.add(Vector.mul(this.velocity, Math.min(((double) this.frame / 20), 1)));

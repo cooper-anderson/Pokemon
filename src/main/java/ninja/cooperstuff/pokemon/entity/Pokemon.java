@@ -10,6 +10,7 @@ import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.util.Stats;
+import ninja.cooperstuff.pokemon.util.Status;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
@@ -32,6 +33,8 @@ public class Pokemon extends Entity {
 	protected boolean noclip = false;
 	public Vector input = new Vector();
 	private int seed = this.hashCode() % 10000;
+
+	public Status status = Status.NONE;
 
 	private int healthAnimation = 0;
 	private int healthDelay = 0;
@@ -152,6 +155,30 @@ public class Pokemon extends Entity {
 		else if (stat == Stats.Stat.DEFENSE_SPECIAL) return this.modifyDefenseSpecial(modifier, sign, chance);
 		else if (stat == Stats.Stat.SPEED) return this.modifySpeed(modifier, sign, chance);
 		return 0;
+	}
+
+	public Pokemon setStatus(Status status) {
+		this.status = status;
+		return this;
+	}
+
+	public boolean canUseMove() {
+		Random r = new Random();
+		switch (this.status) {
+			case PARALYZED:
+				return r.nextDouble() < 0.25;
+			case FROZEN:
+				return false;
+			case FLINCH:
+				this.status = Status.NONE;
+				return false;
+			case CONFUSED:
+				if (r.nextDouble() < 0.5) return true;
+				this.damage(10);
+				return false;
+			default:
+				return true;
+		}
 	}
 
 	@Override

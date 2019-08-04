@@ -4,9 +4,11 @@ import ninja.cooperstuff.pokemon.entity.MoveInstance;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Stats;
+import ninja.cooperstuff.pokemon.util.Status;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 public abstract class Move {
 	public static HashSet<Move> moves = new HashSet<>();
@@ -14,6 +16,8 @@ public abstract class Move {
 
 	public HashMap<Stats.Stat, StatModification> modifiers = new HashMap<>();
 	public HashMap<Stats.Stat, StatModification> selfModifiers = new HashMap<>();
+	public HashMap<Status, Double> effects = new HashMap<>();
+	public HashMap<Status, Double> selfEffects = new HashMap<>();
 
 	public String name;
 	public Type type;
@@ -42,13 +46,18 @@ public abstract class Move {
 
 	public boolean use(Pokemon pokemon) {
 		// TODO check status modifiers, accuracy
-
-		for (Stats.Stat stat : this.selfModifiers.keySet()) {
-			StatModification data = this.selfModifiers.get(stat);
-			pokemon.modifyStat(stat, data.modifier, data.sign, data.chance);
+		if (pokemon.canUseMove()) {
+			for (Stats.Stat stat : this.selfModifiers.keySet()) {
+				StatModification data = this.selfModifiers.get(stat);
+				pokemon.modifyStat(stat, data.modifier, data.sign, data.chance);
+			}
+			for (Status status : this.selfEffects.keySet()) {
+				if (new Random().nextDouble() < this.selfEffects.get(status)) pokemon.setStatus(status);
+			}
+			this.behavior(pokemon);
+			return true;
 		}
-		this.behavior(pokemon);
-		return true;
+		return false;
 	}
 
 	public abstract MoveInstance behavior(Pokemon pokemon);
@@ -60,6 +69,16 @@ public abstract class Move {
 
 	public Move addSelfModifier(Stats.Stat stat, Stats.Modifier modifier, Stats.Sign sign, double chance) {
 		this.selfModifiers.put(stat, new StatModification(modifier, sign, chance));
+		return this;
+	}
+
+	public Move addEffect(Status status, double chance) {
+		this.effects.put(status, chance);
+		return this;
+	}
+
+	public Move addSelfEffect(Status status, double chance) {
+		this.selfEffects.put(status, chance);
 		return this;
 	}
 

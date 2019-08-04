@@ -3,6 +3,7 @@ package ninja.cooperstuff.pokemon.init;
 import ninja.cooperstuff.debug.Debug;
 import ninja.cooperstuff.pokemon.move.*;
 import ninja.cooperstuff.pokemon.util.Stats;
+import ninja.cooperstuff.pokemon.util.Status;
 
 import static ninja.cooperstuff.pokemon.init.Types.*;
 import static ninja.cooperstuff.pokemon.move.Move.AttackType.*;
@@ -18,11 +19,11 @@ public class Moves implements Init.Initializer {
 	public static final Move barrier = new MoveStatus("Barrier", PSYCHIC, STATUS, 0, 0, 20).addSelfModifier(Stats.Stat.DEFENSE_PHYSICAL, Stats.Modifier.SHARP, Stats.Sign.RAISE, 1.0);
 	public static final Move bide = new MoveDefault("Bide", NORMAL, PHYSICAL, 0, 0, 10); // TODO
 	public static final Move bind = new MoveDefault("Bind", NORMAL, PHYSICAL, 15, 85, 20); // TODO
-	public static final Move bite = new MoveDefault("Bite", DARK, PHYSICAL, 60, 100, 25);
-	public static final Move blizzard = new MoveDefault("Blizzard", ICE, SPECIAL, 110, 70, 5);
-	public static final Move bodySlam = new MoveDefault("Body Slam", NORMAL, PHYSICAL, 85, 100, 15);
-	public static final Move boneClub = new MoveDefault("Bone Club", GROUND, PHYSICAL, 65, 85, 20);
-	public static final Move bonemerang = new MoveDefault("Bonemerang", GROUND, PHYSICAL, 50, 90, 10);
+	public static final Move bite = new MoveDefault("Bite", DARK, PHYSICAL, 60, 100, 25).addEffect(Status.FLINCH, 0.3);
+	public static final Move blizzard = new MoveDefault("Blizzard", ICE, SPECIAL, 110, 70, 5).addEffect(Status.FROZEN, 0.1);
+	public static final Move bodySlam = new MoveDefault("Body Slam", NORMAL, PHYSICAL, 85, 100, 15).addEffect(Status.PARALYZED, 0.3);
+	public static final Move boneClub = new MoveDefault("Bone Club", GROUND, PHYSICAL, 65, 85, 20).addEffect(Status.FLINCH, 0.1);
+	public static final Move bonemerang = new Bonemerang("Bonemerang", GROUND, PHYSICAL, 50, 90, 10);
 	public static final Move bubble = new MoveDefault("Bubble", WATER, SPECIAL, 40, 100, 30);
 	public static final Move bubbleBeam = new MoveDefault("Bubble Beam", WATER, SPECIAL, 65, 100, 20);
 	public static final Move clamp = new MoveDefault("Clamp", WATER, PHYSICAL, 35, 85, 10);
