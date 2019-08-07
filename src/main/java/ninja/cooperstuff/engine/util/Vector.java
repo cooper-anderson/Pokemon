@@ -97,16 +97,16 @@ public class Vector {
 		return new Vector(left.x - right.x, left.y - right.y);
 	}
 
-	public static Vector mul(Vector left, Double scalar) {
+	public static Vector mul(Vector left, double scalar) {
 		return new Vector(left.x * scalar, left.y * scalar);
 	}
 
-	public static Vector div(Vector left, Double scalar) {
+	public static Vector div(Vector left, double scalar) {
 		if (scalar == 0) return new Vector();
 		return new Vector(left.x / scalar, left.y / scalar);
 	}
 
-	public static Double dot(Vector left, Vector right) {
+	public static double dot(Vector left, Vector right) {
 		return left.x * right.x + left.y * right.y;
 	}
 

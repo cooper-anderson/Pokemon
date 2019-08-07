@@ -14,13 +14,13 @@ public class MoveAreaOfEffect extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new GrowlInstance(pokemon, this));
+		return pokemon.game.instantiate(new MoveAreaOfEffectInstance(pokemon, this));
 	}
 
-	public class GrowlInstance extends MoveInstance {
-		public GrowlInstance(Pokemon pokemon, Move move) {
+	public class MoveAreaOfEffectInstance extends MoveInstance {
+		public MoveAreaOfEffectInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, false, true);
-			this.spawnProjectile(new GrowlProjectile(this, this.move));
+			this.spawnProjectile(new MoveAreaOfEffectProjectile(this, this.move));
 		}
 
 		@Override
@@ -29,10 +29,10 @@ public class MoveAreaOfEffect extends Move {
 		}
 	}
 
-	public class GrowlProjectile extends AreaOfEffect {
+	public class MoveAreaOfEffectProjectile extends AreaOfEffect {
 		int opacity = 255;
 
-		public GrowlProjectile(MoveInstance owner, Move move) {
+		public MoveAreaOfEffectProjectile(MoveInstance owner, Move move) {
 			super(owner, move);
 			this.position = this.owner.transform.position;
 		}

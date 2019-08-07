@@ -129,6 +129,19 @@ public class PokemonGame extends Game {
 		this.moves.add(Moves.megaKick);
 		this.moves.add(Moves.megaPunch);
 		this.moves.add(Moves.metronome);
+		this.moves.add(Moves.nightShade);
+		this.moves.add(Moves.payDay);
+		this.moves.add(Moves.peck);
+		this.moves.add(Moves.petalDance);
+		this.moves.add(Moves.pinMissile);
+		this.moves.add(Moves.poisonGas);
+		this.moves.add(Moves.poisonPowder);
+		this.moves.add(Moves.poisonSting);
+		this.moves.add(Moves.pound);
+		this.moves.add(Moves.psybeam);
+		this.moves.add(Moves.psychic);
+		this.moves.add(Moves.psywave);
+		this.moves.add(Moves.quickAttack);
 		//this.moves.add(Moves.vineWhip);
 
 		this.player = this.instantiate(new Player(this.world, Monsters.charmander));

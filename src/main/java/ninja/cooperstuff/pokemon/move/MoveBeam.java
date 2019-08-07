@@ -11,8 +11,8 @@ import ninja.cooperstuff.pokemon.util.Constants;
 import java.awt.*;
 import java.util.Random;
 
-public class IceBeam extends Move {
-	public IceBeam(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
+public class MoveBeam extends Move {
+	public MoveBeam(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		super(name, type, attackType, power, accuracy, points);
 	}
 

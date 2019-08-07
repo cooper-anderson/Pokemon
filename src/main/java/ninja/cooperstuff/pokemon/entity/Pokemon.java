@@ -23,6 +23,7 @@ public class Pokemon extends Entity {
 	protected Stats valuesIndividual = new Stats();
 	protected Stats stats;
 	protected Stats statModifiers = new Stats();
+	protected int level = 1;
 	protected boolean shiny;
 	protected boolean useAI = false;
 	private boolean isPlayer = false;
@@ -77,6 +78,15 @@ public class Pokemon extends Entity {
 
 	public Pokemon isPlayer(boolean isPlayer) {
 		this.isPlayer = isPlayer;
+		return this;
+	}
+
+	public int getLevel() {
+		return this.level;
+	}
+
+	public Pokemon setLevel(int level) {
+		this.level = level;
 		return this;
 	}
 
