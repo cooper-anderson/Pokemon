@@ -90,6 +90,10 @@ public class Pokemon extends Entity {
 		return velocity;
 	}
 
+	public int getHealth() {
+		return this.stats.health;
+	}
+
 	public int damage(int amount) {
 		int health = this.stats.health;
 		this.stats.health = Math.max(0, this.stats.health - amount);
@@ -155,6 +159,39 @@ public class Pokemon extends Entity {
 		else if (stat == Stats.Stat.DEFENSE_SPECIAL) return this.modifyDefenseSpecial(modifier, sign, chance);
 		else if (stat == Stats.Stat.SPEED) return this.modifySpeed(modifier, sign, chance);
 		return 0;
+	}
+
+	public void resetStats() {
+		int attackPhysical = (int) -Math.signum(this.statModifiers.attackPhysical);
+		int attackSpecial = (int) -Math.signum(this.statModifiers.attackSpecial);
+		int defensePhysical = (int) -Math.signum(this.statModifiers.defensePhysical);
+		int defenseSpecial = (int) -Math.signum(this.statModifiers.defenseSpecial);
+		int speed = (int) -Math.signum(this.statModifiers.speed);
+		if (attackPhysical != 0) {
+			this.statModifiers.attackPhysical = 0;
+			this.stats.attackPhysical = this.monster.baseStats.attackPhysical;
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, attackPhysical, this.shadow.scale)).transform.position = this.transform.position;
+		}
+		if (attackSpecial != 0) {
+			this.statModifiers.attackSpecial = 0;
+			this.stats.attackSpecial = this.monster.baseStats.attackSpecial;
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, attackSpecial, this.shadow.scale)).transform.position = this.transform.position;
+		}
+		if (defensePhysical != 0) {
+			this.statModifiers.defensePhysical = 0;
+			this.stats.defensePhysical = this.monster.baseStats.defensePhysical;
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.DEFENSE, defensePhysical, this.shadow.scale)).transform.position = this.transform.position;
+		}
+		if (defenseSpecial != 0) {
+			this.statModifiers.defenseSpecial = 0;
+			this.stats.defenseSpecial = this.monster.baseStats.defenseSpecial;
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.DEFENSE, defenseSpecial, this.shadow.scale)).transform.position = this.transform.position;
+		}
+		if (speed != 0) {
+			this.statModifiers.speed = 0;
+			this.stats.speed = this.monster.baseStats.speed;
+			this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.SPEED, speed, this.shadow.scale)).transform.position = this.transform.position;
+		}
 	}
 
 	public Pokemon setStatus(Status status) {

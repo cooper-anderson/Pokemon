@@ -42,6 +42,12 @@ public abstract class Projectile {
 		this.frame++;
 	}
 
+	public boolean checkCollision(Pokemon pokemon) {
+		Vector col1 = Vector.add(pokemon.transform.position, pokemon.monster.collisionCorner1);
+		Vector col2 = Vector.add(pokemon.transform.position, pokemon.monster.collisionCorner2);
+		return this.position.x > col1.x && this.position.x < col2.x && this.position.y > col1.y && this.position.y < col2.y;
+	}
+
 	public void render(Graphics2D screen) {
 		int particleCount = 3;
 		if (this.shadow.scale != 0) this.shadow.render(screen);

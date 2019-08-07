@@ -44,7 +44,7 @@ public abstract class MoveInstance extends Entity {
 		this(pokemon, move, false, false, true);
 	}
 
-	public Projectile spawnProjectile(Projectile projectile) {
+	public <T extends Projectile> T spawnProjectile(T projectile) {
 		this.projectiles.add(projectile);
 		return projectile;
 	}
@@ -57,9 +57,7 @@ public abstract class MoveInstance extends Entity {
 			projectile.update();
 			for (Pokemon pokemon : this.world.pokemon) {
 				if ((this.multihit || !this.pokemonHit.contains(pokemon)) && !projectile.pokemonHit.contains(pokemon)) {
-					Vector col1 = Vector.add(pokemon.transform.position, pokemon.monster.collisionCorner1);
-					Vector col2 = Vector.add(pokemon.transform.position, pokemon.monster.collisionCorner2);
-					if (projectile.position.x > col1.x && projectile.position.x < col2.x && projectile.position.y > col1.y && projectile.position.y < col2.y) {
+					if (projectile.checkCollision(pokemon)) {
 						projectile.pokemonHit.add(pokemon);
 						this.pokemonHit.add(pokemon);
 						this.onCollision(pokemon, projectile);

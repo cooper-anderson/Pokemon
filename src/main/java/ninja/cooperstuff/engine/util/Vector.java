@@ -59,6 +59,10 @@ public class Vector {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	public double angle() {
+		return Math.atan2(this.y, this.x);
+	}
+
 	public IntVector getIntVector() {
 		return new IntVector(this.x, this.y);
 	}
@@ -104,6 +108,22 @@ public class Vector {
 
 	public static Double dot(Vector left, Vector right) {
 		return left.x * right.x + left.y * right.y;
+	}
+
+	public static double distanceSquared(Vector a, Vector b) {
+		return Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2);
+	}
+
+	public static double distance(Vector a, Vector b) {
+		return Math.sqrt(Vector.distanceSquared(a, b));
+	}
+
+	public static Vector fromAngle(double angle, double scale) {
+		return new Vector(Math.cos(angle), Math.sin(angle)).mul(scale);
+	}
+
+	public static Vector fromAngle(double angle) {
+		return Vector.fromAngle(angle, 1.0);
 	}
 
 	public static Vector fromDirection(Direction direction) {
