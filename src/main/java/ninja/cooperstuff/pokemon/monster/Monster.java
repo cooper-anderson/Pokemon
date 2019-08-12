@@ -1,7 +1,10 @@
 package ninja.cooperstuff.pokemon.monster;
 
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.sound.Sound;
+import ninja.cooperstuff.pokemon.sound.SoundClip;
 import ninja.cooperstuff.pokemon.type.Type;
+import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.util.Stats;
 
@@ -26,6 +29,8 @@ public class Monster {
 	public Stats baseStats;
 	private BufferedImage sprite;
 	private BufferedImage spriteShiny;
+	//public OggClip cry;
+	private Sound cry;
 	public SpriteLayout spriteLayout;
 	public SpriteLayout spriteLayoutShiny;
 	public HashMap<Direction, Vector> spriteOffset = new HashMap<>();
@@ -44,6 +49,11 @@ public class Monster {
 		try {
 			this.sprite = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/sprites/%s.png", this.name.toLowerCase())));
 			this.spriteShiny = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/shiny/%s.png", this.name.toLowerCase())));
+			//this.cry = TinySound.loadSound(this.getClass().getResource(String.format("/pokemon/cries/%s.ogg", this.name.toLowerCase())));
+			//this.cry = new OggClip(this.getClass().getResourceAsStream(String.format("/pokemon/cries/%s.ogg", this.name.toLowerCase())));
+			//this.cry = new OggClip(this.getClass().getResourceAsStream("/pokemon/sounds/faint_no_hp.ogg"));
+			this.cry = new Sound(String.format("/pokemon/cries/%s", this.name.toLowerCase()), Constants.audio.cryVolume);
+			//this.cry.setGain(Constants.volume);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -116,6 +126,10 @@ public class Monster {
 	public BufferedImage getSprite(Direction dir, int frame, boolean shiny) {
 		if (shiny) return this.spriteLayoutShiny.get(dir, frame);
 		return this.spriteLayout.get(dir, frame);
+	}
+
+	public SoundClip startCry() {
+		return this.cry.play();
 	}
 
 	public static class SpriteLayout {

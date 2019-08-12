@@ -28,7 +28,7 @@ public class Tiles implements Init.Initializer {
 	public static final Tile woodsGrassTall = new Tile("WoodsGrassTall", "woods/grass_tall.png", true);
 	public static final Tile bogGrass = new Tile("BogGrass", "bog/grass.png", true);
 	public static final Tile bogGrassTall = new Tile("BogGrassTall", "bog/grass_tall.png", true);
-	public static final ConnectedTile bogPuddle = new ConnectedTile("BogPuddle", "Bog/Puddle.png", true, true);
+	public static final ConnectedTile bogPuddle = new ConnectedTile("BogPuddle", "bog/puddle.png", true, true);
 	public static final Tile bogStump = new Tile("BogStump", "bog/stump.png", true);
 	public static final Tile bogLily1 = new Tile("bogLily1", "bog/lily1.png", true);
 	public static final Tile bogLily2 = new Tile("bogLily2", "bog/lily2.png", true);

@@ -6,7 +6,10 @@ import ninja.cooperstuff.engine.util.Noise;
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.entity.particle.Smoke;
 import ninja.cooperstuff.pokemon.entity.particle.StatModifier;
+import ninja.cooperstuff.pokemon.init.Sounds;
 import ninja.cooperstuff.pokemon.monster.Monster;
+import ninja.cooperstuff.pokemon.sound.Sound;
+import ninja.cooperstuff.pokemon.sound.SoundClip;
 import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.util.Direction;
 import ninja.cooperstuff.pokemon.util.Stats;
@@ -39,6 +42,7 @@ public class Pokemon extends Entity {
 
 	private int healthAnimation = 0;
 	private int healthDelay = 0;
+	private SoundClip cryClip;
 
 	public Pokemon(World world, Monster monster) {
 		super(world);
@@ -52,6 +56,7 @@ public class Pokemon extends Entity {
 		this.stats = monster.baseStats.clone();
 		this.healthAnimation = this.stats.health;
 		this.shadow.scale = this.monster.getShadowSize();
+		if (this.isPlayer) this.cryClip = this.cry();
 	}
 
 	public boolean isShiny() {
@@ -79,6 +84,10 @@ public class Pokemon extends Entity {
 	public Pokemon isPlayer(boolean isPlayer) {
 		this.isPlayer = isPlayer;
 		return this;
+	}
+
+	public SoundClip cry() {
+		return this.monster.startCry();
 	}
 
 	public int getLevel() {
@@ -230,6 +239,21 @@ public class Pokemon extends Entity {
 
 	@Override
 	public void update() {
+		if (this.cryClip != null) {
+			if (this.stats.health == 0) {
+				if (this.cryClip.stopped()) {
+					Sound.playSound(Sounds.faint);
+					this.createDeathParticles();
+					this.destroy();
+				}
+				return;
+			} else {
+				if (this.cryClip.stopped()) {
+					if (this.shiny) Sound.playSound(Sounds.shiny, 30);
+					this.cryClip = null;
+				}
+			}
+		}
 		this.lastPos = this.transform.position.clone();
 		if ((!this.moving && this.frame % (2 * this.monster.getAnimationSpeed()) == 0) || (this.moving && this.frame % this.monster.getAnimationSpeed() == 0)) this.walkCycle = 1 - walkCycle;
 		this.moving = false;
@@ -295,10 +319,7 @@ public class Pokemon extends Entity {
 		this.healthAnimation += Constants.healthBar.ANIMATION_STEP * Math.signum(this.stats.health - this.healthAnimation);
 		this.healthDelay = Math.max(0, this.healthDelay - 1);
 
-		if (this.stats.health == 0 && this.healthAnimation == 0) {
-			this.createDeathParticles();
-			this.destroy();
-		}
+		if (this.stats.health == 0 && this.healthAnimation == 0) this.cryClip = this.cry();
 	}
 
 	public void createDeathParticles() {

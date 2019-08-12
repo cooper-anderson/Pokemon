@@ -34,6 +34,11 @@ public abstract class Constants {
 		public static final int height = 32;
 	}
 
+	public static abstract class audio {
+		public static final float masterVolume = 0.8f;
+		public static final float cryVolume = 0.8f;
+	}
+
 	public static final double projectileVelocity = 5.0;
 	public static final int shadowOpacity = 128;
 	public static final Color shadowColor = new Color(0, 0, 0, shadowOpacity);
