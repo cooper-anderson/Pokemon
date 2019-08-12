@@ -8,7 +8,6 @@ import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Moves;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Constants;
-import ninja.cooperstuff.pokemon.util.Stats;
 import ninja.cooperstuff.pokemon.world.World;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 
@@ -52,7 +51,5 @@ public class Player extends Pokemon {
 		if (KeyListener.isKeyDown(Keys.SPACE)) this.world.tempMove.use(this);
 		if (KeyListener.isKeyDown(Keys.J)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, 1, this.shadow.scale)).transform.position = this.transform.position;
 		if (KeyListener.isKeyDown(Keys.K)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, -1, this.shadow.scale)).transform.position = this.transform.position;
-		if (KeyListener.isKeyDown(Keys.L))
-			this.modifyDefensePhysical(Stats.Modifier.SHARP, Stats.Sign.FALL, 1.0);
 	}
 }

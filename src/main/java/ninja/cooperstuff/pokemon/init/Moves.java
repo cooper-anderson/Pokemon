@@ -61,9 +61,9 @@ public class Moves implements Init.Initializer {
 	public static final Move furyAttack = new MoveDefault("Fury Attack", NORMAL, PHYSICAL, 15, 85, 20).setProjectileCount(2, 5);
 	public static final Move furySwipes = new MoveDefault("Fury Swipes", NORMAL, PHYSICAL, 18, 80, 15).setProjectileCount(2, 5);
 	public static final Move glare = new MoveDefault("Glare", NORMAL, STATUS, 0, 100, 30).addEffect(Status.PARALYZED, 1.0);
-	public static final Move growl = new MoveAreaOfEffect("MoveAreaOfEffect", NORMAL, STATUS, 0, 100, 40).addModifier(Stats.Stat.ATTACK_PHYSICAL, Stats.Modifier.NORMAL, Stats.Sign.FALL, 1.0);
+	public static final Move growl = new MoveAreaOfEffect("Growl", NORMAL, STATUS, 0, 100, 40).addModifier(Stats.Stat.ATTACK_PHYSICAL, Stats.Modifier.NORMAL, Stats.Sign.FALL, 1.0);
 	public static final Move growth = new MoveStatus("Growth", NORMAL, STATUS, 0, 0, 40).addSelfModifier(Stats.Stat.ATTACK_PHYSICAL, Stats.Modifier.NORMAL, Stats.Sign.RAISE, 1.0).addSelfModifier(Stats.Stat.ATTACK_SPECIAL, Stats.Modifier.NORMAL, Stats.Sign.RAISE, 1.0);
-	public static final Move guillotine = new MoveOneHitKO("MoveOneHitKO", NORMAL, PHYSICAL, 0, 0, 5);
+	public static final Move guillotine = new MoveOneHitKO("Guillotine", NORMAL, PHYSICAL, 0, 0, 5);
 	public static final Move gust = new MoveDefault("Gust", FLYING, SPECIAL, 40, 100, 35); // Todo Move<Gust> Functionality
 	public static final Move harden = new MoveStatus("Harden", NORMAL, STATUS, 0, 0, 30).addSelfModifier(Stats.Stat.DEFENSE_PHYSICAL, Stats.Modifier.NORMAL, Stats.Sign.RAISE, 1.0);
 	public static final Move haze = new Haze("Haze", ICE, STATUS, 0, 0, 30);

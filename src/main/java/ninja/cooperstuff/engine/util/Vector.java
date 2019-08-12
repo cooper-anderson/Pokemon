@@ -136,15 +136,6 @@ public class Vector {
 	}
 
 	public static Vector bezier(Vector v0, Vector v1, Vector v2, double t) {
-		/*return Vector.add(
-				Vector.add(
-						Vector.mul(v0, Math.pow(1 - t, 3)),
-						Vector.mul(v1, t * 3 * Math.pow(1 - t, 2))
-				), Vector.add(
-						Vector.mul(v2, t * 3 * Math.pow(1 - t, 2)),
-						Vector.mul(v3, Math.pow(t, 3))
-				)
-			);*/
 		return Vector.add(
 				Vector.mul(v0, Math.pow(1 - t, 2)),
 				Vector.add(

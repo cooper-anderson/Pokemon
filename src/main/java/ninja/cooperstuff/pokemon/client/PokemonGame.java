@@ -5,9 +5,10 @@ import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.events.KeyListener;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Keys;
+import ninja.cooperstuff.engine.util.RandomGet;
 import ninja.cooperstuff.pokemon.entity.Player;
-import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Moves;
+import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.world.World;
 
@@ -34,8 +35,9 @@ public class PokemonGame extends Game {
 
 	@Override
 	public void update() {
-		if (KeyListener.isKeyDown(Keys.BRACKET_RIGHT)) this.moveIndex = (this.moveIndex + this.moves.size() + 1) % this.moves.size();
-		if (KeyListener.isKeyDown(Keys.BRACKET_LEFT)) this.moveIndex = (this.moveIndex + this.moves.size() - 1) % this.moves.size();
+		if (KeyListener.isKeyTyped(Keys.BRACKET_RIGHT)) this.moveIndex = (this.moveIndex + this.moves.size() + 1) % this.moves.size();
+		if (KeyListener.isKeyTyped(Keys.BRACKET_LEFT)) this.moveIndex = (this.moveIndex + this.moves.size() - 1) % this.moves.size();
+		if (KeyListener.isKeyTyped(Keys.R)) this.player.setMonster(RandomGet.get(Monster.monsters));
 		this.world.tempMove = this.moves.get(this.moveIndex);
 		this.world.showDetails = this.showDetails;
 		IntVector pos = this.player.transform.position.getTile();
@@ -144,7 +146,7 @@ public class PokemonGame extends Game {
 		this.moves.add(Moves.quickAttack);
 		//this.moves.add(Moves.vineWhip);
 
-		this.player = this.instantiate(new Player(this.world, Monsters.charmander));
+		this.player = this.instantiate(new Player(this.world, RandomGet.get(Monster.monsters)));
 
 		while (this.running) {
 			this.update();
