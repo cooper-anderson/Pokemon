@@ -1,17 +1,24 @@
 package ninja.cooperstuff.pokemon.world;
 
-import ninja.cooperstuff.engine.Game;
 import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.client.PokemonGame;
+import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.init.Tiles;
+import ninja.cooperstuff.pokemon.monster.Monster;
+import ninja.cooperstuff.pokemon.move.Move;
+import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 public class World {
-	Game game;
+	PokemonGame game;
 	double multiplier = 1.0;
 	double multiplierElevation = 6.12;
 	double multiplierMoisture = 5.05;
@@ -21,16 +28,30 @@ public class World {
 	double offsetElevation = -0.58;
 	double offsetMoisture = 0.23;
 
-	private IntVector generateSize = new IntVector(16, 12);
-	private IntVector detailSize = new IntVector(15, 11);
+	private IntVector generateSize = new IntVector(17, 13);
+	private IntVector detailSize = new IntVector(16, 12);
 	private IntVector lastGenerateLocation;
 
+	public HashSet<Pokemon> pokemon = new HashSet<>();
+	public IntVector entityMaxDist = this.detailSize.clone().mul(3);
+	public int entityCap = 32;
+	public double entitySpawnRate = 0.1;
+
 	public boolean showDetails;
+	public Move tempMove;
 
 	private HashMap<IntVector, TileData> data;
 
-	public World(Game game) {
+	public World(PokemonGame game) {
 		this.game = game;
+	}
+
+	public IntVector getGenerateSize() {
+		return this.generateSize;
+	}
+
+	public IntVector getDetailSize() {
+		return this.detailSize;
 	}
 
 	private double getElevation(double x, double y) {
@@ -50,7 +71,7 @@ public class World {
 
 	@NonNull
 	private Biome getBiome(double elevation, double moisture) {
-		//return Biome.bog;
+//		return Biome.woods;
 		if (moisture < 1) {
 			if (elevation < 1) return Biome.bog;
 			if (elevation < 2) return Biome.cave;
@@ -105,13 +126,14 @@ public class World {
 	}
 
 	public void generate(int x, int y) {
+		Tile road = Tiles.ground1;
 		if (this.lastGenerateLocation == null || Math.abs(x - this.lastGenerateLocation.x) > 2 * this.generateSize.x || Math.abs(y - this.lastGenerateLocation.y) > 2 * this.generateSize.y) {
 			this.data = new HashMap<>();
 			for (int j = -this.generateSize.y; j <= this.generateSize.y; j++) {
 				for (int i = -this.generateSize.x; i <= this.generateSize.x; i++) {
 					IntVector pos = new IntVector(x + i, y + j);
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
@@ -142,7 +164,7 @@ public class World {
 					IntVector pos = new IntVector(x + sign * (i + this.generateSize.x), y + j);
 					this.data.remove(new IntVector(this.lastGenerateLocation.x + sign * (i - this.generateSize.x), y + j));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
@@ -162,7 +184,7 @@ public class World {
 					IntVector pos = new IntVector(x + i, y + sign * (j + this.generateSize.y));
 					this.data.remove(new IntVector(x + i, this.lastGenerateLocation.y + sign * (j - this.generateSize.y)));
 					Biome biome = this.getBiome(pos.x, pos.y);
-					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, Tiles.ground1, null));
+					if (this.getHeight(pos.x, pos.y) < 0.15) this.data.put(pos, new TileData(this, biome, 0, road, null));
 					else this.data.put(pos, new TileData(this, biome, biome.getHeight(this, pos.x, pos.y), pos.x, pos.y));
 				}
 			}
@@ -175,6 +197,43 @@ public class World {
 			}
 			this.lastGenerateLocation.y = y;
 		}
+	}
+
+	public Pokemon spawnPokemon(Monster monster) {
+		return this.spawnPokemon(monster, this.game.camera.position);
+	}
+
+	public Pokemon spawnPokemon(Monster monster, Vector position) {
+		if (monster == null) return null;
+		if (this.pokemon.size() >= this.entityCap) return null;
+		Pokemon pokemon = this.game.instantiate(new Pokemon(this, monster)).useAI(true);
+		pokemon.transform.position = position.clone();
+		this.pokemon.add(pokemon);
+		return pokemon;
+	}
+
+	public Pokemon trySpawnPokemon(int x, int y) {
+		Random r = new Random();
+		if (r.nextDouble() < this.entitySpawnRate) {
+			IntVector tile = null;
+			IntVector velocity = new IntVector(Math.signum(this.game.player.getVelocity().x), Math.signum(this.game.player.getVelocity().y));
+			for (int i = 0; i < 5; i++) {
+				IntVector flip = new IntVector(0, 0);
+				if (velocity.x == 0) flip.x = r.nextDouble() < 0.5 ? 1 : -1;
+				else flip.x = velocity.x;
+				if (velocity.y == 0) flip.y = r.nextDouble() < 0.5 ? 1 : -1;
+				else flip.y = velocity.y;
+				//velocity.equals(IntVector.zero) ? new IntVector(r.nextDouble() < 0.5 ? 1 : -1, r.nextDouble() < 0.5 ? 1 : -1) : velocity;
+				double offset = r.nextDouble();
+				if (r.nextDouble() < 0.5) tile = new IntVector(x + flip.x * this.detailSize.x, y + flip.y * this.detailSize.y * offset);
+				else tile = new IntVector(x + flip.x * this.detailSize.x * offset, y + flip.y * this.detailSize.y);
+				if (this.getTileData(tile.x, tile.y).getWalkable()) break;
+				tile = null;
+			}
+			if (tile == null) return null;
+			return this.spawnPokemon(this.getBiome(tile.x, tile.y).getPokemon(), new Vector(tile.x * 32, tile.y * 32));
+		}
+		return null;
 	}
 
 	public void render(Graphics2D screen) {

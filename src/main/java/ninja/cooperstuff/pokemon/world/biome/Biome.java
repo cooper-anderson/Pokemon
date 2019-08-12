@@ -1,5 +1,6 @@
 package ninja.cooperstuff.pokemon.world.biome;
 
+import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.World;
 
@@ -16,4 +17,6 @@ public interface Biome {
 	Tile getTile(World world, int height, int x, int y);
 
 	Tile getDetail(World world, int height, int x, int y);
+
+	Monster getPokemon();
 }

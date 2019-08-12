@@ -44,4 +44,13 @@ public enum Direction {
 				return DOWN;
 		}
 	}
+
+	public double getAngle() {
+		switch (this) {
+			case UP: return -Math.PI / 2;
+			case DOWN: return Math.PI / 2;
+			case LEFT: return Math.PI;
+			default: return 0;
+		}
+	}
 }

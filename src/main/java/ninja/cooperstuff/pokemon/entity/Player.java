@@ -1,19 +1,20 @@
 package ninja.cooperstuff.pokemon.entity;
 
 import ninja.cooperstuff.engine.events.KeyListener;
-import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.entity.particle.StatModifier;
+import ninja.cooperstuff.pokemon.init.Monsters;
+import ninja.cooperstuff.pokemon.init.Moves;
 import ninja.cooperstuff.pokemon.monster.Monster;
-import ninja.cooperstuff.pokemon.util.Direction;
-import ninja.cooperstuff.pokemon.world.TileData;
+import ninja.cooperstuff.pokemon.util.Constants;
 import ninja.cooperstuff.pokemon.world.World;
-
-import java.awt.*;
+import ninja.cooperstuff.pokemon.world.biome.Biome;
 
 public class Player extends Pokemon {
 	public Player(World world, Monster monster) {
 		super(world, monster);
+		this.isPlayer(true);
 	}
 
 	@Override
@@ -23,143 +24,32 @@ public class Player extends Pokemon {
 		double superSpeed = KeyListener.isKeyHeld(Keys.SHIFT) ? 5 : 1;
 		double speed = superSpeed * multiplier * ((KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.W) && KeyListener.isKeyHeld(Keys.D)) ||
 				(KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.A)) || (KeyListener.isKeyHeld(Keys.S) && KeyListener.isKeyHeld(Keys.D)) ? .707 : 1);
-		boolean noclip = KeyListener.isKeyHeld(Keys.CTRL);
-		Vector velocity = new Vector();
-		if (KeyListener.isKeyHeld(Keys.W)) velocity.y = -speed;
-		else if (KeyListener.isKeyHeld(Keys.S)) velocity.y = +speed;
-		if (KeyListener.isKeyHeld(Keys.A)) velocity.x = -speed;
-		else if (KeyListener.isKeyHeld(Keys.D)) velocity.x = +speed;
+		this.noclip = KeyListener.isKeyHeld(Keys.CTRL);
+		if (KeyListener.isKeyHeld(Keys.W)) this.input.y = -speed;
+		else if (KeyListener.isKeyHeld(Keys.S)) this.input.y = +speed;
+		else this.input.y = 0;
+		if (KeyListener.isKeyHeld(Keys.A)) this.input.x = -speed;
+		else if (KeyListener.isKeyHeld(Keys.D)) this.input.x = +speed;
+		else this.input.x = 0;
 
-		Vector pos = this.transform.position;
-		IntVector tile = pos.getTile();
-		Vector newPos = new Vector(this.transform.position.x + velocity.x, this.transform.position.y + velocity.y);
-		IntVector newTile = newPos.getTile();
-		TileData tileData = this.world.getTileData(newTile.x, newTile.y);
-		TileData tileX = this.world.getTileData(newTile.x, tile.y);
-		TileData tileY = this.world.getTileData(tile.x, newTile.y);
-
-		boolean x1 = newPos.x < newTile.x * 32 + 2 * tileData.getCollisionCorner1().x,
-				x2 = newPos.x > newTile.x * 32 + 2 * tileData.getCollisionCorner2().x,
-				y1 = newPos.y < newTile.y * 32 + 2 * tileData.getCollisionCorner1().y,
-				y2 = newPos.y > newTile.y * 32 + 2 * tileData.getCollisionCorner2().y,
-				xx1 = newPos.x < newTile.x * 32 + 2 * tileX.getCollisionCorner1().x,
-				xx2 = newPos.x > newTile.x * 32 + 2 * tileX.getCollisionCorner2().x,
-				xy1 = pos.y <= tile.y * 32 + 2 * tileX.getCollisionCorner1().y,
-				xy2 = pos.y > tile.y * 32 + 2 * tileX.getCollisionCorner2().y,
-				yx1 = pos.x < tile.x * 32 + 2 * tileY.getCollisionCorner1().x,
-				yx2 = pos.x > tile.x * 32 + 2 * tileY.getCollisionCorner2().x,
-				yy1 = newPos.y < newTile.y * 32 + 2 * tileY.getCollisionCorner1().y,
-				yy2 = newPos.y > newTile.y * 32 + 2 * tileY.getCollisionCorner2().y;
-
-		Vector finalVelocity = new Vector();
-		if (noclip || tileData.getWalkable() || x1 || x2 || y1 || y2) {
-			finalVelocity.x = velocity.x;
-			finalVelocity.y = velocity.y;
-		} else {
-			if (tileX.getWalkable() || xx1 || xx2 || xy1 || xy2) finalVelocity.x = velocity.x;
-			if (tileY.getWalkable() || yx1 || yx2 || yy1 || yy2) finalVelocity.y = velocity.y;
-		}
-
-		if (finalVelocity.y != 0) {
-			this.facing = finalVelocity.y < 0 ? Direction.UP : Direction.DOWN;
-			this.transform.position.y += finalVelocity.y;
-			this.moving = true;
-		}
-		if (finalVelocity.x != 0) {
-			this.facing = finalVelocity.x < 0 ? Direction.LEFT : Direction.RIGHT;
-			this.transform.position.x += finalVelocity.x;
-			this.moving = true;
-		}
+		if (KeyListener.isKeyDown(Keys.C)) this.world.spawnPokemon(Biome.cave.getPokemon());
 
 		if (KeyListener.isKeyTyped(45)) this.transform.scale.div(1.1);
-		if (KeyListener.isKeyTyped(61))this.transform.scale.mul(1.1);
-		if (KeyListener.isKeyTyped(Keys.X)) this.shiny = !this.shiny;
+		if (KeyListener.isKeyTyped(61)) this.transform.scale.mul(1.1);
+		if (KeyListener.isKeyUp(Keys.E)) {
+			this.setMonster(Monsters.charmander);
+			Moves.ember.use(this);
+		}
+		if (KeyListener.isKeyUp(Keys.Q)) {
+			this.setMonster(Monsters.venusaur);
+			Moves.vineWhip.use(this);
+		}
 
-		//this.game.camera.follow(this, Vector.zero);
 		this.game.camera.follow(this, new Vector(10, 10));
 		this.game.camera.lagFollow(this.transform.position);
 
-		/*if (collisionMode) {
-			if (KeyListener.isKeyTyped(Keys.O)) {
-				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(1, 0)));
-				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(-1, 0)));
-			} else if (KeyListener.isKeyTyped(Keys.U)) {
-				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(-1, 0)));
-				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(1, 0)));
-			}
-			if (KeyListener.isKeyHeld(Keys.SHIFT)) {
-				this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(x, y)));
-				this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(x, y)));
-			} else if (KeyListener.isKeyHeld(Keys.CTRL)) this.monster.setCollisionCorner2(Vector.add(this.monster.getCollisionCorner2(), new Vector(x, y)));
-			else this.monster.setCollisionCorner1(Vector.add(this.monster.getCollisionCorner1(), new Vector(x, y)));
-		} else {
-			if (KeyListener.isKeyTyped(Keys.O)) this.monster.setShadowSize(this.monster.getShadowSize() + .1);
-			if (KeyListener.isKeyTyped(Keys.U)) this.monster.setShadowSize(this.monster.getShadowSize() - .1);
-			if (KeyListener.isKeyHeld(Keys.SHIFT)) {
-				if (KeyListener.isKeyTyped(Keys.P)) {
-					this.monster.setSpriteOffset(Direction.UP, new Vector());
-					this.monster.setSpriteOffset(Direction.DOWN, new Vector());
-					this.monster.setSpriteOffset(Direction.LEFT, new Vector());
-					this.monster.setSpriteOffset(Direction.RIGHT, new Vector());
-					this.monster.setBobHeight(Direction.UP, 0);
-					this.monster.setBobHeight(Direction.DOWN, 0);
-					this.monster.setBobHeight(Direction.LEFT, 0);
-					this.monster.setBobHeight(Direction.RIGHT, 0);
-				}
-				this.monster.setSpriteOffset(Direction.UP, Vector.add(this.monster.getSpriteOffset(Direction.UP), new Vector(x, y)));
-				this.monster.setSpriteOffset(Direction.DOWN, Vector.add(this.monster.getSpriteOffset(Direction.DOWN), new Vector(x, y)));
-				this.monster.setSpriteOffset(Direction.LEFT, Vector.add(this.monster.getSpriteOffset(Direction.LEFT), new Vector(x, y)));
-				this.monster.setSpriteOffset(Direction.RIGHT, Vector.add(this.monster.getSpriteOffset(Direction.RIGHT), new Vector(x, y)));
-				this.monster.setBobHeight(Direction.UP, this.monster.getBobHeight(Direction.UP) + h);
-				this.monster.setBobHeight(Direction.DOWN, this.monster.getBobHeight(Direction.DOWN) + h);
-				this.monster.setBobHeight(Direction.LEFT, this.monster.getBobHeight(Direction.LEFT) + h);
-				this.monster.setBobHeight(Direction.RIGHT, this.monster.getBobHeight(Direction.RIGHT) + h);
-			} else if (KeyListener.isKeyHeld(Keys.CTRL)) {
-				if (KeyListener.isKeyTyped(Keys.P)) {
-					this.monster.setSpriteOffset(this.facing, new Vector());
-					this.monster.setSpriteOffset(this.facing.getBack(), new Vector());
-					this.monster.setBobHeight(this.facing, 0);
-					this.monster.setBobHeight(this.facing.getBack(), 0);
-				}
-				this.monster.setSpriteOffset(this.facing, Vector.add(this.monster.getSpriteOffset(this.facing), new Vector(x, y)));
-				this.monster.setSpriteOffset(this.facing.getBack(), Vector.add(this.monster.getSpriteOffset(this.facing.getBack()), new Vector(-x, y)));
-				this.monster.setBobHeight(this.facing, this.monster.getBobHeight(this.facing) + h);
-				this.monster.setBobHeight(this.facing.getBack(), this.monster.getBobHeight(this.facing.getBack()) + h);
-			} else {
-				if (KeyListener.isKeyTyped(Keys.T)) this.monster.setAnimationSpeed(this.monster.getAnimationSpeed() + 1);
-				if (KeyListener.isKeyTyped(Keys.G)) this.monster.setAnimationSpeed(this.monster.getAnimationSpeed() - 1);
-				if (KeyListener.isKeyTyped(Keys.P)) {
-					this.monster.setSpriteOffset(this.facing, new Vector());
-					this.monster.setBobHeight(this.facing, 0);
-				}
-				this.monster.setSpriteOffset(this.facing, Vector.add(this.monster.getSpriteOffset(this.facing), new Vector(x, y)));
-				this.monster.setBobHeight(this.facing, this.monster.getBobHeight(this.facing) + h);
-			}
-		}*/
-	}
-
-	@Override
-	public void render(Graphics2D screen) {
-		super.render(screen);
-		/*double scale = 2.0;
-		Vector up = this.monster.getSpriteOffset(Direction.UP);
-		Vector down = this.monster.getSpriteOffset(Direction.DOWN);
-		Vector left = this.monster.getSpriteOffset(Direction.LEFT);
-		Vector right = this.monster.getSpriteOffset(Direction.RIGHT);
-		screen.translate(-this.transform.position.x, -this.transform.position.y);
-		screen.scale(scale / this.transform.scale.x, scale / this.transform.scale.y);
-		screen.drawString(this.monster.name, 50, 205);
-		screen.drawString(String.valueOf(Monster.ids.indexOf(this.monster)), 50, 242);
-		screen.drawString(String.format("Shadow: %s", Math.round(this.monster.getShadowSize() * 10) / 10.0), 150, 205);
-		screen.drawString(String.format("BobHeight: <%d,%d,%d,%d>", this.monster.getBobHeight(Direction.UP), this.monster.getBobHeight(Direction.DOWN), this.monster.getBobHeight(Direction.LEFT), this.monster.getBobHeight(Direction.RIGHT)), 250, 205);
-		screen.drawString(String.format("OffsetUp: <%d, %d>", (int) up.x, (int) up.y), 90, 230);
-		screen.drawString(String.format("OffsetDown: <%d, %d>", (int) down.x, (int) down.y), 90, 255);
-		screen.drawString(String.format("OffsetLeft: <%d, %d>", (int) left.x, (int) left.y), 210, 230);
-		screen.drawString(String.format("OffsetRight: <%d, %d>", (int) right.x, (int) right.y), 210, 255);
-		screen.drawString(String.format("Animation: %s", this.monster.getAnimationSpeed()), 50, 280);
-		screen.drawString(String.format("CollCorner1: <%d, %d>", (int) this.monster.getCollisionCorner1().x, (int) this.monster.getCollisionCorner1().y), 130, 280);
-		screen.drawString(String.format("CollCorner2: <%d, %d>", (int) this.monster.getCollisionCorner2().x, (int) this.monster.getCollisionCorner2().y), 260, 280);
-		screen.scale(this.transform.scale.x / scale, this.transform.scale.y / scale);
-		screen.translate(this.transform.position.x, this.transform.position.y);*/
+		if (KeyListener.isKeyDown(Keys.SPACE)) this.world.tempMove.use(this);
+		if (KeyListener.isKeyDown(Keys.J)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, 1, this.shadow.scale)).transform.position = this.transform.position;
+		if (KeyListener.isKeyDown(Keys.K)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, -1, this.shadow.scale)).transform.position = this.transform.position;
 	}
 }

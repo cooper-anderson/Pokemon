@@ -1,15 +1,40 @@
 package ninja.cooperstuff.pokemon.world.biome;
 
 import ninja.cooperstuff.engine.util.Noise;
+import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Tiles;
+import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.util.DirectionFlag;
+import ninja.cooperstuff.pokemon.util.PokemonWeight;
 import ninja.cooperstuff.pokemon.world.TileData;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.util.Random;
 
 public class Woods implements Biome {
+	private PokemonWeight pokemon = new PokemonWeight()
+			.add(Monsters.caterpie)
+			.add(Monsters.metapod, 3)
+			.add(Monsters.weedle)
+			.add(Monsters.kakuna, 3)
+			.add(Monsters.pidgey)
+			.add(Monsters.rattata)
+			.add(Monsters.rattata, 3)
+			.add(Monsters.spearow)
+			.add(Monsters.ekans)
+			.add(Monsters.pikachu, 2)
+			.add(Monsters.oddish, 4)
+			.add(Monsters.gloom, 2)
+			.add(Monsters.paras, 8)
+			.add(Monsters.parasect, 2)
+			.add(Monsters.venonat, 5)
+			.add(Monsters.venomoth, 2)
+			.add(Monsters.exeggcute, 4)
+			.add(Monsters.scyther, 1)
+			.add(Monsters.pinsir, 1)
+			.add(Monsters.snorlax, 1);
+
 	@Override
 	public int getHeight(World world, int x, int y) {
 		double noise = world.heightNoise(x, y, 2, 0);
@@ -47,5 +72,10 @@ public class Woods implements Biome {
 			else if (noise > 0.2 && (center.getGround() == Tiles.woodsGrass || Tiles.woodsMud.isCenter(center.getGround()))) return Tiles.woodsGrassTall;
 		}
 		return null;
+	}
+
+	@Override
+	public Monster getPokemon() {
+		return this.pokemon.get();
 	}
 }

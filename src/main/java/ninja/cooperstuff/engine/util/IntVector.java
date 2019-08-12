@@ -1,6 +1,8 @@
 package ninja.cooperstuff.engine.util;
 
 public class IntVector {
+	public static IntVector zero = new IntVector(0, 0);
+
 	public int x;
 	public int y;
 
@@ -11,6 +13,40 @@ public class IntVector {
 
 	public IntVector(double x, double y) {
 		this((int) Math.floor(x), (int) Math.floor(y));
+	}
+
+	public IntVector add(IntVector other) {
+		this.x += other.x;
+		this.y += other.y;
+		return this;
+	}
+
+	public IntVector sub(IntVector other) {
+		this.x -= other.x;
+		this.y -= other.y;
+		return this;
+	}
+
+	public IntVector mul(double other) {
+		this.x *= other;
+		this.y *= other;
+		return this;
+	}
+
+	public IntVector div(double other) {
+		if (other == 0) {
+			this.x = 0;
+			this.y = 0;
+			return this;
+		}
+		this.x /= other;
+		this.y /= other;
+		return this;
+	}
+
+	@Override
+	public IntVector clone() {
+		return new IntVector(this.x, this.y);
 	}
 
 	@Override
