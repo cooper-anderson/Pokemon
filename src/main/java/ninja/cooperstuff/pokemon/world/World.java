@@ -213,6 +213,7 @@ public class World {
 	}
 
 	public Pokemon trySpawnPokemon(int x, int y) {
+		if (this.pokemon.size() >= this.entityCap) return null;
 		Random r = new Random();
 		if (r.nextDouble() < this.entitySpawnRate) {
 			IntVector tile = null;
