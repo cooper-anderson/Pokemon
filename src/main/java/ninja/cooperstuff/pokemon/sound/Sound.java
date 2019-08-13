@@ -27,7 +27,6 @@ public class Sound {
 	}
 
 	public static SoundClip playSound(Sound sound, int delay) {
-		System.out.println(sound.path);
 		OggClip oggClip;
 		try {
 			oggClip = new OggClip(Sound.class.getResourceAsStream(sound.path));

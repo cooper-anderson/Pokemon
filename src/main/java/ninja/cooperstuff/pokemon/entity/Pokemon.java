@@ -56,7 +56,7 @@ public class Pokemon extends Entity {
 		this.stats = monster.baseStats.clone();
 		this.healthAnimation = this.stats.health;
 		this.shadow.scale = this.monster.getShadowSize();
-		if (this.isPlayer) this.cryClip = this.cry();
+		this.cryClip = this.cry();
 	}
 
 	public boolean isShiny() {

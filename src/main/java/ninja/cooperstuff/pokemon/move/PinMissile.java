@@ -37,7 +37,7 @@ public class PinMissile extends Move {
 		}
 	}
 
-	public class PinMissileProjectile extends Projectile {
+	public static class PinMissileProjectile extends Projectile {
 	    public PinMissileProjectile(MoveInstance owner, Move move) {
 	    	super(owner, move);
 	    }
