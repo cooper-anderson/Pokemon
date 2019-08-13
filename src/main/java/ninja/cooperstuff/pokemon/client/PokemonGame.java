@@ -7,9 +7,12 @@ import ninja.cooperstuff.engine.util.IntVector;
 import ninja.cooperstuff.engine.util.Keys;
 import ninja.cooperstuff.engine.util.RandomGet;
 import ninja.cooperstuff.pokemon.entity.Player;
+import ninja.cooperstuff.pokemon.init.Monsters;
 import ninja.cooperstuff.pokemon.init.Moves;
+import ninja.cooperstuff.pokemon.init.Sounds;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.move.Move;
+import ninja.cooperstuff.pokemon.sound.Sound;
 import ninja.cooperstuff.pokemon.world.World;
 
 import java.awt.*;
@@ -25,6 +28,7 @@ public class PokemonGame extends Game {
 
 	public ArrayList<Move> moves = new ArrayList<>();
 	public int moveIndex = 0;
+	public int pokeIndex = 0;
 
 	public PokemonGame() {
 		super();
@@ -35,9 +39,17 @@ public class PokemonGame extends Game {
 
 	@Override
 	public void update() {
+		Sound.update();
 		if (KeyListener.isKeyTyped(Keys.BRACKET_RIGHT)) this.moveIndex = (this.moveIndex + this.moves.size() + 1) % this.moves.size();
 		if (KeyListener.isKeyTyped(Keys.BRACKET_LEFT)) this.moveIndex = (this.moveIndex + this.moves.size() - 1) % this.moves.size();
+		if (KeyListener.isKeyTyped(Keys.O)) this.pokeIndex = (this.pokeIndex + 150) % 151;
+		if (KeyListener.isKeyTyped(Keys.P)) this.pokeIndex = (this.pokeIndex + 152) % 151;
+		if (KeyListener.isKeyTyped(Keys.O) || KeyListener.isKeyTyped(Keys.P)) this.player.setMonster(Monster.ids.get(this.pokeIndex + 1));
 		if (KeyListener.isKeyTyped(Keys.R)) this.player.setMonster(RandomGet.get(Monster.monsters));
+		if (KeyListener.isKeyTyped(Keys.G)) this.player.setMonster(this.player.monster);
+		if (KeyListener.isKeyTyped(Keys.F)) this.player.setMonster(Monsters.pidgey);
+		if (KeyListener.isKeyDown(Keys.L))
+			Sound.playSound(Sounds.shiny, 0);
 		this.world.tempMove = this.moves.get(this.moveIndex);
 		this.world.showDetails = this.showDetails;
 		IntVector pos = this.player.transform.position.getTile();
@@ -146,7 +158,8 @@ public class PokemonGame extends Game {
 		this.moves.add(Moves.quickAttack);
 		//this.moves.add(Moves.vineWhip);
 
-		this.player = this.instantiate(new Player(this.world, RandomGet.get(Monster.monsters)));
+		//this.player = this.instantiate(new Player(this.world, RandomGet.get(Monster.monsters)));
+		this.player = this.instantiate(new Player(this.world, Monster.ids.get(this.pokeIndex + 1)));
 
 		while (this.running) {
 			this.update();

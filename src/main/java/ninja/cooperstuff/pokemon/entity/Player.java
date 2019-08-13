@@ -48,7 +48,7 @@ public class Player extends Pokemon {
 		this.game.camera.follow(this, new Vector(10, 10));
 		this.game.camera.lagFollow(this.transform.position);
 
-		if (KeyListener.isKeyDown(Keys.SPACE)) this.world.tempMove.use(this);
+		if (KeyListener.isKeyTyped(Keys.SPACE)) this.world.tempMove.use(this);
 		if (KeyListener.isKeyDown(Keys.J)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, 1, this.shadow.scale)).transform.position = this.transform.position;
 		if (KeyListener.isKeyDown(Keys.K)) this.game.instantiate(new StatModifier(this.world, Constants.statModifier.color.ATTACK, -1, this.shadow.scale)).transform.position = this.transform.position;
 	}
