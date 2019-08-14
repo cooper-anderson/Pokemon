@@ -34,6 +34,15 @@ public abstract class Constants {
 		public static final int height = 32;
 	}
 
+	public static abstract class userInterface {
+		public static abstract class color {
+			public static final Color background = new Color(255, 255, 255, 128);
+			public static final Color border = new Color(0, 0, 0);
+			public static final Color text = new Color(50, 50, 50);
+		}
+		public static final int borderThickness = 2;
+	}
+
 	public static abstract class audio {
 		public static final float masterVolume = 0.8f;
 		public static final float cryVolume = 0.8f;
@@ -44,4 +53,5 @@ public abstract class Constants {
 	public static final Color shadowColor = new Color(0, 0, 0, shadowOpacity);
 	public static final int deathParticleCount = 10;
 	public static final double maxBezierMagnitude = 500.0;
+	public static final int moveTimer = 60;
 }

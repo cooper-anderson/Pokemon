@@ -27,7 +27,7 @@ public class LeechSeed extends Move {
 			super(pokemon, move, false, true, true);
 			this.lifetime = 250;
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override

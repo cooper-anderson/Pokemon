@@ -15,14 +15,14 @@ public class MoveOneHitKO extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new GuillotineInstance(pokemon, this));
+		return pokemon.game.instantiate(new MoveOneHitKOInstance(pokemon, this));
 	}
 
-	public class GuillotineInstance extends MoveInstance {
-		public GuillotineInstance(Pokemon pokemon, Move move) {
+	public class MoveOneHitKOInstance extends MoveInstance {
+		public MoveOneHitKOInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			double angle = new Random().nextDouble() * 2 * Math.PI;
-			Projectile p = this.spawnProjectile(new GuillotineProjectile(this, this.move));
+			Projectile p = this.spawnProjectile(new MoveOneHitKOProjectile(this, this.move));
 			p.velocity = new Vector(Math.cos(angle), Math.sin(angle)).mul(5);
 		}
 
@@ -37,10 +37,10 @@ public class MoveOneHitKO extends Move {
 		}
 	}
 
-	public class GuillotineProjectile extends Projectile {
+	public class MoveOneHitKOProjectile extends Projectile {
 		int sign = new Random().nextInt(2) * 2 - 1;
 
-		public GuillotineProjectile(MoveInstance owner, Move move) {
+		public MoveOneHitKOProjectile(MoveInstance owner, Move move) {
 			super(owner, move);
 		}
 

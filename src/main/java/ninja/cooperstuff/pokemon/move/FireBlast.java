@@ -19,9 +19,9 @@ public class FireBlast extends Move {
 	}
 
 	public class FireBlastInstance extends MoveInstance {
-
 		public FireBlastInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
+			this.lifetime = 150;
 			for (int i = 0; i < FireBlast.projectileCount; i++) {
 				this.spawnProjectile(new FireBlastProjectile(this, this.move, i));
 			}

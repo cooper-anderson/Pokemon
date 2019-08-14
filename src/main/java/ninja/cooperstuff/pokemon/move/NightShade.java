@@ -21,7 +21,7 @@ public class NightShade extends Move {
 		public NightShadeInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override

@@ -23,6 +23,7 @@ public class Bonemerang extends Move {
 	public class BonemerangInstance extends MoveInstance {
 		public BonemerangInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, true, false, true);
+			this.lifetime = 150;
 		}
 
 		@Override
@@ -40,7 +41,7 @@ public class Bonemerang extends Move {
 
 		public BonemerangProjectile(MoveInstance owner, Move move, int side) {
 			super(owner, move);
-			Vector facing = this.owner.pokemon.getForwardVector();
+			Vector facing = this.owner.pokemon.getAimVector();
 			this.v0 = this.owner.transform.position.clone();
 			this.v1 = Vector.add(Vector.add(v0, Vector.mul(facing, 500.0)), new Vector(-facing.y, facing.x).mul(25 * side));
 			this.v2 = this.owner.pokemon.transform.position;

@@ -25,7 +25,7 @@ public class Twineedle extends Move {
 		public void behavior() {
 			if (this.frame <= 10 && this.frame % 10 == 0) {
 				Projectile p = this.spawnProjectile(new PinMissile.PinMissileProjectile(this, this.move));
-				p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+				p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 			}
 		}
 	}

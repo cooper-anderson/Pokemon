@@ -25,7 +25,7 @@ public class Teleport extends Move {
 		public TeleportInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new TeleportProjectile(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override
@@ -35,19 +35,29 @@ public class Teleport extends Move {
 
 		@Override
 		public int onCollision(Pokemon pokemon, Projectile projectile) {
-			Vector old = pokemon.transform.position.clone();
-			pokemon.transform.position = this.pokemon.transform.position.clone();
+			if (this.pokemon.isPlayer()) movePlayer(this.pokemon, pokemon);
+			else if (pokemon.isPlayer()) movePlayer(pokemon, this.pokemon);
+			else {
+				Vector pos = pokemon.transform.position.clone();
+				pokemon.transform.position = this.pokemon.transform.position.clone();
+				this.pokemon.transform.position = pos;
+			}
+			return 0;
+		}
+
+		private void movePlayer(Pokemon user, Pokemon target) {
+			Vector pos = target.transform.position.clone();
+			target.transform.position = user.transform.position.clone();
 			boolean moving = true;
 			while (moving) {
-				Vector current = Vector.sub(old, this.pokemon.transform.position);
+				Vector current = Vector.sub(pos, user.transform.position);
 				if (current.magnitude() > 10) current = current.normalized().mul(10);
 				else moving = false;
-				this.pokemon.transform.position.add(current);
-				IntVector tile = this.pokemon.transform.position.getTile();
-				this.pokemon.world.generate(tile.x, tile.y);
+				user.transform.position.add(current);
+				IntVector tile = user.transform.position.getTile();
+				user.world.generate(tile.x, tile.y);
 			}
-			this.game.camera.follow(this.pokemon.transform.position, Vector.zero);
-			return 0;
+			this.game.camera.follow(user.transform.position, Vector.zero);
 		}
 	}
 

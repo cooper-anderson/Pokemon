@@ -24,7 +24,7 @@ public class PoisonSting extends Move {
 		public PoisonStingInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new PoisonStingProjectile(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override

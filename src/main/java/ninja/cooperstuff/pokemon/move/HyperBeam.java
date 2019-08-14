@@ -27,7 +27,7 @@ public class HyperBeam extends Move {
 		public HyperBeamInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			this.p = this.spawnProjectile(new HyperBeamProjectile(this, this.move));
-			this.p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			this.p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override

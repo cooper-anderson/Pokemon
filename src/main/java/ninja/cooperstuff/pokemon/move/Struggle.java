@@ -22,7 +22,7 @@ public class Struggle extends Move {
 			super(pokemon, move, false, true, true);
 			pokemon.damage(20);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override

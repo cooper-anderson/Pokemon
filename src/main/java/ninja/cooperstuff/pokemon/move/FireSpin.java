@@ -23,7 +23,7 @@ public class FireSpin extends Move {
 
 		public FireSpinInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, false);
-			this.velocity = this.pokemon.getForwardVector();
+			this.velocity = this.pokemon.getAimVector();
 			for (int i = 0; i < FireSpin.projectileCount; i++) {
 				this.spawnProjectile(new FireSpinProjectile(this, this.move, i));
 			}

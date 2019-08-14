@@ -37,10 +37,10 @@ public class Game extends JFrame {
 		RepaintManager.currentManager(this).markCompletelyClean(this.screen);
 		if (KeyListener.isKeyHeld(Keys.ESC)) this.close();
 		else {
-			this.gameObjects.addAll(this.addQueue);
-			this.addQueue.clear();
 			for (GameObject gameObject : this.deleteQueue) this.gameObjects.remove(gameObject);
 			this.deleteQueue.clear();
+			this.gameObjects.addAll(this.addQueue);
+			this.addQueue.clear();
 			for (GameObject gameObject : this.gameObjects) {
 				gameObject.update();
 				for (Class componentType : gameObject.components.keySet()) gameObject.components.get(componentType).update();

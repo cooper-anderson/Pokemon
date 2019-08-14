@@ -32,7 +32,7 @@ public class PinMissile extends Move {
 		public void behavior() {
 			if (this.frame <= 10 * (this.count - 1) && this.frame % 10 == 0) {
 				Projectile p = this.spawnProjectile(new PinMissileProjectile(this, this.move));
-				p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+				p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 			}
 		}
 	}

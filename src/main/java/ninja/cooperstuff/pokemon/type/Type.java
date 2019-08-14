@@ -1,5 +1,7 @@
 package ninja.cooperstuff.pokemon.type;
 
+import ninja.cooperstuff.pokemon.move.Move;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ public class Type {
 	public Color color;
 	public HashMap<Type, Effectiveness> effOut = new HashMap<>();
 	public HashMap<Type, Effectiveness> effIn = new HashMap<>();
+	public HashSet<Move> moves = new HashSet<>();
 
 	public Type(String name, String abbr, Color color) {
 		this.name = name;

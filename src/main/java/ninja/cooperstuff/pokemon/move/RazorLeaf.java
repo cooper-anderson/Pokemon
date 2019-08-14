@@ -24,7 +24,7 @@ public class RazorLeaf extends Move {
 	public class RazorLeafInstance extends MoveInstance {
 		public RazorLeafInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
-			double angle = this.pokemon.getForwardVector().angle();
+			double angle = this.pokemon.getAimVector().angle();
 			for (int i = 0; i < RazorLeaf.projectileCount; i++) {
 				Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 				p.velocity = Vector.fromAngle(angle - RazorLeaf.arcLength / 2 + RazorLeaf.arcLength * (double) i / (RazorLeaf.projectileCount - 1)).mul(Constants.projectileVelocity);

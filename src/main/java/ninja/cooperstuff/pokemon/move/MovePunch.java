@@ -38,7 +38,7 @@ public class MovePunch extends Move {
 
 	    public MovePunchProjectile(MoveInstance owner, Move move) {
 	    	super(owner, move);
-	    	this.direction = this.owner.pokemon.getForwardVector();
+	    	this.direction = this.owner.pokemon.getAimVector();
 	    }
 
 	    @Override

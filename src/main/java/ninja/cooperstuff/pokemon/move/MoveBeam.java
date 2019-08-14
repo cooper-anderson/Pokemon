@@ -18,16 +18,17 @@ public class MoveBeam extends Move {
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new HyperBeamInstance(pokemon, this));
+		return pokemon.game.instantiate(new MoveBeamInstance(pokemon, this));
 	}
 
-	public class HyperBeamInstance extends MoveInstance {
+	public class MoveBeamInstance extends MoveInstance {
 		Projectile p;
 
-		public HyperBeamInstance(Pokemon pokemon, Move move) {
+		public MoveBeamInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
-			this.p = this.spawnProjectile(new HyperBeamProjectile(this, this.move));
-			this.p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			this.lifetime = 150;
+			this.p = this.spawnProjectile(new MoveBeamProjectile(this, this.move));
+			this.p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override
@@ -48,10 +49,10 @@ public class MoveBeam extends Move {
 		}
 	}
 
-	public class HyperBeamProjectile extends Projectile {
+	public class MoveBeamProjectile extends Projectile {
 		int sign = new Random().nextInt(2) * 2 - 1;
 
-		public HyperBeamProjectile(MoveInstance owner, Move move) {
+		public MoveBeamProjectile(MoveInstance owner, Move move) {
 			super(owner, move);
 		}
 

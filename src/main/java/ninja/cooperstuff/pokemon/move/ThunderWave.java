@@ -23,7 +23,7 @@ public class ThunderWave extends Move {
 		public ThunderWaveInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, false, true);
 			Projectile p = this.spawnProjectile(new ThunderWaveProjectile(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override
