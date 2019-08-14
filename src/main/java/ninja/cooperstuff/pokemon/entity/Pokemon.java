@@ -66,7 +66,7 @@ public class Pokemon extends Entity {
 		this.setLevel(5);
 		this.queueMoves();
 		this.shadow.scale = this.monster.getShadowSize();
-		this.cryClip = this.cry();
+		if (!this.isPlayer) this.cryClip = this.cry();
 	}
 
 	public boolean isShiny() {
@@ -403,7 +403,7 @@ public class Pokemon extends Entity {
 	}
 
 	private void drawHealthBar(Graphics2D screen) {
-		double percent = (double) this.healthAnimation / (double) this.healthMax;
+		double percent = Math.min((double) this.healthAnimation / (double) this.healthMax, 1.0);
 		int width = (int) (40 * this.shadow.scale);
 		int height = 10;
 		int offsetY = (int) (10 * this.shadow.scale);

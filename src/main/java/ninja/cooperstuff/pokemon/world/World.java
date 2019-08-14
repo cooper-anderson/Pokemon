@@ -18,14 +18,14 @@ import java.util.Random;
 
 public class World {
 	PokemonGame game;
-	double multiplier = 1.0;
-	double multiplierElevation = 6.12;
-	double multiplierMoisture = 5.05;
+	private double multiplier = 1.0;
+	private double multiplierElevation = 6.12;
+	private double multiplierMoisture = 5.05;
 	public double scaleMap = 1;
-	double scaleElevation = 2;
-	double scaleMoisture = 5.56;
-	double offsetElevation = -0.58;
-	double offsetMoisture = 0.23;
+	private double scaleElevation = 2;
+	private double scaleMoisture = 5.56;
+	private double offsetElevation = -0.58;
+	private double offsetMoisture = 0.23;
 
 	private IntVector generateSize = new IntVector(17, 13);
 	private IntVector detailSize = new IntVector(16, 12);
@@ -67,7 +67,6 @@ public class World {
 
 	@NonNull
 	private Biome getBiome(double elevation, double moisture) {
-//		return Biome.woods;
 		if (moisture < 1) {
 			if (elevation < 1) return Biome.bog;
 			if (elevation < 2) return Biome.cave;

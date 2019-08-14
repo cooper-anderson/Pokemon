@@ -152,8 +152,8 @@ public class PokemonGame extends Game {
 			screen.setColor(move3.type.color);
 			screen.fillOval(3, height / 4 + 8, 6, 6);
 		}
-		if (move3 != null) {
-			screen.setColor(move3.type.color);
+		if (move4 != null) {
+			screen.setColor(move4.type.color);
 			screen.fillOval(width / 4 + 3, height / 4 + 8, 6, 6);
 		}
 		screen.setColor(Constants.userInterface.color.text);

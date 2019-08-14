@@ -49,15 +49,10 @@ public class Monster {
 		this.type1 = type1;
 		this.type2 = type2;
 		this.baseStats = new Stats(health, attackPhysical, attackSpecial, defensePhysical, defenseSpecial, speed);
-		//this.sprite = ResourceLoader.load(String.format("pokemon/sprites/%s.png", this.name.toLowerCase()));
 		try {
 			this.sprite = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/sprites/%s.png", this.name.toLowerCase())));
 			this.spriteShiny = ImageIO.read(this.getClass().getResourceAsStream(String.format("/pokemon/shiny/%s.png", this.name.toLowerCase())));
-			//this.cry = TinySound.loadSound(this.getClass().getResource(String.format("/pokemon/cries/%s.ogg", this.name.toLowerCase())));
-			//this.cry = new OggClip(this.getClass().getResourceAsStream(String.format("/pokemon/cries/%s.ogg", this.name.toLowerCase())));
-			//this.cry = new OggClip(this.getClass().getResourceAsStream("/pokemon/sounds/faint_no_hp.ogg"));
 			this.cry = new Sound(String.format("/pokemon/cries/%s", this.name.toLowerCase()), Constants.audio.cryVolume);
-			//this.cry.setGain(Constants.volume);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
