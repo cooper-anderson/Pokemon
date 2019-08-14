@@ -20,6 +20,7 @@ public class MoveAreaOfEffect extends Move {
 	public class MoveAreaOfEffectInstance extends MoveInstance {
 		public MoveAreaOfEffectInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, false, true);
+			this.lifetime = 150;
 			this.spawnProjectile(new MoveAreaOfEffectProjectile(this, this.move));
 		}
 

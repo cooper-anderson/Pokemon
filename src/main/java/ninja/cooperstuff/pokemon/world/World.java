@@ -26,6 +26,7 @@ public class World {
 	private double scaleMoisture = 5.56;
 	private double offsetElevation = -0.58;
 	private double offsetMoisture = 0.23;
+	private double seed = new Random().nextDouble() * 10000;
 
 	private IntVector generateSize = new IntVector(17, 13);
 	private IntVector detailSize = new IntVector(16, 12);
@@ -51,12 +52,12 @@ public class World {
 	}
 
 	private double getElevation(double x, double y) {
-		double elevation = (Noise.noise(x / (this.scaleMap * this.scaleElevation * 100), y / (this.scaleMap * this.scaleElevation * 100)));
+		double elevation = (Noise.noise(this.seed + x / (this.scaleMap * this.scaleElevation * 100), this.seed + y / (this.scaleMap * this.scaleElevation * 100)));
 		return World.sigmoid(multiplier * elevation * multiplierElevation + offsetElevation) * 4;
 	}
 
 	private double getMoisture(double x, double y) {
-		double moisture = (Noise.noise(x / (this.scaleMap * this.scaleMoisture * 50), y / (this.scaleMap * this.scaleMoisture * 50)));
+		double moisture = (Noise.noise(this.seed + x / (this.scaleMap * this.scaleMoisture * 50), this.seed + y / (this.scaleMap * this.scaleMoisture * 50)));
 		return World.sigmoid(multiplier * moisture * multiplierMoisture + offsetMoisture) * 6;
 	}
 
@@ -116,7 +117,7 @@ public class World {
 	}
 
 	public double heightNoise(int x, int y, double multiplier, double offset) {
-		double noise = Noise.noise(x / 10.0, y / 10.0);
+		double noise = Noise.noise(this.seed + x / 10.0, this.seed + y / 10.0);
 		return (World.sigmoid(multiplier * noise + offset) * 2 - 1) * this.getHeight(x, y);
 	}
 

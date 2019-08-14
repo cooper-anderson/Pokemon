@@ -138,7 +138,7 @@ public class Moves implements Init.Initializer {
 	public static final Move solarBeam = new MoveBeam("Solar Beam", GRASS, SPECIAL, 120, 100, 10);
 	public static final Move sonicBoom = new SonicBoom("Sonic Boom", NORMAL, SPECIAL, 0, 90, 20);
 	public static final Move spikeCannon = new PinMissile("Spike Cannon", NORMAL, PHYSICAL, 20, 100, 15);
-	public static final Move splash = new MoveDefault("Splash", NORMAL, STATUS, 0, 0, 40);
+	public static final Move splash = new MoveStatus("Splash", NORMAL, STATUS, 0, 0, 40);
 	public static final Move spore = new MoveDefault("Spore", GRASS, STATUS, 0, 100, 15).addEffect(Status.SLEEPING, 1.0);
 	public static final Move stomp = new MovePunch("Stomp", NORMAL, PHYSICAL, 65, 100, 20).addEffect(Status.FLINCH, 0.3);
 	public static final Move strength = new MoveDefault("Strength", NORMAL, PHYSICAL, 80, 100, 15);

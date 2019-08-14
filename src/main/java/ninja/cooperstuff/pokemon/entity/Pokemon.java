@@ -145,7 +145,7 @@ public class Pokemon extends Entity {
 	public int heal(int amount) {
 		if (this.stats.health == 0) return 0;
 		int health = this.stats.health;
-		this.stats.health = Math.min(this.monster.baseStats.health, this.stats.health + amount);
+		this.stats.health = Math.min(this.healthMax, this.stats.health + amount);
 		return this.stats.health - health;
 	}
 

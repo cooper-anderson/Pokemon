@@ -2,6 +2,7 @@ package ninja.cooperstuff.pokemon.init;
 
 import ninja.cooperstuff.engine.util.Vector;
 import ninja.cooperstuff.pokemon.monster.Ditto;
+import ninja.cooperstuff.pokemon.monster.Magikarp;
 import ninja.cooperstuff.pokemon.monster.Mew;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
@@ -137,7 +138,7 @@ public class Monsters implements Init.Initializer {
 	public static final Monster magmar = new Monster("Magmar", FIRE, null, 495, 65, 100, 57, 85, 93);
 	public static final Monster pinsir = new Monster("Pinsir", BUG, null, 500, 65, 55, 100, 70, 85);
 	public static final Monster tauros = new Monster("Tauros", NORMAL, null, 490, 75, 40, 95, 70, 110);
-	public static final Monster magikarp = new Monster("Magikarp", WATER, null, 200, 20, 15, 55, 20, 80);
+	public static final Monster magikarp = new Magikarp("Magikarp", WATER, null, 200, 20, 15, 55, 20, 80);
 	public static final Monster gyarados = new Monster("Gyarados", WATER, FLYING, 540, 95, 60, 79, 100, 81);
 	public static final Monster lapras = new Monster("Lapras", WATER, ICE, 535, 130, 85, 80, 95, 60);
 	public static final Monster ditto = new Ditto("Ditto", NORMAL, null, 288, 48, 48, 48, 48, 48);
