@@ -44,7 +44,7 @@ public class MoveDefault extends Move {
 		public void behavior() {
 			if (this.frame <= this.projectileDelay * (this.projectileCount - 1) && this.frame % this.projectileDelay == 0) {
 				Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
-				p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity);
+				p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 			}
 		}
 	}

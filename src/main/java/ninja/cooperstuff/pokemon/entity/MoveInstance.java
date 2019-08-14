@@ -20,7 +20,7 @@ public abstract class MoveInstance extends Entity {
 	public HashSet<Pokemon> pokemonHit = new HashSet<>();
 	public HashSet<Projectile> projectiles = new HashSet<>();
 	public HashSet<Projectile> projectilesDeleteQueue = new HashSet<>();
-	public int lifetime = 150;
+	public int lifetime = 300;
 	public int projectileCount;
 	public int projectileDelay;
 
@@ -82,7 +82,7 @@ public abstract class MoveInstance extends Entity {
 		for (Status status : this.effects.keySet()) {
 			if (new Random().nextDouble() < this.effects.get(status)) pokemon.setStatus(status);
 		}
-		int damage = pokemon.damage(this.move.power);
+		int damage = pokemon.damage(Pokemon.getDamage(this.pokemon, pokemon, this.move));
 		if (this.move.recoilChance != 0 && new Random().nextDouble() < this.move.recoilChance) this.pokemon.damage((int) (damage * this.move.recoilPercent));
 		return damage;
 	}

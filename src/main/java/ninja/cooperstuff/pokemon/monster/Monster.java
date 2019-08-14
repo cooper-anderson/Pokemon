@@ -1,6 +1,9 @@
 package ninja.cooperstuff.pokemon.monster;
 
+import ninja.cooperstuff.engine.util.RandomGet;
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.init.Types;
+import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.sound.Sound;
 import ninja.cooperstuff.pokemon.sound.SoundClip;
 import ninja.cooperstuff.pokemon.type.Type;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 
 public class Monster {
 	public static HashSet<Monster> monsters = new HashSet<>();
@@ -130,6 +134,33 @@ public class Monster {
 
 	public SoundClip startCry() {
 		return this.cry.play();
+	}
+
+	public Move getRandomMove() {
+		Move move = null;
+		while (move == null) {
+			double r = new Random().nextDouble();
+			if (r < 0.2) move = RandomGet.get(Types.NORMAL.moves);
+			else if (this.type2 != null && r < 0.6) move = RandomGet.get(this.type2.moves);
+			else move = RandomGet.get(this.type1.moves);
+		}
+		return move;
+	}
+
+	public ArrayList<Move> getMoves() {
+		ArrayList<Move> moves = new ArrayList<>();
+		for (int i = 0; i < 4; i++) {
+			Move move;
+			int count = 15;
+			do {
+				move = this.getRandomMove();
+				if (count == 0) return moves;
+				count--;
+			}
+			while (moves.contains(move));
+			moves.add(move);
+		}
+		return moves;
 	}
 
 	public static class SpriteLayout {

@@ -40,7 +40,7 @@ public class HighJumpKick extends Move {
 
 	    public HighJumpKickProjectile(MoveInstance owner, Move move) {
 	    	super(owner, move);
-	    	this.direction = this.owner.pokemon.getForwardVector();
+	    	this.direction = this.owner.pokemon.getAimVector();
 	    }
 
 	    @Override

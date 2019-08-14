@@ -285,7 +285,6 @@ public class StreamState{
       // unroll previous partial packet (if any)
       for(i=lacing_packet; i<lacing_fill; i++){
         body_fill-=lacing_vals[i]&0xff;
-        //System.out.println("??");
       }
       lacing_fill=lacing_packet;
 

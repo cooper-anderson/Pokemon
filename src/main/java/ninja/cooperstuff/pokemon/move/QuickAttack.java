@@ -21,7 +21,7 @@ public class QuickAttack extends Move {
 		public QuickAttackInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
-			p.velocity = this.pokemon.getForwardVector().clone().mul(Constants.projectileVelocity * 2);
+			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity * 2);
 		}
 
 		@Override

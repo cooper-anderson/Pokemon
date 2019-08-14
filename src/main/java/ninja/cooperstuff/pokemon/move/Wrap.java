@@ -7,31 +7,33 @@ import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
 
-public class NightShade extends Move {
-	public NightShade(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
+public class Wrap extends Move {
+	public Wrap(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		super(name, type, attackType, power, accuracy, points);
 	}
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new NightShadeInstance(pokemon, this));
+		return pokemon.game.instantiate(new WrapInstance(pokemon, this));
 	}
 
-	public class NightShadeInstance extends MoveInstance {
-		public NightShadeInstance(Pokemon pokemon, Move move) {
+	public class WrapInstance extends MoveInstance {
+		public WrapInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override
-		public int onCollision(Pokemon pokemon, Projectile projectile) {
-			return pokemon.damage(this.pokemon.getLevel());
-		}
-
-		@Override
 		public void behavior() {
-
+			if (this.frame == 150 && this.pokemonHit.size() == 0) this.destroy();
+			if (this.frame % 50 == 0) {
+				for (Pokemon pokemon : this.pokemonHit) {
+					if (pokemon.getHealth() != 0) {
+						pokemon.damage(pokemon.monster.baseStats.health / 16);
+					}
+				}
+			}
 		}
 	}
 }

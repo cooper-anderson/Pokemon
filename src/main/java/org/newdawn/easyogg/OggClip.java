@@ -1,16 +1,5 @@
 package org.newdawn.easyogg;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-
 import org.newdawn.easyogg.jogg.Packet;
 import org.newdawn.easyogg.jogg.Page;
 import org.newdawn.easyogg.jogg.StreamState;
@@ -19,6 +8,11 @@ import org.newdawn.easyogg.jorbis.Block;
 import org.newdawn.easyogg.jorbis.Comment;
 import org.newdawn.easyogg.jorbis.DspState;
 import org.newdawn.easyogg.jorbis.Info;
+
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Simple Clip like player for OGG's. Code is mostly taken from the example provided with 
@@ -339,7 +333,7 @@ public class OggClip {
 			setBalance(balance);
 			setGain(gain);
 		} catch (Exception ee) {
-			System.out.println(ee);
+			System.err.println(ee);
 		}
 	}
 

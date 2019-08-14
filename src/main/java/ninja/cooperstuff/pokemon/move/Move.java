@@ -39,6 +39,7 @@ public abstract class Move {
 		this.accuracy = accuracy;
 		this.points = points;
 		Move.moves.add(this);
+		this.type.moves.add(this);
 	}
 
 	/*public final boolean use(Pokemon pokemon) {
@@ -60,6 +61,8 @@ public abstract class Move {
 				if (new Random().nextDouble() < this.selfEffects.get(status)) pokemon.setStatus(status);
 			}
 			this.behavior(pokemon);
+			pokemon.triggerMoveTimer();
+			pokemon.incrementExperience();
 			return true;
 		}
 		return false;

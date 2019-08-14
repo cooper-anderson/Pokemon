@@ -7,7 +7,6 @@ import ninja.cooperstuff.pokemon.client.PokemonGame;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.init.Tiles;
 import ninja.cooperstuff.pokemon.monster.Monster;
-import ninja.cooperstuff.pokemon.move.Move;
 import ninja.cooperstuff.pokemon.tile.Tile;
 import ninja.cooperstuff.pokemon.world.biome.Biome;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -38,7 +37,6 @@ public class World {
 	public double entitySpawnRate = 0.1;
 
 	public boolean showDetails;
-	public Move tempMove;
 
 	private HashMap<IntVector, TileData> data;
 
@@ -205,15 +203,16 @@ public class World {
 
 	public Pokemon spawnPokemon(Monster monster, Vector position) {
 		if (monster == null) return null;
-		if (this.pokemon.size() >= this.entityCap) return null;
+		if (this.pokemon.size() > this.entityCap) return null;
 		Pokemon pokemon = this.game.instantiate(new Pokemon(this, monster)).useAI(true);
 		pokemon.transform.position = position.clone();
+		pokemon.setLevel(Math.min(Math.max(new Random().nextInt(this.game.player.getLevel() + 6), 1), 100));
 		this.pokemon.add(pokemon);
 		return pokemon;
 	}
 
 	public Pokemon trySpawnPokemon(int x, int y) {
-		if (this.pokemon.size() >= this.entityCap) return null;
+		if (this.pokemon.size() > this.entityCap) return null;
 		Random r = new Random();
 		if (r.nextDouble() < this.entitySpawnRate) {
 			IntVector tile = null;

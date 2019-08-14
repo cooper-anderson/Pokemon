@@ -27,7 +27,7 @@ public class Flamethrower extends Move {
 		public void behavior() {
 			if (this.frame <= 40 && this.frame % 5 == 0) {
 				Projectile p = this.spawnProjectile(new FlamethrowerProjectile(this, this.move));
-				p.velocity = Vector.fromAngle(this.pokemon.getForwardVector().angle() + Math.PI / 24 * Math.sin(Math.PI / 2 * this.frame / 10), 5);
+				p.velocity = Vector.fromAngle(this.pokemon.getAimVector().angle() + Math.PI / 24 * Math.sin(Math.PI / 2 * this.frame / 10), 5);
 			}
 		}
 	}

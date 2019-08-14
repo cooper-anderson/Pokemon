@@ -1,6 +1,8 @@
 package ninja.cooperstuff.pokemon.init;
 
 import ninja.cooperstuff.engine.util.Vector;
+import ninja.cooperstuff.pokemon.monster.Ditto;
+import ninja.cooperstuff.pokemon.monster.Mew;
 import ninja.cooperstuff.pokemon.monster.Monster;
 import ninja.cooperstuff.pokemon.util.Direction;
 
@@ -138,7 +140,7 @@ public class Monsters implements Init.Initializer {
 	public static final Monster magikarp = new Monster("Magikarp", WATER, null, 200, 20, 15, 55, 20, 80);
 	public static final Monster gyarados = new Monster("Gyarados", WATER, FLYING, 540, 95, 60, 79, 100, 81);
 	public static final Monster lapras = new Monster("Lapras", WATER, ICE, 535, 130, 85, 80, 95, 60);
-	public static final Monster ditto = new Monster("Ditto", NORMAL, null, 288, 48, 48, 48, 48, 48);
+	public static final Monster ditto = new Ditto("Ditto", NORMAL, null, 288, 48, 48, 48, 48, 48);
 	public static final Monster eevee = new Monster("Eevee", NORMAL, null, 325, 55, 45, 50, 65, 55);
 	public static final Monster vaporeon = new Monster("Vaporeon", WATER, null, 525, 130, 110, 60, 95, 65);
 	public static final Monster jolteon = new Monster("Jolteon", ELECTRIC, null, 525, 65, 110, 60, 95, 130);
@@ -157,7 +159,7 @@ public class Monsters implements Init.Initializer {
 	public static final Monster dragonair = new Monster("Dragonair", DRAGON, null, 420, 61, 70, 65, 70, 70);
 	public static final Monster dragonite = new Monster("Dragonite", DRAGON, FLYING, 600, 91, 100, 95, 100, 80);
 	public static final Monster mewtwo = new Monster("Mewtwo", PSYCHIC, null, 680, 106, 154, 90, 90, 130);
-	public static final Monster mew = new Monster("Mew", PSYCHIC, null, 600, 100, 100, 100, 100, 100);
+	public static final Monster mew = new Mew("Mew", PSYCHIC, null, 600, 100, 100, 100, 100, 100);
 
 	@Override
 	public void preInit() {}

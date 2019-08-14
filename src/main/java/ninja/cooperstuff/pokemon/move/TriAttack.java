@@ -6,32 +6,40 @@ import ninja.cooperstuff.pokemon.entity.projectile.Projectile;
 import ninja.cooperstuff.pokemon.entity.projectile.ProjectileDefault;
 import ninja.cooperstuff.pokemon.type.Type;
 import ninja.cooperstuff.pokemon.util.Constants;
+import ninja.cooperstuff.pokemon.util.Status;
 
-public class NightShade extends Move {
-	public NightShade(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
+import java.util.Random;
+
+public class TriAttack extends Move {
+	public TriAttack(String name, Type type, AttackType attackType, int power, int accuracy, int points) {
 		super(name, type, attackType, power, accuracy, points);
 	}
 
 	@Override
 	public MoveInstance behavior(Pokemon pokemon) {
-		return pokemon.game.instantiate(new NightShadeInstance(pokemon, this));
+		return pokemon.game.instantiate(new TriAttackInstance(pokemon, this));
 	}
 
-	public class NightShadeInstance extends MoveInstance {
-		public NightShadeInstance(Pokemon pokemon, Move move) {
+	public class TriAttackInstance extends MoveInstance {
+		public TriAttackInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
 			Projectile p = this.spawnProjectile(new ProjectileDefault(this, this.move));
 			p.velocity = this.pokemon.getAimVector().clone().mul(Constants.projectileVelocity);
 		}
 
 		@Override
-		public int onCollision(Pokemon pokemon, Projectile projectile) {
-			return pokemon.damage(this.pokemon.getLevel());
+		public void behavior() {
+
 		}
 
 		@Override
-		public void behavior() {
-
+		public int onCollision(Pokemon pokemon, Projectile projectile) {
+			double r = new Random().nextDouble();
+			double step = 0.20 / 3;
+			if (r < step) pokemon.setStatus(Status.PARALYZED);
+			else if (r < 2 * step) pokemon.setStatus(Status.BURNED);
+			else if (r < 3 * step) pokemon.setStatus(Status.FROZEN);
+			return 0;
 		}
 	}
 }

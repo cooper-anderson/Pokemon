@@ -25,7 +25,7 @@ public class DoubleKick extends Move {
 
 		public DoubleKickInstance(Pokemon pokemon, Move move) {
 			super(pokemon, move, false, true, true);
-			this.facing = this.pokemon.getForwardVector();
+			this.facing = this.pokemon.getAimVector();
 			this.lifetime = 50;
 		}
 
