@@ -289,6 +289,7 @@ public class Pokemon extends Entity {
 				if (this.cryClip.stopped()) {
 					Sound.playSound(Sounds.faint);
 					this.createDeathParticles();
+					((PokemonGame) this.game).addLog(String.format("%s fainted.", this.monster.name));
 					this.destroy();
 				}
 				return;

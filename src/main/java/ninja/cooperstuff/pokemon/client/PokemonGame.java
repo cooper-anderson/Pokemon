@@ -22,7 +22,9 @@ public class PokemonGame extends Game {
 	private int generateCounter = 0;
 	private int spawnCounter = 0;
 	private int respawnCounter = 0;
-	private boolean showDetails = true;
+	private boolean showLog = true;
+	private boolean showHelp = false;
+	private ArrayList<String> log = new ArrayList<>();
 
 	public int pokeIndex = 0;
 
@@ -31,6 +33,8 @@ public class PokemonGame extends Game {
 		this.setSize(240 * 4 + 16, 160 * 4 + 39);
 		this.setResizable(false);
 		this.setTitle("Pokemon");
+		this.log.add("Press ? for help.");
+		this.log.add("Press F3 to toggle this log.");
 	}
 
 	@Override
@@ -39,7 +43,8 @@ public class PokemonGame extends Game {
 		if (KeyListener.isKeyTyped(Keys.BRACKET_LEFT)) this.pokeIndex = (this.pokeIndex + 150) % 151;
 		if (KeyListener.isKeyTyped(Keys.BRACKET_RIGHT)) this.pokeIndex = (this.pokeIndex + 152) % 151;
 		if (KeyListener.isKeyTyped(Keys.BRACKET_LEFT) || KeyListener.isKeyTyped(Keys.BRACKET_RIGHT)) this.player.setMonster(Monster.ids.get(this.pokeIndex + 1));
-		this.world.showDetails = this.showDetails;
+		if (KeyListener.isKeyTyped(Keys.F3)) this.showLog = !this.showLog;
+		if (KeyListener.isKeyHeld(Keys.SHIFT) && KeyListener.isKeyTyped(Keys.SLASH)) this.showHelp = !this.showHelp;
 		IntVector pos = this.player.transform.position.getTile();
 		if (this.generateCounter == 0) {
 			this.world.generate(pos.x, pos.y);
@@ -52,7 +57,11 @@ public class PokemonGame extends Game {
 		this.generateCounter--;
 		this.spawnCounter--;
 		if (this.respawnCounter > 0) this.respawnCounter--;
-		super.update();
+		if (!this.showHelp) super.update();
+		else {
+			if (KeyListener.isKeyHeld(Keys.ESC)) this.close();
+			KeyListener.clearKeys();
+		}
 	}
 
 	public void run() throws InterruptedException {
@@ -74,6 +83,19 @@ public class PokemonGame extends Game {
 
 	public void respawn() {
 		if (this.respawnCounter == 0) this.respawnCounter = 121;
+	}
+
+	public void addLog(String message) {
+		this.log.add(message);
+	}
+
+	public void drawLog(Graphics2D screen) {
+		screen.setColor(Constants.userInterface.color.background);
+		screen.scale(1.5, 1.5);
+		for (int i = 0; i < Math.min(10, this.log.size()); i++) {
+			screen.drawString(this.log.get(this.log.size() - i - 1), 5, 15 + 15 * i);
+		}
+		screen.scale(1.0 / 1.5, 1.0 / 1.5);
 	}
 
 	public void drawPokemonInfo(Graphics2D screen) {
@@ -143,16 +165,41 @@ public class PokemonGame extends Game {
 		screen.translate(width - screenWidth + Constants.userInterface.borderThickness, height - screenHeight + Constants.userInterface.borderThickness);
 	}
 
+	public void drawHelp(Graphics2D screen) {
+		int screenWidth = this.getWidth() - 16, screenHeight = this.getHeight() - 39;
+		int width = 400, height = 400;
+		screen.translate((screenWidth - width) / 2, (screenHeight - height) / 2);
+		this.drawRect(screen, width, height);
+		screen.scale(2, 2);
+		screen.drawString("Movement:", 5, 15);
+		screen.drawString("W, A, S, D", width / 4 + 39, 15);
+		screen.drawString("Change Move:", 5, 30);
+		screen.drawString("I, J, K, L, ARROWS", width / 4 - 10, 30);
+		screen.drawString("Use Move:", 5, 45);
+		screen.drawString("SPACEBAR", width / 4 + 32, 45);
+		screen.drawString("Switch Pokemon:", 5, 60);
+		screen.drawString("[, ]", width / 4 + 82, 60);
+		screen.drawString("Toggle Log:", 5, 75);
+		screen.drawString("F3", width / 4 + 82, 75);
+		screen.drawString("Toggle Help:", 5, 90);
+		screen.drawString("?", width / 4 + 88, 90);
+		screen.scale(0.5, 0.5);
+		screen.translate((width - screenWidth) / 2, (height - screenHeight) / 2);
+	}
+
 	@Override
 	public void render(Graphics2D screen) {
 		super.render(screen);
 		world.render(screen);
 		screen.setColor(Color.white);
 		this.camera.toScreenCoords(screen);
-		this.drawPokemonInfo(screen);
-		this.drawMoveList(screen);
+		if (this.showHelp) this.drawHelp(screen);
+		else {
+			this.drawPokemonInfo(screen);
+			this.drawMoveList(screen);
+			if (this.showLog) this.drawLog(screen);
+		}
 		this.camera.toGameCoords(screen);
-		screen.fillRect(-1, -1, 2, 2);
 	}
 
 	private void drawRect(Graphics2D screen, int width, int height) {

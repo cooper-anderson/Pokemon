@@ -1,5 +1,6 @@
 package ninja.cooperstuff.pokemon.move;
 
+import ninja.cooperstuff.pokemon.client.PokemonGame;
 import ninja.cooperstuff.pokemon.entity.MoveInstance;
 import ninja.cooperstuff.pokemon.entity.Pokemon;
 import ninja.cooperstuff.pokemon.type.Type;
@@ -63,6 +64,7 @@ public abstract class Move {
 			this.behavior(pokemon);
 			pokemon.triggerMoveTimer();
 			pokemon.incrementExperience();
+			((PokemonGame) pokemon.game).addLog(String.format("%s used %s!", pokemon.monster.name, this.name));
 			return true;
 		}
 		return false;

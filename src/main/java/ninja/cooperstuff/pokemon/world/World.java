@@ -36,8 +36,6 @@ public class World {
 	public int entityCap = 32;
 	public double entitySpawnRate = 0.1;
 
-	public boolean showDetails;
-
 	private HashMap<IntVector, TileData> data;
 
 	public World(PokemonGame game) {
@@ -208,6 +206,7 @@ public class World {
 		pokemon.transform.position = position.clone();
 		pokemon.setLevel(Math.min(Math.max(new Random().nextInt(this.game.player.getLevel() + 6), 1), 100));
 		this.pokemon.add(pokemon);
+		this.game.addLog(String.format("A wild %s appeared!", pokemon.monster.name));
 		return pokemon;
 	}
 
@@ -255,14 +254,6 @@ public class World {
 					int drawY = (int) Math.floor(pos.y - Math.floorDiv(y, 32)) * 32 - screenOffsetY;
 					screen.drawImage(tileData.getGround().getSprite(), drawX, drawY, 32, 32, null);
 					if (tileData.getDetail() != null) screen.drawImage(tileData.getDetail().getSprite(), drawX, drawY, 32, 32, null);
-					if (!this.showDetails) {
-						int scale = 10000;
-						//screen.setColor(new Color(0, 0, 0, (int) (255 * (1 - this.getHeight(Math.floorDiv(x, scale) + i, Math.floorDiv(y, scale) + j)))));
-						screen.setColor(new Color(255, 0, 0, tileData.getWalkable() ? 0 : 255));
-						IntVector col1 = tileData.getCollisionCorner1();
-						IntVector col2 = tileData.getCollisionCorner2();
-						screen.fillRect(drawX + col1.x * 2, drawY + col1.y * 2, (col2.x - col1.x) * 2, (col2.y - col1.y) * 2);
-					}
 				}
 			}
 
