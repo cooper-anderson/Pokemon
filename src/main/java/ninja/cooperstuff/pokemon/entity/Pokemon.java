@@ -378,6 +378,7 @@ public class Pokemon extends Entity {
 			this.setLevel(this.level + 1);
 			this.experience = 0;
 			this.stats.health = health;
+			this.healthAnimation = health;
 		}
 	}
 
